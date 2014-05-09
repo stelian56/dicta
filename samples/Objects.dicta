@@ -1,0 +1,21 @@
+﻿a = { p: { q: 1; } }
+b = a.p;
+// b depends on a
+// b is assigned a copy of a.p, not the actual object a.p
+
+a = { p: { q: 1; } }
+// Will invalidate b
+a.p.q = 2;
+
+a = { p: { q: 1; } }
+// Will not affect a
+b.q = 3;
+
+c = {};
+c.p = a;
+c.q = b;
+// c depends on a, b
+
+c.p = a;
+c.p = b;
+// c depends on b only

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Dicta</title>
+<script type="text/javascript" src="lib/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="dojo/dojo.js" data-dojo-config="locale: 'en-us'"></script>
+<script type="text/javascript">
+require(["dicta/dicta", "dojo/domReady!"], function(dicta) {
+    dicta.startUp().then(function() {
+        $("body").append(
+            "<div style='display:inline-block;border:1px solid black;padding:10px;background-color:#eeeeee;font-family:monospace;position:absolute;top:20px;right:20px;'>" +
+            dicta.model.text.replace(/\n/g, "<br>") +
+            "</div>");
+    });
+});
+</script>
+</head>
+<body>
+<div style="display:inline-block;">
+<p>
+Enter A: <input type="text" dicta_in="a"></input>
+</p>
+<p>
+Get B: <b dicta_out="b"></b>
+</p>
+</div>
+</body>
