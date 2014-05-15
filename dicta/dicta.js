@@ -10,13 +10,14 @@
         parsePage: function() {
             var model = this.model;
             $("[dicta_in]").each(function() {
-                var $element = $(this);
-                var varName = $element.attr("dicta_in");
+                var element = this;
+                var varName = $(element).attr("dicta_in");
                 var variable = model.variables[varName];
-                $element.change(function() {
-                    var value = $element.val();
+                $(element).change(function() {
+                    var value = $(element).val();
                     variable.set(value);
                 });
+                $(element).before("<span><b>" + varName + "</b> = </span>");
             });
             $("[dicta_out]").each(function() {
                 var element = this;
@@ -25,6 +26,7 @@
                 var value = variable.get();
                 $(element).text(value);
                 variable.watched = true;
+                $(element).before("<span><b>" + attrValue + "</b> = </span>");
             });
         },
 
@@ -43,8 +45,7 @@
 
         statusesChanged : function(variables) {
             var model = this.model;
-            $.each(variables, function() {
-                var variable = this;
+            $.each(variables, function(varName, variable) {
                 if (variable.status == "Invalid") {
                     $("[dicta_out]").each(function() {
                         var element = this;

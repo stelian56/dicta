@@ -17,7 +17,7 @@
             this.statusListener = statusListener;
         },
         
-        parseDependents: function(variable, ast) {
+        bind: function(variable, ast) {
             var model = this;
             if (ast.type == "Identifier") {
                 var varName = ast.name;
@@ -41,13 +41,13 @@
                         v.dependents[variable.name] = variable;
                     }
                     else if (operand.type == "BinaryExpression") {
-                        model.parseDependents(variable, operand);
+                        model.bind(variable, operand);
                     }
                 });
             }
         },
 
-        _clearDependents: function(variable) {
+        _unbind: function(variable) {
             $.each(this.variables, function() {
                 $.each(this.dependents, function(varName) {
                     if (varName == variable.name) {
@@ -81,30 +81,65 @@
                         }
                     }
                     else if (expression.type == "AssignmentExpression") {
-                        varName = statement.expression.left.name;
-                        varAst = statement.expression.right;
-                        var variable = model.variables[varName];
-                        if (variable) {
-                            model._clearDependents(variable);
-                            variable.ast = varAst;
+                        var left = statement.expression.left;
+                        var right = statement.expression.right;
+                        if (left.type == "Identifier") {
+                            varName = left.name;
+                            var variable = model.variables[varName];
+                            if (variable) {
+                                model._unbind(variable);
+                            }
+                            else {
+                                variable = new DVariable(model, varName);
+                                model.variables[varName] = variable;
+                            }
+                            variable.ast = right;
+                            model.bind(variable, variable.ast);
                         }
-                        else {
-                            variable = new DVariable(model, varName, varAst);
-                            model.variables[varName] = variable;
+                        else if (left.type == "MemberExpression") {
+                            var parentName = left.object.name;
+                            var childName;
+                            if (left.property.type == "Identifier") {
+                                childName = left.property.name;
+                            }
+                            else if (left.property.type == "Literal") {
+                                childName = left.property.value;
+                            }
+                            var parent = model.variables[parentName];
+                            var child;
+                            if (parent) {
+                                if (!parent.children) {
+                                    parent.children = {};
+                                }
+                                child = parent.children[childName];
+                                if (!child) {
+                                    child = new DVariable(model, childName, parent);
+                                    parent.children[chlidName] = child;
+                                }
+                                model._unbind(variable);
+                            }
+                            else {
+                                parent = new DVariable(model, parentName);
+                                model.variables[parentName] = parent;
+                                parent.children = {};
+                                child = new DVariable(model, childName, parent);
+                                parent.children[childName] = child;
+                            }
+                            child.ast = right;
+                            model.bind(child, child.ast);
                         }
-                        model.parseDependents(variable, variable.ast);
                     }
                 }
             });
         },
 
         getVariable: function(expression) {
-            var variable = this.variables[expression];
-            var varName;
+            var model = this;
+            var variable = model.variables[expression];
             if (!variable) {
-                varName = this.tempVarNames[expression];
+                var varName = model.tempVarNames[expression];
                 if (varName) {
-                    variable = this.variables[varName];
+                    variable = model.variables[varName];
                 }
                 else {
                     varName = utils.newTempVarName();
@@ -117,11 +152,33 @@
                         console.error("Parse error: " + error.message);
                         return null;
                     }
-                    var expressionAst = ast.body[0].expression.right
-                    variable = new DVariable(this, varName, expressionAst);
-                    this.parseDependents(variable, variable.ast);
-                    this.variables[varName] = variable;
-                    this.tempVarNames[expression] = varName;
+                    var right = ast.body[0].expression.right;
+                    if (right.type == "MemberExpression") {
+                        var parentName = right.object.name;
+                        var parent = model.variables[parentName];
+                        if (parent) {
+                            var childName;
+                            if (right.property.type == "Identifier") {
+                                childName = right.property.name;
+                            }
+                            else if (right.property.type == "Literal") {
+                                childName = right.property.value;
+                            }
+                            if (parent.children) {
+                                var child = parent.children[childName];
+                                if (child) {
+                                    variable = child;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        variable = new DVariable(model, varName);
+                        variable.ast = right;
+                        model.bind(variable, variable.ast);
+                        model.variables[varName] = variable;
+                        model.tempVarNames[expression] = varName;
+                    }
                 }
             }
             return variable;

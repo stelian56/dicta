@@ -3,11 +3,12 @@
 ], function(declare) {
     
     return declare(null, {
-        constructor: function(model, name, ast) {
+        constructor: function(model, name, parent) {
             this.model = model;
             this.name = name;
-            this.ast = ast;
-            this.parent = null;
+            this.parent = parent;
+            this.children = null;
+            this.ast = null;
             this.dependents = {};
             this.value = null;
             this.status = null;
@@ -26,14 +27,14 @@
         },
         
         set: function(value) {
-            var invalidVariables = [];
+            var invalidVariables = {};
 
             var invalidate = function(variable) {
                 $.each(variable.dependents, function(varName) {
                     var v = this;
                     v.status = "Invalid";
                     if (v.watched) {
-                        invalidVariables.push(v);
+                        invalidVariables[varName] = v;
                     }
                     invalidate(v);
                 });
@@ -47,7 +48,9 @@
             }
             this.status = "Valid";
             invalidate(this);
-            this.model.statusListener.statusesChanged(invalidVariables);
+            if (this.model.statusListener) {
+                this.model.statusListener.statusChanged(invalidVariables);
+            }
         }
     });
 });

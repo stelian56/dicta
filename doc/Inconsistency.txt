@@ -1,0 +1,10 @@
+﻿a = {p: x};
+b = a;
+b.p = 2*x;
+
+When x, y change:
+
+    a, b, b.p become invalid
+    b.p evaluates to x or to 2*x, depending on which formula is used
+ 
+    
