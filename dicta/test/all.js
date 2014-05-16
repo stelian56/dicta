@@ -1,7 +1,8 @@
 define([
     "dojo/promise/Promise",
     "dicta/test/model",
-    "dicta/test/performance"
+    "dicta/test/performance",
+    "dicta/test/work.js"
 ], function(Promise) {
 
     var allTestGroups = arguments;
