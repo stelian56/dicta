@@ -1,0 +1,20 @@
+{
+	"name": "dicta",
+	"version": "1.0",
+	"directories": {
+		"lib": "."
+	},
+	"main": "main",
+	"dependencies": {
+		"dojo": "1.9.3"
+	},
+	"description": "Tool to create business rules",
+	"licenses": [
+        {
+            "type": "MIT",
+			"url": "http://opensource.org/licenses/MIT"
+		}
+	],
+	"homepage": "http://geocentral.net/dicta",
+	"dojoBuild": "dicta.profile.js"
+}

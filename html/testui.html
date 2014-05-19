@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Dicta</title>
+<link rel="stylesheet" type="text/css" href="testui.css"/>
+<script type="text/javascript" src="lib/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="dojo/dojo.js" data-dojo-config="locale: 'en-us'"></script>
+<script type="text/javascript">
+require(["dicta/test/ui", "dojo/domReady!"], function(testui) {
+    testui.startUp("testui.dicta").then(function() {
+        $("body").append(
+            "<div class='modelText'>" + testui.model.text.replace(/\n/g, "<br>") + "</div>");
+    });
+});
+</script>
+</head>
+<body>
+<div style="display:inline-block;">
+<p>
+<input type="text" dicta_in="a"></input>
+</p>
+<p>
+<b dicta_out="b"></b>
+</p>
+</div>
+</body>

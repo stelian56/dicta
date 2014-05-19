@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!-- Dicta build file -->
+
+<project name="geocentral.net.dicta" default="all">
+ 
+  <property name="app.name" value="Dicta"/>
+  <property name="app.version" value="1.0"/>
+  <property name="build.dir" value="build"/>
+  <property name="test.dir" value="test"/>
+  <property name="package.dir" value="package"/>
+  <property name="dojo.src" value="dojo-release-1.9.3-src"/>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete dir="${test.dir}"/>
+    <delete dir="${package.dir}"/>
+  </target>
+
+  <target name="prepare">
+    <unzip src="lib/zip/${dojo.src}.zip" dest="${basedir}"/>
+    <move file="${dojo.src}" tofile="${build.dir}"/>
+    <mkdir dir="${test.dir}"/>
+    <copy todir="${test.dir}">
+      <fileset dir="${build.dir}" includes="
+        dojo/**
+        dojox/**
+        dijit/**
+      "/>
+    </copy>
+  </target>
+      
+  <target name="test">
+    <copy todir="${test.dir}">
+      <fileset dir="${basedir}" includes="css/**"/>
+      <fileset dir="lib/bin" includes="**"/>
+      <fileset dir="html" includes="**"/>
+    </copy>
+    <copy todir="${test.dir}/dicta">
+      <fileset dir="js/dicta" includes="**/*.js" excludes="**/*.profile.js"/>
+    </copy>
+    <copy todir="${test.dir}">
+      <fileset dir="${basedir}" includes="lib/js/**"/>
+    </copy>
+  </target>
+    
+  <target name="package">
+    <copy todir="${build.dir}">
+      <fileset dir="${basedir}/js" includes="**/*"/>
+    </copy>
+    <exec executable="cmd" dir="${build.dir}">
+      <arg value="/c"/>
+      <arg value="util\buildscripts\build.bat"/>
+      <arg value="-p"/>
+      <arg value="profile.js"/>
+    </exec>
+    <mkdir dir="${package.dir}"/>
+    <copy todir="${package.dir}/dicta">
+      <fileset dir="${build.dir}/release/dicta" includes="dicta.js"/>
+    </copy>
+    <tstamp/>
+    <zip destfile="${package.dir}/${app.name}-${app.version}.${DSTAMP}.zip">
+      <zipfileset dir="${package.dir}" includes="**/*" excludes="*.zip"/>
+      <zipfileset dir="${basedir}" includes="lib/js/*.min.js"/>
+      <zipfileset dir="${basedir}" includes="*.txt *.md"/>
+    </zip>
+    <delete includeemptydirs="true">
+      <fileset dir="${package.dir}" includes="**/*" excludes="*.zip"/>
+    </delete>
+  </target>
+  
+  <target name="all" depends="clean,prepare,package,test"/>
+
+</project>
+
