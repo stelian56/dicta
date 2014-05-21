@@ -44,6 +44,9 @@
                     else if (operand.type == "BinaryExpression") {
                         model._bind(variable, operand);
                     }
+                    else if (operand.type == "MemberExpression") {
+                        model._bind(variable, operand);
+                    }
                 });
             }
             else if (ast.type == "MemberExpression") {
@@ -60,37 +63,60 @@
                 });
             });
         },
+
+        _parseExpression: function(expression) {
+            var statement = "v=" + expression + ";";
+            var ast;
+            try {
+                ast = acorn.parse(statement, options);
+            }
+            catch (error) {
+                console.error("Parse error: " + error.message);
+                return null;
+            }
+            return ast.body[0].expression.right;
+        },
         
         _parseMemberExpression: function(ast) {
             var model = this;
-            var parentName = ast.object.name;
-            var childName;
-            if (ast.property.type == "Identifier") {
-                childName = ast.property.name;
-            }
-            else if (ast.property.type == "Literal") {
-                childName = ast.property.value;
-            }
-            var parent = model._variables[parentName];
-            var child;
-            if (parent) {
+
+            var parseProp = function(ast, parent) {
+                var propName;
+                if (ast.type == "Identifier") {
+                    propName = ast.name;
+                }
+                else if (ast.type == "Literal") {
+                    propName = ast.value;
+                }
+                var prop = parent.children[propName];
+                if (!prop) {
+                    prop = new DVariable(model, propName);
+                    parent.children[propName] = prop;
+                    prop.parent = parent;
+                }
+                return prop;
+            };
+            
+            if (ast.object.type == "MemberExpression") {
+                var parentProp = model._parseMemberExpression(ast.object);
+                var parent = parentProp.prop;
                 if (!parent.children) {
                     parent.children = {};
                 }
-                var child = parent.children[childName];
-                if (!child) {
-                    child = new DVariable(model, childName, parent);
-                    parent.children[chlidName] = child;
-                }
+                var prop = parseProp(ast.property, parent);
+                return { parent: parent, prop: prop };
             }
-            else {
+            var parentName = ast.object.name;
+            var parent = model._variables[parentName];
+            if (!parent) {
                 parent = new DVariable(model, parentName);
                 model._variables[parentName] = parent;
-                parent.children = {};
-                child = new DVariable(model, childName, parent);
-                parent.children[childName] = child;
             }
-            return child;
+            if (!parent.children) {
+                parent.children = {};
+            }
+            var prop = parseProp(ast.property, parent);
+            return { parent: parent, prop: prop };
         },
         
         parse: function(text) {
@@ -132,7 +158,7 @@
                             }
                         }
                         else if (left.type == "MemberExpression") {
-                            variable = model._parseMemberExpression(left);
+                            variable = model._parseMemberExpression(left).prop;
                         }
                         variable.ast = right;
                         model._bind(variable, variable.ast);
@@ -143,22 +169,44 @@
 
         getVariable: function(expression) {
             var model = this;
-            var tokens = expression.split("\.");
-            var variable;
-            $.each(tokens, function(index, varName) {
-                if (variable) {
-                    variable = variable.children[varName];
-                }
-                else {
-                    variable = model._variables[varName];
-                }
-                if (!variable) {
-                    return false;
-                }
-            });
-            return variable || model.getTempVariable();
-        },
 
+            var getMemberExpression = function(ast) {
+
+                var getProp = function(ast, parent) {
+                    var model = this;
+                    var propName;
+                    if (ast.type == "Identifier") {
+                        propName = ast.name;
+                    }
+                    else if (ast.type == "Literal") {
+                        propName = ast.value;
+                    }
+                    return parent.children[propName];
+                };
+                
+                if (ast.object.type == "MemberExpression") {
+                    var prop = getMemberExpression(ast.object);
+                    return getProp(ast.property, prop);
+                }
+                var parentName = ast.object.name;
+                var parent = model._variables[parentName];
+                if (parent) {
+                    return getProp(ast.property, parent);
+                }
+                return null;
+            };
+
+            var variable = model._variables[expression];
+            if (variable) {
+                return variable;
+            }
+            var ast = model._parseExpression(expression);
+            if (ast.type == "MemberExpression") {
+                return getMemberExpression(ast);
+            }
+            return variable;
+        },
+        
         getTempVariable: function(expression) {
             var model = this;
             var varName = model._tempVarNames[expression];
@@ -166,16 +214,7 @@
                 return model._variables[varName];
             }
             varName = utils.newTempVarName();
-            var statement = varName + "=" + expression + ";";
-            var ast;
-            try {
-                ast = acorn.parse(statement, options);
-            }
-            catch (error) {
-                console.error("Parse error: " + error.message);
-                return null;
-            }
-            var right = ast.body[0].expression.right;
+            var right = model._parseExpression(expression);
             variable = new DVariable(model, varName);
             variable.ast = right;
             model._bind(variable, variable.ast);
@@ -186,6 +225,36 @@
         
         evaluate: function(ast) {
             var model = this;
+
+            var evaluateMemberExpression = function(ast) {
+                var evaluateProp = function(ast, parent) {
+                    var propName;
+                    if (ast.type == "Identifier") {
+                        propName = ast.name;
+                    }
+                    else if (ast.type == "Literal") {
+                        propName = ast.value;
+                    }
+                    var prop = parent.children[propName];
+                    if (prop && !prop.children) {
+                        return prop.get();
+                    }
+                    return prop;
+                };
+
+                if (ast.object.type == "MemberExpression") {
+                    var value;
+                    var prop = evaluateMemberExpression(ast.object);
+                    return evaluateProp(ast.property, prop);
+                }
+                var parentName = ast.object.name;
+                var parent = model._variables[parentName];
+                if (parent) {
+                    return evaluateProp(ast.property, parent);
+                }
+                return null;
+            };
+            
             var value;
             switch (ast.type) {
                 case "Literal":
@@ -208,6 +277,9 @@
                             value = isNaN(operand.value) ? operand.value :
                                 parseInt(operand.value);
                         }
+                        else if (operand.type == "MemberExpression") {
+                            value = evaluateMemberExpression(operand);
+                        }
                         else if (operand.type == "BinaryExpression") {
                             value = model.evaluate(operand);
                         }
@@ -229,17 +301,7 @@
                     }
                     break;
                 case "MemberExpression":
-                    var parentName = ast.object.name;
-                    var childName;
-                    if (ast.property.type == "Identifier") {
-                        childName = ast.property.name;
-                    }
-                    else if (ast.property.type == "Literal") {
-                        childName = ast.property.value;
-                    }
-                    var parent = model._variables[parentName];
-                    var child = parent.children[childName];
-                    value = child.get();
+                    value = evaluateMemberExpression(ast);
                     break;
             }
             return value;

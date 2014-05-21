@@ -19,3 +19,9 @@ c.q = b;
 c.p = a;
 c.p = b;
 // c depends on b only
+
+// If a changes, only one assignment is re-evaluated. Same with b.
+a;
+b;
+c[a] = 1;
+c[b] = 2;

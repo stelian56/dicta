@@ -1,6 +1,7 @@
 define([
     "dojo/promise/Promise",
     "dicta/test/model",
+    "dicta/test/object",
     "dicta/test/performance",
     "dicta/test/work"
 ], function(Promise) {

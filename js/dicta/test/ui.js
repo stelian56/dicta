@@ -22,7 +22,8 @@
             $("[dicta_out]").each(function() {
                 var element = this;
                 var attrValue = $(element).attr("dicta_out");
-                var variable = model.getVariable(attrValue);
+                var variable = model.getVariable(attrValue) ||
+                    model.getTempVariable(attrValue);
                 var value = variable.get();
                 $(element).text(value);
                 variable.watched = true;
@@ -50,7 +51,8 @@
                     $("[dicta_out]").each(function() {
                         var element = this;
                         var attrValue = $(element).attr("dicta_out");
-                        var v = model.getVariable(attrValue);
+                        var v = model.getVariable(attrValue) ||
+                            model.getTempVariable(attrValue);
                         if (variable.name == v.name) {
                             var value = variable.get();
                             $(element).text(value);
