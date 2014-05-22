@@ -7,17 +7,18 @@ define([
     return {
         name: "work",
 
-        propOperator: function() {
-            var text = "c = a.p + b;"
+        depthInitializer: function() {
+            var text = "b = {q: { w: a }, e: { r: 2*a } };"
             var model = new DModel();
             model.parse(text);
-            var a_p = model.getVariable("a.p");
-            a_p.set(1);
-            var b = model.getVariable("b");
-            b.set(2);
-            var c = model.getVariable("c");
-            var cValue = c.get();
-            return cValue == 3;
+            var a = model.getVariable("a");
+            var b_q_w = model.getVariable("b.q.w");
+            var b_e_r = model.getVariable("b.e.r");
+            a.set(1);
+            b_q_w.get();
+            b_e_r.get();
+            a.set(2);
+            return !b_q_w.isValid() && !b_e_r.isValid();
         }
     };
 });

@@ -40,6 +40,7 @@
     </copy>
     <copy todir="${test.dir}">
       <fileset dir="${basedir}" includes="lib/js/**"/>
+      <fileset dir="${basedir}" includes="sample/**"/>
     </copy>
   </target>
     

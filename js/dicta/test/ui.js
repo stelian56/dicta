@@ -47,7 +47,7 @@
         statusChanged : function(variables) {
             var model = this.model;
             $.each(variables, function(varName, variable) {
-                if (variable.status == "Invalid") {
+                if (!variable.isValid()) {
                     $("[dicta_out]").each(function() {
                         var element = this;
                         var attrValue = $(element).attr("dicta_out");

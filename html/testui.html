@@ -2,12 +2,12 @@
 <html>
 <head>
 <title>Dicta</title>
-<link rel="stylesheet" type="text/css" href="testui.css"/>
+<link rel="stylesheet" type="text/css" href="css/testui.css"/>
 <script type="text/javascript" src="lib/js/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="dojo/dojo.js" data-dojo-config="locale: 'en-us'"></script>
 <script type="text/javascript">
 require(["dicta/test/ui", "dojo/domReady!"], function(testui) {
-    testui.startUp("testui.dicta").then(function() {
+    testui.startUp("sample/testui.dicta").then(function() {
         $("body").append(
             "<div class='modelText'>" + testui.model.text.replace(/\n/g, "<br>") + "</div>");
     });
@@ -20,7 +20,7 @@ require(["dicta/test/ui", "dojo/domReady!"], function(testui) {
 <input type="text" dicta_in="a"></input>
 </p>
 <p>
-<b dicta_out="b"></b>
+<b dicta_out="c"></b>
 </p>
 </div>
 </body>

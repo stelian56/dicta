@@ -11,17 +11,17 @@
             this.ast = null;
             this.dependents = {};
             this.value = null;
-            this.status = null;
+            this.valid = false;
             this.watched = false;
         },
         
         get: function() {
-            if (this.status == "Valid") {
+            if (this.valid) {
                 return this.value;
             }
             if (this.ast) {
                 this.value = this.model.evaluate(this.ast);
-                this.status = "Valid";
+                this.valid = true;
             }
             return this.value;
         },
@@ -32,7 +32,7 @@
             var invalidate = function(variable) {
                 $.each(variable.dependents, function(varName) {
                     var v = this;
-                    v.status = "Invalid";
+                    v.valid = false;
                     if (v.watched) {
                         invalidVariables[varName] = v;
                     }
@@ -46,11 +46,15 @@
             else {
                 this.value = parseInt(value);
             }
-            this.status = "Valid";
+            this.valid = true;
             invalidate(this);
             if (this.model.statusListener) {
                 this.model.statusListener.statusChanged(invalidVariables);
             }
+        },
+        
+        isValid: function() {
+            return this.valid;
         }
     });
 });

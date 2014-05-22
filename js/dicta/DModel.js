@@ -50,10 +50,46 @@
                 });
             }
             else if (ast.type == "MemberExpression") {
-                model._parseMemberExpression(ast);
+                var prop = model._parseMemberExpression(ast);
+                prop.dependents[variable.name] = variable;
+            }
+            else if (ast.type == "ObjectExpression") {
+                model._parseObjectExpression(ast, variable);
             }
         },
 
+        _parseObjectExpression: function(ast, parent) {
+            var model = this;
+            $.each(ast.properties, function() {
+                var key = this.key;
+                var value = this.value;
+                var propName;
+                if (key.type == "Identifier") {
+                    propName = key.name;
+                }
+                else if (key.type == "Literal") {
+                    propName = key.value;
+                }
+                if (!parent.children) {
+                    parent.children = {};
+                }
+                var prop = parent.children[propName];
+                if (!prop) {
+                    prop = new DVariable(model, propName);
+                    parent.children[propName] = prop;
+                    prop.parent = parent;
+                }
+                if (value.type == "ObjectExpression") {
+                    model._parseObjectExpression(value, prop);
+                }
+                else {
+                    prop.ast = value;
+                    model._bind(prop, prop.ast);
+                }
+            });
+
+        },
+        
         _unbind: function(variable) {
             $.each(this._variables, function() {
                 $.each(this.dependents, function(varName) {
@@ -76,47 +112,54 @@
             }
             return ast.body[0].expression.right;
         },
-        
+
         _parseMemberExpression: function(ast) {
             var model = this;
+        
+            var parse = function(ast) {
 
-            var parseProp = function(ast, parent) {
-                var propName;
-                if (ast.type == "Identifier") {
-                    propName = ast.name;
+                var parseProp = function(ast, parent) {
+                    var propName;
+                    if (ast.type == "Identifier") {
+                        propName = ast.name;
+                    }
+                    else if (ast.type == "Literal") {
+                        propName = ast.value;
+                    }
+                    var prop = parent.children[propName];
+                    if (!prop) {
+                        prop = new DVariable(model, propName);
+                        parent.children[propName] = prop;
+                        prop.parent = parent;
+                    }
+                    return prop;
+                };
+                
+                var parent, prop;
+                if (ast.object.type == "MemberExpression") {
+                    var parentProp = parse(ast.object);
+                    parent = parentProp.prop;
+                    if (!parent.children) {
+                        parent.children = {};
+                    }
+                    prop = parseProp(ast.property, parent);
                 }
-                else if (ast.type == "Literal") {
-                    propName = ast.value;
+                else {
+                    var parentName = ast.object.name;
+                    parent = model._variables[parentName];
+                    if (!parent) {
+                        parent = new DVariable(model, parentName);
+                        model._variables[parentName] = parent;
+                    }
+                    if (!parent.children) {
+                        parent.children = {};
+                    }
+                    prop = parseProp(ast.property, parent);
                 }
-                var prop = parent.children[propName];
-                if (!prop) {
-                    prop = new DVariable(model, propName);
-                    parent.children[propName] = prop;
-                    prop.parent = parent;
-                }
-                return prop;
+                return { parent: parent, prop: prop };
             };
             
-            if (ast.object.type == "MemberExpression") {
-                var parentProp = model._parseMemberExpression(ast.object);
-                var parent = parentProp.prop;
-                if (!parent.children) {
-                    parent.children = {};
-                }
-                var prop = parseProp(ast.property, parent);
-                return { parent: parent, prop: prop };
-            }
-            var parentName = ast.object.name;
-            var parent = model._variables[parentName];
-            if (!parent) {
-                parent = new DVariable(model, parentName);
-                model._variables[parentName] = parent;
-            }
-            if (!parent.children) {
-                parent.children = {};
-            }
-            var prop = parseProp(ast.property, parent);
-            return { parent: parent, prop: prop };
+            return parse(ast).prop;
         },
         
         parse: function(text) {
@@ -158,7 +201,7 @@
                             }
                         }
                         else if (left.type == "MemberExpression") {
-                            variable = model._parseMemberExpression(left).prop;
+                            variable = model._parseMemberExpression(left);
                         }
                         variable.ast = right;
                         model._bind(variable, variable.ast);

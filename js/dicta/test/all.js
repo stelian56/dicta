@@ -3,6 +3,7 @@ define([
     "dicta/test/model",
     "dicta/test/object",
     "dicta/test/performance",
+    "dicta/test/status",
     "dicta/test/work"
 ], function(Promise) {
 

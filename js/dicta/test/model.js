@@ -40,24 +40,6 @@ define([
             return cValue == 1;
         },
 
-        status: function() {
-            var text = "d = a + b + c; c = 2*b; b = a + 1;"
-            var model = new DModel();
-            model.parse(text);
-            var result = false;
-            model.statusListener = {
-                statusChanged: function(variables) {
-                    result = variables["b"] && variables["c"] && variables["d"] && true;
-                }
-            };
-            $.each(["b", "c", "d"], function() {
-                model.getVariable(this).watched = true;
-            });
-            var a = model.getVariable("a");
-            a.set(1);
-            return result;
-        },
-        
         temp: function() {
             var text = "(2*a + 4*a)/2 - a;"
             var model = new DModel();
