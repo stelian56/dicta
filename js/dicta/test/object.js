@@ -61,7 +61,7 @@ define([
             var b_pValue = b_p.get();
             return b_pValue == 1;
         },
- 
+        
         leftLiteral: function() {
             var text = "b['p'] = a;"
             var model = new DModel();
@@ -73,6 +73,18 @@ define([
             return b_pValue == 1;
         },
 
+        leftComputedIdentifier: function() {
+            var text = "b[p] = a;"
+            var model = new DModel();
+            try {
+                model.parse(text);
+            }
+            catch (error) {
+                return true;
+            }
+            return false;
+        },
+        
         rightIdentifier: function() {
             var text = "b = a.p;"
             var model = new DModel();
@@ -93,6 +105,18 @@ define([
             var b = model.getVariable("b");
             var bValue = b.get();
             return bValue == 1;
+        },
+
+        rightComputedIdentifier: function() {
+            var text = "b = a[p];"
+            var model = new DModel();
+            try {
+                model.parse(text);
+            }
+            catch (error) {
+                return true;
+            }
+            return false;
         },
 
         getPropByLiteral: function() {

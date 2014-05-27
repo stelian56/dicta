@@ -1,0 +1,118 @@
+define([
+    "dicta/DModel"
+], function(DModel) {
+
+    var statusListener;
+
+    return {
+        name: "array",
+
+        constantInitializer: function() {
+            var text = "a = [1];"
+            var model = new DModel();
+            model.parse(text);
+            var a = model.getVariable("a");
+            var a0 = model.getVariable("a[0]");
+            var a0Value = a0.get();
+            return Array.isArray(a.children) && a0Value == 1;
+        },
+        
+        nullElementInitializer: function() {
+            var text = "a = [,1];"
+            var model = new DModel();
+            model.parse(text);
+            var a = model.getVariable("a");
+            var a0 = model.getVariable("a[0]");
+            a0.set(1);
+            var a0Value = a0.get();
+            return Array.isArray(a.children) && a0Value == 1;
+        },
+        
+        variableInitializer: function() {
+            var text = "b = [a];";
+            var model = new DModel();
+            model.parse(text);
+            var b = model.getVariable("b");
+            var b0 = model.getVariable("b[0]");
+            var a = model.getVariable("a");
+            a.set(1);
+            var b0Value = b0.get();
+            return Array.isArray(b.children) && b0Value == 1;
+        },
+        
+        objectInitializer: function() {
+            var text = "b = [ {p: 1} ];"
+            var model = new DModel();
+            model.parse(text);
+            var b = model.getVariable("b");
+            var b0_p1 = model.getVariable("b[0].p");
+            var b0_p2 = model.getVariable("b[0]['p']");
+            b0_p1.set(1);
+            var b0_p2Value = b0_p2.get();
+            return Array.isArray(b.children) && b0_p2Value == 1;
+        },
+        
+        propInitializer: function() {
+            var text = "b = [ a.p, a['p'] ];"
+            var model = new DModel();
+            model.parse(text);
+            var a_p = model.getVariable("a.p");
+            var b = model.getVariable("b");
+            var b0 = model.getVariable("b[0]");
+            var b1 = model.getVariable("b[1]");
+            a_p.set(1);
+            var b0Value = b0.get();
+            var b1Value = b1.get();
+            return Array.isArray(b.children) && b0Value == 1 && b1Value == 1;;
+        },
+
+        expressionInitializer: function() {
+            var text = "b = [ (4*a + 2)/2 - a ];"
+            var model = new DModel();
+            model.parse(text);
+            var a = model.getVariable("a");
+            var b = model.getVariable("b");
+            var b0 = model.getVariable("b[0]");
+            a.set(1);
+            var b0Value = b0.get();
+            return Array.isArray(b.children) && b0Value == 2;
+        },
+        
+        depthInitializer: function() {
+            var text = "b = [ [a, 2*a], [3*a] ];"
+            var model = new DModel();
+            model.parse(text);
+            var a = model.getVariable("a");
+            var b = model.getVariable("b");
+            var b00 = model.getVariable("b[0][0]");
+            var b01 = model.getVariable("b[0][1]");
+            var b10 = model.getVariable("b[1][0]");
+            a.set(1);
+            var b00Value = b00.get();
+            var b01Value = b01.get();
+            var b10Value = b10.get();
+            return Array.isArray(b.children) && b00Value == 1 && b01Value == 2 && b10Value == 3;
+        },
+        
+        assignElementRight: function() {
+            var text = "a = [1, 2]; b = a[1];"
+            var model = new DModel();
+            model.parse(text);
+            var b = model.getVariable("b");
+            var bValue = b.get();
+            return bValue == 2;
+        },
+
+        depth: function() {
+            var text = "b = [[[[[[[[[[[[[[[[[[[[[[[[[a]]]]]]]]]]]]]]]]]]]]]]]]];"
+            var model = new DModel();
+            model.parse(text);
+            var a = model.getVariable("a");
+            var b = model.getVariable("b");
+            var b0 = model.getVariable("b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
+            a.set(1);
+            var b0Value = b0.get();
+            return Array.isArray(b.children) && b0Value == 1;
+        }
+    };
+});

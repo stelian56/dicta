@@ -19,77 +19,84 @@
         
         _bind: function(variable, ast) {
             var model = this;
+
+            var bindObjectExpression = function(parent, ast) {
+                parent.children = {};
+                $.each(ast.properties, function() {
+                    var key = this.key;
+                    var value = this.value;
+                    var propName;
+                    if (key.type == "Identifier") {
+                        propName = key.name;
+                    }
+                    else if (key.type == "Literal") {
+                        propName = key.value;
+                    }
+                    var prop = new DVariable(model, propName);
+                    parent.children[propName] = prop;
+                    prop.parent = parent;
+                    prop.ast = value;
+                    model._bind(prop, prop.ast);
+                });
+            };
+
+            var bindArrayExpression = function(parent, ast) {
+                parent.children = [];
+                $.each(ast.elements, function(index, element) {
+                    var child = new DVariable(model, index);
+                    parent.children[index] = child;
+                    child.parent = parent;
+                    child.ast = element;
+                    model._bind(child, child.ast);
+                });
+            };
+
             model._unbind(variable);
-            if (ast.type == "Identifier") {
-                var varName = ast.name;
-                var v = model._variables[varName];
-                if (!v) {
-                    v = new DVariable(model, varName);
-                    model._variables[varName] = v;
-                }
-                v.dependents[variable.name] = variable;
-            }
-            else if (ast.type == "BinaryExpression") {
-                $.each([ast.left, ast.right], function() {
-                    var operand = this;
-                    if (operand.type == "Identifier") {
-                        var varName = this.name;
+            if (ast) {
+                switch (ast.type) {
+                    case "Identifier":
+                        var varName = ast.name;
                         var v = model._variables[varName];
                         if (!v) {
                             v = new DVariable(model, varName);
                             model._variables[varName] = v;
                         }
                         v.dependents[variable.name] = variable;
-                    }
-                    else if (operand.type == "BinaryExpression") {
-                        model._bind(variable, operand);
-                    }
-                    else if (operand.type == "MemberExpression") {
-                        model._bind(variable, operand);
-                    }
-                });
-            }
-            else if (ast.type == "MemberExpression") {
-                var prop = model._parseMemberExpression(ast);
-                prop.dependents[variable.name] = variable;
-            }
-            else if (ast.type == "ObjectExpression") {
-                model._parseObjectExpression(ast, variable);
+                        break;
+                    case "ObjectExpression":
+                        bindObjectExpression(variable, ast);
+                        break;
+                    case "ArrayExpression":
+                        bindArrayExpression(variable, ast);
+                        break;
+                     case "MemberExpression":
+                        var prop = model._parseMemberExpression(ast);
+                        prop.dependents[variable.name] = variable;
+                        break;
+                    case "BinaryExpression":
+                        $.each([ast.left, ast.right], function() {
+                            var operand = this;
+                            if (operand.type == "Identifier") {
+                                var varName = this.name;
+                                var v = model._variables[varName];
+                                if (!v) {
+                                    v = new DVariable(model, varName);
+                                    model._variables[varName] = v;
+                                }
+                                v.dependents[variable.name] = variable;
+                            }
+                            else if (operand.type == "BinaryExpression") {
+                                model._bind(variable, operand);
+                            }
+                            else if (operand.type == "MemberExpression") {
+                                model._bind(variable, operand);
+                            }
+                        });
+                        break;
+                }
             }
         },
 
-        _parseObjectExpression: function(ast, parent) {
-            var model = this;
-            $.each(ast.properties, function() {
-                var key = this.key;
-                var value = this.value;
-                var propName;
-                if (key.type == "Identifier") {
-                    propName = key.name;
-                }
-                else if (key.type == "Literal") {
-                    propName = key.value;
-                }
-                if (!parent.children) {
-                    parent.children = {};
-                }
-                var prop = parent.children[propName];
-                if (!prop) {
-                    prop = new DVariable(model, propName);
-                    parent.children[propName] = prop;
-                    prop.parent = parent;
-                }
-                if (value.type == "ObjectExpression") {
-                    model._parseObjectExpression(value, prop);
-                }
-                else {
-                    prop.ast = value;
-                    model._bind(prop, prop.ast);
-                }
-            });
-
-        },
-        
         _unbind: function(variable) {
             $.each(this._variables, function() {
                 $.each(this.dependents, function(varName) {
@@ -153,6 +160,10 @@
                     }
                     if (!parent.children) {
                         parent.children = {};
+                    }
+                    if (ast.computed && ast.property.type == "Identifier") {
+                        throw "Computed property identifier '" + ast.property.name +
+                            "' in object '" + parentName + "'";
                     }
                     prop = parseProp(ast.property, parent);
                 }

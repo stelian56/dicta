@@ -30,6 +30,7 @@ var profile = {
                 "dicta/DVariable",
 
                 "dicta/test/all",
+                "dicta/test/array",
                 "dicta/test/model",
                 "dicta/test/object",
                 "dicta/test/status",

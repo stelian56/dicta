@@ -7,18 +7,23 @@ define([
     return {
         name: "work",
 
-        depthInitializer: function() {
-            var text = "b = {q: { w: a }, e: { r: 2*a } };"
+        assignElementRight: function() {
+            var text = "a = [1, 2]; b = a[1];"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var b_q_w = model.getVariable("b.q.w");
-            var b_e_r = model.getVariable("b.e.r");
-            a.set(1);
-            b_q_w.get();
-            b_e_r.get();
-            a.set(2);
-            return !b_q_w.isValid() && !b_e_r.isValid();
-        }
+            var b = model.getVariable("b");
+            var bValue = b.get();
+            return bValue == 2;
+        },
+
+        // assignLast: function() {
+            // var text = "b[1] = 1;"
+            // var model = new DModel();
+            // model.parse(text);
+            // var b0 = model.getVariable("b[0]");
+            // b0.set(1);
+            // var b0Value = b0.get();
+            // return b0Value == 1;
+        // }
     };
 });
