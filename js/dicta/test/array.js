@@ -14,7 +14,7 @@ define([
             var a = model.getVariable("a");
             var a0 = model.getVariable("a[0]");
             var a0Value = a0.get();
-            return Array.isArray(a.children) && a0Value == 1;
+            return a.array && a0Value == 1;
         },
         
         nullElementInitializer: function() {
@@ -25,7 +25,7 @@ define([
             var a0 = model.getVariable("a[0]");
             a0.set(1);
             var a0Value = a0.get();
-            return Array.isArray(a.children) && a0Value == 1;
+            return a.array && a0Value == 1;
         },
         
         variableInitializer: function() {
@@ -37,7 +37,7 @@ define([
             var a = model.getVariable("a");
             a.set(1);
             var b0Value = b0.get();
-            return Array.isArray(b.children) && b0Value == 1;
+            return b.array && b0Value == 1;
         },
         
         objectInitializer: function() {
@@ -49,7 +49,7 @@ define([
             var b0_p2 = model.getVariable("b[0]['p']");
             b0_p1.set(1);
             var b0_p2Value = b0_p2.get();
-            return Array.isArray(b.children) && b0_p2Value == 1;
+            return b.array && b0_p2Value == 1;
         },
         
         propInitializer: function() {
@@ -63,7 +63,7 @@ define([
             a_p.set(1);
             var b0Value = b0.get();
             var b1Value = b1.get();
-            return Array.isArray(b.children) && b0Value == 1 && b1Value == 1;;
+            return b.array && b0Value == 1 && b1Value == 1;;
         },
 
         expressionInitializer: function() {
@@ -75,7 +75,7 @@ define([
             var b0 = model.getVariable("b[0]");
             a.set(1);
             var b0Value = b0.get();
-            return Array.isArray(b.children) && b0Value == 2;
+            return b.array && b0Value == 2;
         },
         
         depthInitializer: function() {
@@ -91,7 +91,7 @@ define([
             var b00Value = b00.get();
             var b01Value = b01.get();
             var b10Value = b10.get();
-            return Array.isArray(b.children) && b00Value == 1 && b01Value == 2 && b10Value == 3;
+            return b.array && b00Value == 1 && b01Value == 2 && b10Value == 3;
         },
         
         assignElementRight: function() {
@@ -103,6 +103,18 @@ define([
             return bValue == 2;
         },
 
+        assignLast: function() {
+            var text = "b = []; b[1] = 2;"
+            var model = new DModel();
+            model.parse(text);
+            var b0 = model.getVariable("b[0]");
+            var b1 = model.getVariable("b[1]");
+            b0.set(1);
+            var b0Value = b0.get();
+            var b1Value = b1.get();
+            return b0Value == 1 && b1Value == 2;
+        },
+        
         depth: function() {
             var text = "b = [[[[[[[[[[[[[[[[[[[[[[[[[a]]]]]]]]]]]]]]]]]]]]]]]]];"
             var model = new DModel();
@@ -112,7 +124,7 @@ define([
             var b0 = model.getVariable("b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
             a.set(1);
             var b0Value = b0.get();
-            return Array.isArray(b.children) && b0Value == 1;
+            return b.array && b0Value == 1;
         }
     };
 });

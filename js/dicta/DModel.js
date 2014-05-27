@@ -22,6 +22,7 @@
 
             var bindObjectExpression = function(parent, ast) {
                 parent.children = {};
+                parent.array = null;
                 $.each(ast.properties, function() {
                     var key = this.key;
                     var value = this.value;
@@ -41,13 +42,14 @@
             };
 
             var bindArrayExpression = function(parent, ast) {
-                parent.children = [];
+                parent.children = {};
+                parent.array = [];
                 $.each(ast.elements, function(index, element) {
-                    var child = new DVariable(model, index);
-                    parent.children[index] = child;
-                    child.parent = parent;
-                    child.ast = element;
-                    model._bind(child, child.ast);
+                    var arrayElement = new DVariable(model, index);
+                    parent.array.push(arrayElement);
+                    arrayElement.parent = parent;
+                    arrayElement.ast = element;
+                    model._bind(arrayElement, arrayElement.ast);
                 });
             };
 
@@ -126,18 +128,36 @@
             var parse = function(ast) {
 
                 var parseProp = function(ast, parent) {
-                    var propName;
-                    if (ast.type == "Identifier") {
-                        propName = ast.name;
+                    var prop;
+                    if (parent.array) {
+                        if (ast.type == "Literal") {
+                            var index = parseInt(ast.value);
+                            if (index >= 0) {
+                                prop = parent.array[index];
+                                if (!prop) {
+                                    for (var idx = parent.array.length; idx <= index; idx++) {
+                                        prop = new DVariable(model, index);
+                                        parent.array.push(prop);
+                                        prop.parent = parent;
+                                    }
+                                }
+                            }
+                        }
                     }
-                    else if (ast.type == "Literal") {
-                        propName = ast.value;
-                    }
-                    var prop = parent.children[propName];
                     if (!prop) {
-                        prop = new DVariable(model, propName);
-                        parent.children[propName] = prop;
-                        prop.parent = parent;
+                    var propName;
+                        if (ast.type == "Identifier") {
+                            propName = ast.name;
+                        }
+                        else if (ast.type == "Literal") {
+                            propName = ast.value;
+                        }
+                        var prop = parent.children[propName];
+                        if (!prop) {
+                            prop = new DVariable(model, propName);
+                            parent.children[propName] = prop;
+                            prop.parent = parent;
+                        }
                     }
                     return prop;
                 };
@@ -228,6 +248,14 @@
 
                 var getProp = function(ast, parent) {
                     var model = this;
+                    if (parent.array) {
+                        if (ast.type == "Literal") {
+                            var index = parseInt(ast.value);
+                            if (index >= 0) {
+                                return parent.array[index];
+                            }
+                        }
+                    }
                     var propName;
                     if (ast.type == "Identifier") {
                         propName = ast.name;
@@ -282,14 +310,25 @@
 
             var evaluateMemberExpression = function(ast) {
                 var evaluateProp = function(ast, parent) {
-                    var propName;
-                    if (ast.type == "Identifier") {
-                        propName = ast.name;
+                    var prop;
+                    if (parent.array) {
+                        if (ast.type == "Literal") {
+                            var index = parseInt(ast.value);
+                            if (index >= 0) {
+                                prop = parent.array[index];
+                            }
+                        }
                     }
-                    else if (ast.type == "Literal") {
-                        propName = ast.value;
+                    if (!prop) {
+                        var propName;
+                        if (ast.type == "Identifier") {
+                            propName = ast.name;
+                        }
+                        else if (ast.type == "Literal") {
+                            propName = ast.value;
+                        }
+                        prop = parent.children[propName];
                     }
-                    var prop = parent.children[propName];
                     if (prop && !prop.children) {
                         return prop.get();
                     }

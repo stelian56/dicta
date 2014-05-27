@@ -8,6 +8,7 @@
             this.name = name;
             this.parent = parent;
             this.children = null;
+            this.array = null;
             this.ast = null;
             this.dependents = {};
             this.value = null;
