@@ -125,6 +125,39 @@ define([
             a.set(1);
             var b0Value = b0.get();
             return b.array && b0Value == 1;
+        },
+        
+        variableIndex: function() {
+            var text = "a = [1, 2]; b = a[x];"
+            var model = new DModel();
+            model.parse(text);
+            var b = model.getVariable("b");
+            var x = model.getVariable("x");
+            x.set(1);
+            var bValue = b.get();
+            return bValue == 2;
+        },
+        
+        expressionIndex: function() {
+            var text = "a = [1, 2, 3, 4, 5]; b = a[2*x - y];"
+            var model = new DModel();
+            model.parse(text);
+            var x = model.getVariable("x");
+            var y = model.getVariable("y");
+            var b = model.getVariable("b");
+            x.set(0);
+            y.set(0);
+            var bValue = b.get();
+            if (bValue != 1) {
+                return false;
+            }
+            x.set(2);
+            y.set(1);
+            if (b.isValid()) {
+                return false;
+            }
+            var bValue = b.get();
+            return bValue == 4;
         }
     };
 });

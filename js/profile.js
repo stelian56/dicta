@@ -25,7 +25,14 @@ var profile = {
         },
         "dicta/dicta": {
             include: [
+                "dicta/lib/acorn",
+                "dicta/lib/escodegen",
+                "dicta/lib/estraverse",
+                "dicta/lib/esutils",
+
+                "dicta/DEvaluator",
                 "dicta/DModel",
+                "dicta/DParser",
                 "dicta/DUtils",
                 "dicta/DVariable",
 
@@ -33,11 +40,9 @@ var profile = {
                 "dicta/test/array",
                 "dicta/test/model",
                 "dicta/test/object",
-                "dicta/test/status",
                 "dicta/test/performance",
-                "dicta/test/ui",
-
-                "dicta/lib/acorn"
+                "dicta/test/status",
+                "dicta/test/ui"
             ],
             customBase: true,
             boot: true

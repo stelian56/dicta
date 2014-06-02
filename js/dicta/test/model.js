@@ -41,11 +41,10 @@ define([
         },
 
         temp: function() {
-            var text = "(2*a + 4*a)/2 - a;"
+            var text = "(2*a + 4*a)/2 - a"
             var model = new DModel();
-            model.parse("a;");
-            var a = model.getVariable("a");
             var temp = model.getTempVariable(text);
+            var a = model.getVariable("a");
             a.set(1);
             var tempValue = temp.get();
             return tempValue == 2;

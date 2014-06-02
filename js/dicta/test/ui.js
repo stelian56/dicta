@@ -32,13 +32,12 @@
         },
 
         startUp: function(url) {
-            var dicta = this;
+            var ui = this;
             var deferred = new Deferred();
-            this.model = new DModel(dicta);
-            var model = this.model;
+            this.model = new DModel(ui);
             request(url).then(function(text) {
-                model.parse(text);
-                dicta.parsePage();
+                ui.model.parse(text);
+                ui.parsePage();
                 deferred.resolve();
             });
             return deferred.promise;

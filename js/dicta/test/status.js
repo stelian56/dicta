@@ -5,7 +5,7 @@ define([
     var statusListener;
 
     return {
-        name: "model",
+        name: "status",
 
         operator: function() {
             var text = "b = a + 1;"
