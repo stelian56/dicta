@@ -31,6 +31,10 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/*
+  Dicta Contributors: Modified to suit Dojo build approach.
+*/
+
 define([
     "exports",
     "dicta/lib/estraverse",

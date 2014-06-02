@@ -20,6 +20,10 @@
 // [dammit]: acorn_loose.js
 // [walk]: util/walk.js
 
+/*
+  Dicta Contributors: Modified to suit Dojo build approach.
+*/
+
 define([
     "exports"
 ], function(exports) {
