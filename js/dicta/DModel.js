@@ -1,92 +1,87 @@
 ﻿define([
     "dojo/_base/declare",
     "dicta/lib/acorn",
-    "dicta/DEvaluator",
     "dicta/DParser",
     "dicta/DUtils",
     "dicta/DVariable"
-], function(declare, acorn, DEvaluator, parser, utils, DVariable) {
+], function(declare, acorn, parser, utils, DVariable) {
     
     return declare(null, {
+
         constructor: function(statusListener) {
             this.statusListener = statusListener;
             this.text = null;
             this.variables = {};
             this._tempVarNames = {};
-            this._evaluator = new DEvaluator(this);
         },
 
         parse: function(text) {
             this.text = text;
-            parser.parseBind(this, text);
+            parser.parse(this, text);
         },
         
-        getVariable: function(text) {
-            var model = this;
-
-            var getMemberExpression = function(ast) {
-
-                var getProp = function(ast, parent) {
-                    if (parent.array) {
-                        if (ast.type == "Literal") {
-                            var index = parseInt(ast.value);
-                            if (index >= 0) {
-                                return parent.array[index];
-                            }
-                        }
-                    }
-                    var propName;
-                    if (ast.type == "Identifier") {
-                        propName = ast.name;
-                    }
-                    else if (ast.type == "Literal") {
-                        propName = ast.value;
-                    }
-                    return parent.children[propName];
-                };
-                
-                if (ast.object.type == "MemberExpression") {
-                    var prop = getMemberExpression(ast.object);
-                    return getProp(ast.property, prop);
-                }
-                var parentName = ast.object.name;
-                var parent = model.variables[parentName];
-                if (parent) {
-                    return getProp(ast.property, parent);
-                }
-                return null;
-            };
-
-            var variable = model.variables[text];
-            if (variable) {
-                return variable;
-            }
-            var ast = parser.parseExpression(text);
-            if (ast.type == "MemberExpression") {
-                return getMemberExpression(ast);
+        createVariable: function(varName) {
+            var variable = new DVariable(this, varName);
+            this.variables[varName] = variable;
+            var fullName = utils.getFullName(variable);
+            eval(fullName + "=undefined");
+            return variable;
+        },
+        
+        // TODO Cache auxiliary variables by expression, as opposed to name
+        _getVariable: function(text) {
+            var variable = this.variables[text];
+            if (!variable) {
+                var varName = utils.newAuxiliaryVarName();
+                var statementText = varName + "=" + text + ";";
+                var vars = [];
+                $.each(this.variables, function() {
+                    vars.push(this);
+                });
+                parser.parse(this, statementText, vars);
+                variable = this.variables[varName];
+                variable.auxiliary = true;
             }
             return variable;
         },
         
-        getTempVariable: function(text) {
-            var model = this;
-            var varName = model._tempVarNames[text];
-            if (varName) {
-                return model.variables[varName];
-            }
-            varName = utils.newTempVarName();
-            var variable = new DVariable(model, varName);
-            model.variables[varName] = variable;
-            var assignmentText = varName + "=" + text + ";";
-            if (parser.parseBind(model, assignmentText)) {
-                model._tempVarNames[text] = varName;
-                return variable;
-            }
-            return null;
+        get: function(text) {
+            var variable = this._getVariable(text);
+            return variable.get();
         },
         
-        evaluate: function(ast) {
-            return this._evaluator.evaluate(ast);
+        set: function(text, value) {
+            var model = this;
+            if (typeof value == "string") {
+                value = "'" + value + "'";
+            }
+            var variable = this._getVariable(text);
+            variable.get();
+            var ast = parser.parse(this, text + "=" + value + ";");
+            var statement = utils.generateCode(ast);
+            eval(statement);
+            if (variable.auxiliary) {
+                $.each(variable.definers, function() {
+                    model.invalidate(this);
+                    return false;
+                });
+            }
+            else {
+                model.invalidate(variable);
+            }
+        },
+        
+        invalidate: function(variable) {
+            var staleVars = {};
+            variable.invalidate(staleVars);
+            if (this.statusListener) {
+                this.statusListener.statusChanged(staleVars);
+            }
+        },
+        
+        watch: function(text) {
+            variable = this._getVariable(text);
+            variable.watched = true;
         }
     });
 });

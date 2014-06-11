@@ -1,7 +1,7 @@
 Dicta
 =====
 
-Dicta provides the business analyst with a tool to create rule models on which the developers will independently build UIs or report generators.
+Dicta provides the business analyst with a tool to create data models on which the developers will independently build UIs or report generators. Dicta is free software.
 
 Dictionaries define [dicta](https://www.google.com/search?q=dictum) as a set of formal pronouncements from an authoritative source.
 

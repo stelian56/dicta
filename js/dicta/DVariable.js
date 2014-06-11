@@ -1,61 +1,53 @@
 ﻿define([
-    "dojo/_base/declare"
-], function(declare) {
+    "dojo/_base/declare",
+    "dicta/DUtils"
+], function(declare, utils) {
+
+    var evaluate = function(variable) {
+        if (variable.isStale()) {
+            $.each(variable.definers, function() {
+                evaluate(this);
+            });
+            $.each(variable.definitions, function(index, definition) {
+                eval(definition);
+            });
+            variable._stale = false;
+        }
+    };
+
+    var invalidate = function(variable, staleVars) {
+        $.each(variable.dependents, function() {
+            invalidate(this, staleVars);
+        });
+        staleVars[variable.name] = variable;
+        variable._stale = true;
+    };
     
     return declare(null, {
-        constructor: function(model, name, parent) {
+    
+        constructor: function(model, name) {
             this.model = model;
             this.name = name;
-            this.parent = parent;
-            this.children = null;
-            this.array = null;
-            this.ast = null;
+            this.definitions = [];
             this.dependents = {};
-            this.value = null;
-            this.valid = false;
+            this.definers = {};
+            this.auxiliary = false;
+            this._stale = true;
             this.watched = false;
         },
         
-        get: function() {
-            if (this.valid) {
-                return this.value;
-            }
-            if (this.ast) {
-                this.value = this.model.evaluate(this.ast);
-                this.valid = true;
-            }
-            return this.value;
+        isStale: function() {
+            return this._stale;
         },
-        
-        set: function(value) {
-            var invalidVariables = {};
 
-            var invalidate = function(variable) {
-                $.each(variable.dependents, function(varName) {
-                    var v = this;
-                    v.valid = false;
-                    if (v.watched) {
-                        invalidVariables[varName] = v;
-                    }
-                    invalidate(v);
-                });
-            };
-        
-            if (value.isNaN) {
-                this.value = value;
-            }
-            else {
-                this.value = parseInt(value);
-            }
-            this.valid = true;
-            invalidate(this);
-            if (this.model.statusListener) {
-                this.model.statusListener.statusChanged(invalidVariables);
-            }
+        invalidate: function(staleVars) {
+            invalidate(this, staleVars);
         },
-        
-        isValid: function() {
-            return this.valid;
+
+        get: function() {
+            evaluate(this);
+            var fullName = utils.getFullName(this);
+            return eval(fullName);
         }
     });
 });

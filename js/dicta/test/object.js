@@ -11,131 +11,160 @@ define([
             var text = "a = { p: 1 };"
             var model = new DModel();
             model.parse(text);
-            var a_p = model.getVariable("a.p");
-            var a_pValue = a_p.get();
-            return a_pValue == 1;
+            var a_p = model.get("a.p");
+            if (a_p != 1) {
+                return false;
+            }
+            model.set("a.p", 10);
+            a_p = model.get("a.p");
+            return(a_p == 10);
         },
 
         variableInitializer: function() {
-            var text = "b = { p: a };"
+            var text = "b = { p: a }; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var b_p = model.getVariable("b.p");
-            var a = model.getVariable("a");
-            a.set(1);
-            var b_pValue = b_p.get();
-            return b_pValue == 1;
+            var b_p = model.get("b.p");
+            if (b_p != 1) {
+                return false;
+            }
+            model.set("a", 10);
+            b_p = model.get("b.p");
+            return b_p == 10;
         },
         
         expressionInitializer: function() {
-            var text = "b = {p: (4*a + 2)/2 - a };"
+            var text = "b = {p: (4*a + 2)/2 - a }; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var b_p = model.getVariable("b.p");
-            a.set(1);
-            var b_pValue = b_p.get();
-            return b_pValue == 2;
+            var b_p = model.get("b.p");
+            if (b_p != 2) {
+                return false;
+            }
+            model.set("a", 10);
+            b_p = model.get("b.p");
+            return b_p == 11;
         },
         
         depthInitializer: function() {
-            var text = "b = {q: { w: a }, e: { r: 2*a } };"
+            var text = "b = {q: { w: a }, e: { r: 2*a } }; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var b_q_w = model.getVariable("b.q.w");
-            var b_e_r = model.getVariable("b.e.r");
-            a.set(1);
-            var b_q_wValue = b_q_w.get();
-            var b_e_rValue = b_e_r.get();
-            return b_q_wValue == 1 && b_e_rValue == 2;
+            var b_q_w = model.get("b.q.w");
+            var b_e_r = model.get("b.e.r");
+            if (b_q_w != 1 || b_e_r != 2) {
+                return false;
+            }
+            model.set("a", 10);
+            b_q_w = model.get("b.q.w");
+            b_e_r = model.get("b.e.r");
+            return b_q_w == 10 && b_e_r == 20;
         },
-        
-        leftIdentifier: function() {
-            var text = "b.p = a;"
+
+        leftFixedIdentifier: function() {
+            var text = "b = {}; b.p = a; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            a.set(1);
-            var b_p = model.getVariable("b.p");
-            var b_pValue = b_p.get();
-            return b_pValue == 1;
+            var b_p = model.get("b.p");
+            if (b_p != 1) {
+                return false;
+            }
+            model.set("a", 10);
+            b_p = model.get("b.p");
+            return b_p == 10;
         },
         
         leftLiteral: function() {
-            var text = "b['p'] = a;"
+            var text = "b = {}; b['p'] = a; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            a.set(1);
-            var b_p = model.getVariable("b.p");
-            var b_pValue = b_p.get();
-            return b_pValue == 1;
-        },
-
-        leftComputedIdentifier: function() {
-            var text = "b[p] = a;"
-            var model = new DModel();
-            try {
-                model.parse(text);
+            var b_p = model.get("b.p");
+            if (b_p != 1) {
+                return false;
             }
-            catch (error) {
-                return true;
-            }
-            return false;
+            model.set("a", 10);
+            b_p = model.get("b.p");
+            return b_p == 10;
         },
         
         rightFixedIdentifier: function() {
-            var text = "b = a.p;"
+            var text = "a = {}; b = a.p; a.p = 1;"
             var model = new DModel();
             model.parse(text);
-            var a_p = model.getVariable("a.p");
-            a_p.set(1);
-            var b = model.getVariable("b");
-            var bValue = b.get();
-            return bValue == 1;
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            model.set("a.p", 10);
+            b = model.get("b");
+            return b == 10;
+        },
+        
+        rightLiteral: function() {
+            var text = "a = {}; b = a['p']; a['p'] = 1;"
+            var model = new DModel();
+            model.parse(text);
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            model.set("a['p']", 10);
+            b = model.get("b");
+            return b == 10;
+        },
+        
+        rightOperator: function() {
+            var text = "a = {}; c = (2*b*a.p - 6*b)/2 + 5*a['p']; a.p = 1; b = 2;"
+            var model = new DModel();
+            model.parse(text);
+            var c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            model.set("a.p", 10);
+            model.set("b", 10);
+            c = model.get("c");
+            return c == 120;
+        },
+        
+        leftIdentifierRightInitializer: function() {
+            var text = "a = {}; a.p = {x: 1};"
+            var model = new DModel();
+            model.parse(text);
+            var a_p_x = model.get("a.p.x");
+            if (a_p_x != 1) {
+                return false;
+            }
+            model.set("a.p.x", 2);
+            a_p_x = model.get("a.p.x");
+            return a_p_x == 2;
         },
         
         rightComputedIdentifier: function() {
-            var text = "a = { x: 1, y: 2 }; b = a[p];"
+            var text = "a = {x: 1, y: 2}; b = a[p]; p = 'x';"
             var model = new DModel();
             model.parse(text);
-            // TODO
-            return true;
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            model.set("p", "y");
+            b = model.get("b");
+            return b == 2;
         },
-
-        rightLiteral: function() {
-            var text = "b = a['p'];"
+        
+        leftComputedIdentifier: function() {
+            var text = "b = {}; b[p] = a; a = 1; p = 'x';"
             var model = new DModel();
             model.parse(text);
-            var a_p = model.getVariable("a.p");
-            a_p.set(1);
-            var b = model.getVariable("b");
-            var bValue = b.get();
-            return bValue == 1;
-        },
-
-        getPropByLiteral: function() {
-            var text = "b = a.p.x;"
-            var model = new DModel();
-            model.parse(text);
-            var a_p = model.getVariable("a['p']['x']");
-            a_p.set(1);
-            var b = model.getVariable("b");
-            var bValue = b.get();
-            return bValue == 1;
-        },
-
-        depth: function() {
-            var text = "m = q.w.e.r.t.y.u.i.o.p.a.s.d.f.g.h.j.k.l.z.x.c.v.b.n;"
-            var model = new DModel();
-            model.parse(text);
-            var q = model.
-                getVariable("q.w.e.r.t.y.u.i.o.p.a.s.d.f.g.h.j.k.l.z.x.c.v.b.n");
-            q.set(1);
-            var m = model.getVariable("m");
-            var mValue = m.get();
-            return mValue == 1;
+            var b_p = model.get("b[p]");
+            if (b_p != 1) {
+                return false;
+            }
+            model.set("a", 2);
+            model.set("p", "y");
+            b_p = model.get("b[p]");
+            return b_p == 2;
         }
     };
 });

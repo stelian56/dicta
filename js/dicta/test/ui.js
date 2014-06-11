@@ -45,7 +45,7 @@
 
         statusChanged : function(variables) {
             var model = this.model;
-            $.each(variables, function(varName, variable) {
+            $.each(variables, function(index, variable) {
                 if (!variable.isValid()) {
                     $("[dicta_out]").each(function() {
                         var element = this;

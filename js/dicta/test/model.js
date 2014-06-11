@@ -8,46 +8,51 @@ define([
         name: "model",
 
         constant: function() {
-            var text = "a = 1; b = a;"
+            var text = "a = 1;"
             var model = new DModel();
             model.parse(text);
-            var b = model.getVariable("b");
-            var bValue = b.get();
-            return bValue == 1;
+            var a = model.get("a");
+            if (a != 1) {
+                return false;
+            }
+            model.set("a", 10);
+            a = model.get("a");
+            return a == 10;
         },
         
-        operatorVariable: function() {
-            var text = "b = (2*a + 4*a)/2 - a;"
+        // TODO Fix
+        // set: function() {
+            // var text = "a = 1;"
+            // var model = new DModel();
+            // model.parse(text);
+            // model.set("a", 10);
+            // return model._getVariable("a").definitions.length == 1;
+        // },
+
+        variable: function() {
+            var text = "b = a; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            a.set(1);
-            var b = model.getVariable("b");
-            var bValue = b.get();
-            return bValue == 2;
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            model.set("a", 10);
+            b = model.get("b");
+            return b == 10;
         },
 
-        operatorObject: function() {
-            var text = "c = (2*b*a.p - 6*b)/2 + 5*a['p'];"
+        operator: function() {
+            var text = "b = (2*a + 4*a)/2 - a; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a_p = model.getVariable("a.p");
-            a_p.set(1);
-            var b = model.getVariable("b");
-            b.set(2);
-            var c = model.getVariable("c");
-            var cValue = c.get();
-            return cValue == 1;
-        },
-
-        temp: function() {
-            var text = "(2*a + 4*a)/2 - a"
-            var model = new DModel();
-            var temp = model.getTempVariable(text);
-            var a = model.getVariable("a");
-            a.set(1);
-            var tempValue = temp.get();
-            return tempValue == 2;
+            var b = model.get("b");
+            if (b != 2) {
+                return false;
+            }
+            model.set("a", 10);
+            b = model.get("b");
+            return b == 20;
         }
     };
 });

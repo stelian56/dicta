@@ -11,153 +11,167 @@ define([
             var text = "a = [1];"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var a0 = model.getVariable("a[0]");
-            var a0Value = a0.get();
-            return a.array && a0Value == 1;
+            var a_0 = model.get("a[0]");
+            if (a_0 != 1) {
+                return false;
+            }
+            model.set("a[0]", 10);
+            a_0 = model.get("a[0]");
+            return a_0 = 10;
         },
         
         nullElementInitializer: function() {
-            var text = "a = [,1];"
+            var text = "a = [, 2];"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var a0 = model.getVariable("a[0]");
-            a0.set(1);
-            var a0Value = a0.get();
-            return a.array && a0Value == 1;
+            var a_0 = model.get("a[0]");
+            if (a_0) {
+                return false;
+            }
+            model.set("a[0]", 1);
+            a_0 = model.get("a[0]");
+            return a_0 == 1;
         },
         
         variableInitializer: function() {
-            var text = "b = [a];";
+            var text = "b = [a]; a = 1;";
             var model = new DModel();
             model.parse(text);
-            var b = model.getVariable("b");
-            var b0 = model.getVariable("b[0]");
-            var a = model.getVariable("a");
-            a.set(1);
-            var b0Value = b0.get();
-            return b.array && b0Value == 1;
+            var b_0 = model.get("b[0]");
+            if (b_0 != 1) {
+                return false;
+            }
+            model.set("a", 10);
+            b_0 = model.get("b[0]");
+            return b_0 == 10;
         },
         
         objectInitializer: function() {
             var text = "b = [ {p: 1} ];"
             var model = new DModel();
             model.parse(text);
-            var b = model.getVariable("b");
-            var b0_p1 = model.getVariable("b[0].p");
-            var b0_p2 = model.getVariable("b[0]['p']");
-            b0_p1.set(1);
-            var b0_p2Value = b0_p2.get();
-            return b.array && b0_p2Value == 1;
+            var b_0_p = model.get("b[0]['p']");
+            if (b_0_p != 1) {
+                return false;
+            }
+            model.set("b[0]['p']", 10);
+            b_0_p = model.get("b[0].p");
+            return b_0_p == 10;
         },
         
         propInitializer: function() {
-            var text = "b = [ a.p, a['p'] ];"
+            var text = "a = {}; b = [ a.p, a['p'] ]; a.p = 1;"
             var model = new DModel();
             model.parse(text);
-            var a_p = model.getVariable("a.p");
-            var b = model.getVariable("b");
-            var b0 = model.getVariable("b[0]");
-            var b1 = model.getVariable("b[1]");
-            a_p.set(1);
-            var b0Value = b0.get();
-            var b1Value = b1.get();
-            return b.array && b0Value == 1 && b1Value == 1;;
+            var b_0 = model.get("b[0]");
+            var b_1 = model.get("b[1]");
+            if (b_0 != 1 || b_1 != 1) {
+                return false;
+            }
+            model.set("a.p", 10);
+            b_0 = model.get("b[0]");
+            b_1 = model.get("b[1]");
+            return b_0 == 10 && b_1 == 10;
         },
 
         expressionInitializer: function() {
-            var text = "b = [ (4*a + 2)/2 - a ];"
+            var text = "b = [ (4*a + 2)/2 - a ]; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var b = model.getVariable("b");
-            var b0 = model.getVariable("b[0]");
-            a.set(1);
-            var b0Value = b0.get();
-            return b.array && b0Value == 2;
+            var b_0 = model.get("b[0]");
+            if (b_0 != 2) {
+                return false;
+            }
+            model.set("a", 10);
+            b_0 = model.get("b[0]");
+            return b_0 == 11;
         },
         
         depthInitializer: function() {
-            var text = "b = [ [a, 2*a], [3*a] ];"
+            var text = "b = [ [a, 2*a], [3*a] ]; a = 1;"
             var model = new DModel();
             model.parse(text);
-            var a = model.getVariable("a");
-            var b = model.getVariable("b");
-            var b00 = model.getVariable("b[0][0]");
-            var b01 = model.getVariable("b[0][1]");
-            var b10 = model.getVariable("b[1][0]");
-            a.set(1);
-            var b00Value = b00.get();
-            var b01Value = b01.get();
-            var b10Value = b10.get();
-            return b.array && b00Value == 1 && b01Value == 2 && b10Value == 3;
+            var b_0_0 = model.get("b[0][0]");
+            var b_0_1 = model.get("b[0][1]");
+            var b_1_0 = model.get("b[1][0]");
+            if (b_0_0 != 1 || b_0_1 != 2 || b_1_0 != 3) {
+                return false;
+            }
+            model.set("a", 10);
+            b_0_0 = model.get("b[0][0]");
+            b_0_1 = model.get("b[0][1]");
+            b_1_0 = model.get("b[1][0]");
+            return b_0_0 == 10 && b_0_1 == 20 && b_1_0 == 30;
         },
         
-        assignElementRight: function() {
+        assignRight: function() {
             var text = "a = [1, 2]; b = a[1];"
             var model = new DModel();
             model.parse(text);
-            var b = model.getVariable("b");
-            var bValue = b.get();
-            return bValue == 2;
+            var b = model.get("b");
+            if (b != 2) {
+                return false;
+            }
+            model.set("a[1]", 20);
+            b = model.get("b");
+            return b == 20;
         },
 
         assignLast: function() {
             var text = "b = []; b[1] = 2;"
             var model = new DModel();
             model.parse(text);
-            var b0 = model.getVariable("b[0]");
-            var b1 = model.getVariable("b[1]");
-            b0.set(1);
-            var b0Value = b0.get();
-            var b1Value = b1.get();
-            return b0Value == 1 && b1Value == 2;
-        },
-        
-        depth: function() {
-            var text = "b = [[[[[[[[[[[[[[[[[[[[[[[[[a]]]]]]]]]]]]]]]]]]]]]]]]];"
-            var model = new DModel();
-            model.parse(text);
-            var a = model.getVariable("a");
-            var b = model.getVariable("b");
-            var b0 = model.getVariable("b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
-            a.set(1);
-            var b0Value = b0.get();
-            return b.array && b0Value == 1;
+            var b_0 = model.get("b[0]");
+            var b_1 = model.get("b[1]");
+            if (b_0 || b_1 != 2) {
+                return false;
+            }
+            model.set("b[3]", 10);
+            var b_2 = model.get("b[2]");
+            var b_3 = model.get("b[3]");
+            return !b_2 && b_3 == 10;
         },
         
         variableIndex: function() {
-            var text = "a = [1, 2]; b = a[x];"
+            var text = "a = [1, 2]; b = a[x]; x = 0;"
             var model = new DModel();
             model.parse(text);
-            var b = model.getVariable("b");
-            var x = model.getVariable("x");
-            x.set(1);
-            var bValue = b.get();
-            return bValue == 2;
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            model.set("x", 1);
+            b = model.get("b");
+            return b == 2;
         },
         
         expressionIndex: function() {
-            var text = "a = [1, 2, 3, 4, 5]; b = a[2*x - y];"
+            var text = "a = [1, 2, 3, 4, 5]; b = a[2*x - y]; x = 2; y = 1;"
             var model = new DModel();
             model.parse(text);
-            var x = model.getVariable("x");
-            var y = model.getVariable("y");
-            var b = model.getVariable("b");
-            x.set(0);
-            y.set(0);
-            var bValue = b.get();
-            if (bValue != 1) {
+            var b = model.get("b");
+            if (b != 4) {
                 return false;
             }
-            x.set(2);
-            y.set(1);
-            if (b.isValid()) {
+            model.set("x", 3);
+            model.set("y", 2);
+            b = model.get("b");
+            return b == 5;
+        },
+        
+        depth: function() {
+            var text = "b = [[[[[[[[[[[[[[[[[[[[[[[[[a]]]]]]]]]]]]]]]]]]]]]]]]]; a = 1;"
+            var model = new DModel();
+            model.parse(text);
+            var b = model.get(
+                "b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
+            if (b != 1) {
                 return false;
             }
-            var bValue = b.get();
-            return bValue == 4;
+            model.set("a", 10);
+            b = model.get(
+                "b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
+            return b == 10;
         }
     };
 });

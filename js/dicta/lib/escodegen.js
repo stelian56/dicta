@@ -70,9 +70,6 @@ define([
         FORMAT_MINIFY,
         FORMAT_DEFAULTS;
 
-//    estraverse = require('estraverse');
-//    esutils = require('esutils');
-
     Syntax = {
         AssignmentExpression: 'AssignmentExpression',
         ArrayExpression: 'ArrayExpression',
@@ -345,7 +342,7 @@ define([
 
         if (reg.source) {
             // extract flag from toString result
-            match = result.match(/\/([^/]*)$/);
+            match = result.match(/\/([^\/]*)$/);
             if (!match) {
                 return result;
             }
