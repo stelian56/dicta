@@ -15,11 +15,11 @@
         }
     };
 
-    var invalidate = function(variable, staleVars) {
+    var invalidate = function(variable, staleVarNames) {
         $.each(variable.dependents, function() {
-            invalidate(this, staleVars);
+            invalidate(this, staleVarNames);
         });
-        staleVars[variable.name] = variable;
+        staleVarNames[variable.name] = true;
         variable._stale = true;
     };
     
@@ -33,6 +33,7 @@
             this.definers = {};
             this.auxiliary = false;
             this._stale = true;
+            this.pinned = false;
             this.watched = false;
         },
         
@@ -40,14 +41,25 @@
             return this._stale;
         },
 
-        invalidate: function(staleVars) {
-            invalidate(this, staleVars);
+        invalidate: function(staleVarNames) {
+            invalidate(this, staleVarNames);
         },
 
         get: function() {
             evaluate(this);
             var fullName = utils.getFullName(this);
             return eval(fullName);
+        },
+        
+        setPinned: function(pinned) {
+            if (this.pinned) {
+                var definitionCount = this.definitions.length;
+                this.definitions.splice(definitionCount - 1, 1);
+            }
+            else {
+                this.pinned = pinned;
+            }
+            this.invalidate({});
         }
     });
 });

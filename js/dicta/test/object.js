@@ -17,7 +17,10 @@ define([
             }
             model.set("a.p", 10);
             a_p = model.get("a.p");
-            return(a_p == 10);
+            if (a_p != 10) {
+                return false;
+            }
+            return true;
         },
 
         variableInitializer: function() {
@@ -30,7 +33,10 @@ define([
             }
             model.set("a", 10);
             b_p = model.get("b.p");
-            return b_p == 10;
+            if (b_p != 10) {
+                return false;
+            }
+            return true;
         },
         
         expressionInitializer: function() {
@@ -43,7 +49,10 @@ define([
             }
             model.set("a", 10);
             b_p = model.get("b.p");
-            return b_p == 11;
+            if (b_p != 11) {
+                return false;
+            }
+            return true;
         },
         
         depthInitializer: function() {
@@ -58,7 +67,13 @@ define([
             model.set("a", 10);
             b_q_w = model.get("b.q.w");
             b_e_r = model.get("b.e.r");
-            return b_q_w == 10 && b_e_r == 20;
+            if (b_q_w != 10) {
+                return false;
+            }
+            if (b_e_r != 20) {
+                return false;
+            }
+            return true;
         },
 
         leftFixedIdentifier: function() {
@@ -71,7 +86,10 @@ define([
             }
             model.set("a", 10);
             b_p = model.get("b.p");
-            return b_p == 10;
+            if (b_p != 10) {
+                return false;
+            }
+            return true;
         },
         
         leftLiteral: function() {
@@ -84,7 +102,10 @@ define([
             }
             model.set("a", 10);
             b_p = model.get("b.p");
-            return b_p == 10;
+            if (b_p != 10) {
+                return false;
+            }
+            return true;
         },
         
         rightFixedIdentifier: function() {
@@ -97,7 +118,10 @@ define([
             }
             model.set("a.p", 10);
             b = model.get("b");
-            return b == 10;
+            if (b != 10) {
+                return false;
+            }
+            return true;
         },
         
         rightLiteral: function() {
@@ -110,7 +134,10 @@ define([
             }
             model.set("a['p']", 10);
             b = model.get("b");
-            return b == 10;
+            if (b != 10) {
+                return false;
+            }
+            return true;
         },
         
         rightOperator: function() {
@@ -124,7 +151,10 @@ define([
             model.set("a.p", 10);
             model.set("b", 10);
             c = model.get("c");
-            return c == 120;
+            if (c != 120) {
+                return false;
+            }
+            return true;
         },
         
         leftIdentifierRightInitializer: function() {
@@ -137,7 +167,10 @@ define([
             }
             model.set("a.p.x", 2);
             a_p_x = model.get("a.p.x");
-            return a_p_x == 2;
+            if (a_p_x != 2) {
+                return false;
+            }
+            return true;
         },
         
         rightComputedIdentifier: function() {
@@ -150,7 +183,10 @@ define([
             }
             model.set("p", "y");
             b = model.get("b");
-            return b == 2;
+            if (b != 2) {
+                return false;
+            }
+            return true;
         },
         
         leftComputedIdentifier: function() {
@@ -164,7 +200,10 @@ define([
             model.set("a", 2);
             model.set("p", "y");
             b_p = model.get("b[p]");
-            return b_p == 2;
+            if (b_p != 2) {
+                return false;
+            }
+            return true;
         }
     };
 });

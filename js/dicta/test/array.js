@@ -17,7 +17,10 @@ define([
             }
             model.set("a[0]", 10);
             a_0 = model.get("a[0]");
-            return a_0 = 10;
+            if (a_0 != 10) {
+                return false;
+            }
+            return true;
         },
         
         nullElementInitializer: function() {
@@ -30,7 +33,10 @@ define([
             }
             model.set("a[0]", 1);
             a_0 = model.get("a[0]");
-            return a_0 == 1;
+            if (a_0 != 1) {
+                return false;
+            }
+            return true;
         },
         
         variableInitializer: function() {
@@ -43,7 +49,10 @@ define([
             }
             model.set("a", 10);
             b_0 = model.get("b[0]");
-            return b_0 == 10;
+            if (b_0 != 10) {
+                return false;
+            }
+            return true;
         },
         
         objectInitializer: function() {
@@ -56,7 +65,10 @@ define([
             }
             model.set("b[0]['p']", 10);
             b_0_p = model.get("b[0].p");
-            return b_0_p == 10;
+            if (b_0_p != 10) {
+                return false;
+            }
+            return true;
         },
         
         propInitializer: function() {
@@ -71,7 +83,13 @@ define([
             model.set("a.p", 10);
             b_0 = model.get("b[0]");
             b_1 = model.get("b[1]");
-            return b_0 == 10 && b_1 == 10;
+            if (b_0 != 10) {
+                return false;
+            }
+            if (b_1 != 10) {
+                return false;
+            }
+            return true;
         },
 
         expressionInitializer: function() {
@@ -84,7 +102,10 @@ define([
             }
             model.set("a", 10);
             b_0 = model.get("b[0]");
-            return b_0 == 11;
+            if (b_0 != 11) {
+                return false;
+            }
+            return true;
         },
         
         depthInitializer: function() {
@@ -101,7 +122,16 @@ define([
             b_0_0 = model.get("b[0][0]");
             b_0_1 = model.get("b[0][1]");
             b_1_0 = model.get("b[1][0]");
-            return b_0_0 == 10 && b_0_1 == 20 && b_1_0 == 30;
+            if (b_0_0 != 10) {
+                return false;
+            }
+            if (b_0_1 != 20) {
+                return false;
+            }
+            if (b_1_0 != 30) {
+                return false;
+            }
+            return true;
         },
         
         assignRight: function() {
@@ -114,7 +144,10 @@ define([
             }
             model.set("a[1]", 20);
             b = model.get("b");
-            return b == 20;
+            if (b != 20) {
+                return false;
+            }
+            return true;
         },
 
         assignLast: function() {
@@ -129,7 +162,13 @@ define([
             model.set("b[3]", 10);
             var b_2 = model.get("b[2]");
             var b_3 = model.get("b[3]");
-            return !b_2 && b_3 == 10;
+            if (b_2) {
+                return false;
+            }
+            if (b_3 != 10) {
+                return false;
+            }
+            return true;
         },
         
         variableIndex: function() {
@@ -142,7 +181,10 @@ define([
             }
             model.set("x", 1);
             b = model.get("b");
-            return b == 2;
+            if (b != 2) {
+                return false;
+            }
+            return true;
         },
         
         expressionIndex: function() {
@@ -156,7 +198,10 @@ define([
             model.set("x", 3);
             model.set("y", 2);
             b = model.get("b");
-            return b == 5;
+            if (b != 5) {
+                return false;
+            }
+            return true;
         },
         
         depth: function() {
@@ -171,7 +216,10 @@ define([
             model.set("a", 10);
             b = model.get(
                 "b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
-            return b == 10;
+            if (b != 10) {
+                return false;
+            }
+            return true;
         }
     };
 });

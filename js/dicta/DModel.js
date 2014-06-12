@@ -12,7 +12,7 @@
             this.statusListener = statusListener;
             this.text = null;
             this.variables = {};
-            this._tempVarNames = {};
+            this.auxVarNames = {};
         },
 
         parse: function(text) {
@@ -28,25 +28,29 @@
             return variable;
         },
         
-        // TODO Cache auxiliary variables by expression, as opposed to name
-        _getVariable: function(text) {
+        getVariable: function(text) {
             var variable = this.variables[text];
             if (!variable) {
-                var varName = utils.newAuxiliaryVarName();
-                var statementText = varName + "=" + text + ";";
-                var vars = [];
-                $.each(this.variables, function() {
-                    vars.push(this);
-                });
-                parser.parse(this, statementText, vars);
+                var varName = this.auxVarNames[text];
                 variable = this.variables[varName];
-                variable.auxiliary = true;
+                if (!variable) {
+                    varName = utils.newAuxiliaryVarName();
+                    var statementText = varName + "=" + text + ";";
+                    var vars = [];
+                    $.each(this.variables, function() {
+                        vars.push(this);
+                    });
+                    parser.parse(this, statementText, vars);
+                    variable = this.variables[varName];
+                    variable.auxiliary = true;
+                    this.auxVarNames[text] = varName;
+                }
             }
             return variable;
         },
         
         get: function(text) {
-            var variable = this._getVariable(text);
+            var variable = this.getVariable(text);
             return variable.get();
         },
         
@@ -55,13 +59,15 @@
             if (typeof value == "string") {
                 value = "'" + value + "'";
             }
-            var variable = this._getVariable(text);
+            var variable = model.getVariable(text);
             variable.get();
-            var ast = parser.parse(this, text + "=" + value + ";");
+            variable.setPinned(true);
+            var ast = parser.parse(model, variable.name + "=" + value + ";");
             var statement = utils.generateCode(ast);
             eval(statement);
             if (variable.auxiliary) {
                 $.each(variable.definers, function() {
+                    parser.parse(model, text + "=" + value + ";");
                     model.invalidate(this);
                     return false;
                 });
@@ -71,16 +77,21 @@
             }
         },
         
+        unset: function(text) {
+            var variable = this.getVariable(text);
+            variable.setPinned(false);
+        },
+        
         invalidate: function(variable) {
-            var staleVars = {};
-            variable.invalidate(staleVars);
+            var staleVarNames = {};
+            variable.invalidate(staleVarNames);
             if (this.statusListener) {
-                this.statusListener.statusChanged(staleVars);
+                this.statusListener.statusChanged(staleVarNames);
             }
         },
         
         watch: function(text) {
-            variable = this._getVariable(text);
+            variable = this.getVariable(text);
             variable.watched = true;
         }
     });

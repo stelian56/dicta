@@ -12,22 +12,28 @@
             $("[dicta_in]").each(function() {
                 var element = this;
                 var varName = $(element).attr("dicta_in");
-                var variable = model.getVariable(varName);
+                var valueType = $(element).attr("dicta_type");
                 $(element).change(function() {
-                    var value = $(element).val();
-                    variable.set(value);
+                    var text = $(element).val();
+                    var value;
+                    switch (valueType) {
+                        case "number":
+                            value = parseFloat(text);
+                            break;
+                        default:
+                            value = text;
+                    }
+                    model.set(varName, value);
                 });
                 $(element).before("<span><b>" + varName + "</b> = </span>");
             });
             $("[dicta_out]").each(function() {
                 var element = this;
-                var attrValue = $(element).attr("dicta_out");
-                var variable = model.getVariable(attrValue) ||
-                    model.getTempVariable(attrValue);
-                var value = variable.get();
+                var varName = $(element).attr("dicta_out");
+                var value = model.get(varName);
                 $(element).text(value);
-                variable.watched = true;
-                $(element).before("<span><b>" + attrValue + "</b> = </span>");
+                model.watch(varName);
+                $(element).before("<span><b>" + varName + "</b> = </span>");
             });
         },
 
@@ -43,21 +49,17 @@
             return deferred.promise;
         },
 
-        statusChanged : function(variables) {
+        statusChanged : function(varNames) {
             var model = this.model;
-            $.each(variables, function(index, variable) {
-                if (!variable.isValid()) {
-                    $("[dicta_out]").each(function() {
-                        var element = this;
-                        var attrValue = $(element).attr("dicta_out");
-                        var v = model.getVariable(attrValue) ||
-                            model.getTempVariable(attrValue);
-                        if (variable.name == v.name) {
-                            var value = variable.get();
-                            $(element).text(value);
-                        }
-                    });
-                }
+            $.each(varNames, function(varName) {
+                $("[dicta_out]").each(function() {
+                    var element = this;
+                    var vName = $(element).attr("dicta_out");
+                    if (vName == varName) {
+                        var value = model.get(varName);
+                        $(element).text(value);
+                    }
+                });
             });
         }
     };

@@ -17,18 +17,12 @@ define([
             }
             model.set("a", 10);
             a = model.get("a");
-            return a == 10;
+            if (a != 10) {
+                return false;
+            }
+            return true;
         },
         
-        // TODO Fix
-        // set: function() {
-            // var text = "a = 1;"
-            // var model = new DModel();
-            // model.parse(text);
-            // model.set("a", 10);
-            // return model._getVariable("a").definitions.length == 1;
-        // },
-
         variable: function() {
             var text = "b = a; a = 1;"
             var model = new DModel();
@@ -39,7 +33,10 @@ define([
             }
             model.set("a", 10);
             b = model.get("b");
-            return b == 10;
+            if (b != 10) {
+                return false;
+            }
+            return true;
         },
 
         operator: function() {
@@ -52,7 +49,53 @@ define([
             }
             model.set("a", 10);
             b = model.get("b");
-            return b == 20;
+            if (b != 20) {
+                return false;
+            }
+            return true;
+        },
+        
+        setunset: function() {
+            var text = "c = b; b = a; a = 1;";
+            var model = new DModel();
+            model.parse(text);
+            var c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            model.set("b", 10);
+            c = model.get("c");
+            if (c != 10) {
+                return false;
+            }
+            model.unset("b");
+            c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            return true;
+        },
+        
+        setset: function() {
+            var text = "a = {p: 1};";
+            var model = new DModel();
+            model.parse(text);
+            a_p = model.get("a.p");
+            if (a_p != 1) {
+                return false;
+            }
+            var a_p = model.get("a.p");
+            model.set("a.p", 2);
+            a_p = model.get("a.p");
+            if (a_p != 2) {
+                return false;
+            }
+            model.set("a.p", 3);
+            a_p = model.get("a.p");
+            if (a_p != 3) {
+                return false;
+            }
+            return true;
         }
     };
 });
