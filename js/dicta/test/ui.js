@@ -1,8 +1,9 @@
 ﻿define([
     "dojo/Deferred",
     "dojo/request",
-    "dicta/DModel"
-], function(Deferred, request, DModel) {
+    "dicta/DModel",
+    "dicta/DUtils"
+], function(Deferred, request, DModel, utils) {
 
     return {
         model: null,
@@ -40,9 +41,8 @@
         startUp: function(url) {
             var ui = this;
             var deferred = new Deferred();
-            this.model = new DModel(ui);
-            request(url).then(function(text) {
-                ui.model.parse(text);
+            ui.model = new DModel(ui);
+            utils.readModel(url, ui.model).then(function() {
                 ui.parsePage();
                 deferred.resolve();
             });

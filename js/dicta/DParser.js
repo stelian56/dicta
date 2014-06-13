@@ -8,17 +8,6 @@
         strictSemicolons: true
     };
 
-    // TODO Remove?
-    // var pathToCode = function(path) {
-        // var parent = this.parent;
-        // var path = this.name;
-        // while (parent) {
-            // path = parent.name + "." + path;
-            // parent = parent.parent;
-        // }
-        // return "$dicta_" + path;
-    // };
-        
     var bind = function(var1, var2) {
         if (!var2.dependents[var1.name]) {
             var2.dependents[var1.name] = var1;

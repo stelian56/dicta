@@ -37,7 +37,7 @@
     };
     
     return {
-        readModel: function(url, model) {
+        readModel: function(url, model, sync) {
             var deferred = new Deferred();
             
             var onSuccess = function(text) {
@@ -49,7 +49,7 @@
                 deferred.reject();
             };
             
-            request(url).then(onSuccess, onError);
+            request(url, {sync: sync}).then(onSuccess, onError);
             return deferred.promise;
         },
 
