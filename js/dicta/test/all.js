@@ -1,6 +1,7 @@
 define([
     "dojo/promise/Promise",
     "dicta/test/array",
+    "dicta/test/function",
     "dicta/test/model",
     "dicta/test/object",
     "dicta/test/status",

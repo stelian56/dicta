@@ -23,6 +23,12 @@
                 ast.name = fullNamePrefix + ast.name;
             }
         }
+        else if (ast.type == "CallExpression") {
+            ast.callee.name = fullNamePrefix + ast.callee.name;
+            $.each(ast.arguments, function() {
+                prependVariableNames(this);
+            });
+        }
         else if (typeof ast === "object" || Array.isArray(ast)) {
             $.each(ast, function(key, value) {
                 if (value) {

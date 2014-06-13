@@ -1,0 +1,5 @@
+f = function() {
+    return 1;
+};
+
+a = f();

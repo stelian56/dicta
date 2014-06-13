@@ -38,6 +38,7 @@ var profile = {
 
                 "dicta/test/all",
                 "dicta/test/array",
+                "dicta/test/function",
                 "dicta/test/model",
                 "dicta/test/object",
                 "dicta/test/status",

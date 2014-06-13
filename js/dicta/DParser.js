@@ -50,6 +50,22 @@
         parseExpression(model, ast.property, vars, !computed);
     };
 
+    var parseCallExpression = function(model, ast, vars) {
+        var varName = ast.callee.name;
+        var variable;
+        variable = model.variables[varName];
+        if (!variable) {
+            variable = model.createVariable(varName);
+        }
+        ast.notOwned = true;
+        if (vars.indexOf(variable) < 0) {
+            vars.push(variable);
+        }
+        $.each(ast.arguments, function() {
+            parseExpression(model, this, vars);
+        });
+    };
+    
     var parseExpression = function(model, ast, vars, owned) {
 
         switch (ast.type) {
@@ -71,6 +87,9 @@
                 $.each([ast.left, ast.right], function() {
                     parseExpression(model, this, vars);
                 });
+                break;
+            case "CallExpression":
+                parseCallExpression(model, ast, vars);
                 break;
         }
     };

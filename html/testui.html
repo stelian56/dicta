@@ -7,9 +7,10 @@
 <script type="text/javascript" src="dojo/dojo.js" data-dojo-config="locale: 'en-us'"></script>
 <script type="text/javascript">
 require(["dicta/test/ui", "dojo/domReady!"], function(testui) {
-    testui.startUp("sample/testui.dicta").then(function() {
+    testui.startUp("sample/ui.dicta").then(function() {
         $("body").append(
-            "<div class='modelText'>" + testui.model.text.replace(/\n/g, "<br>") + "</div>");
+            "<div class='modelText'>" +
+            testui.model.text.replace(/\n/g, "<br>").replace(/\s/g, "&nbsp;") + "</div>");
     });
 });
 </script>
@@ -17,10 +18,13 @@ require(["dicta/test/ui", "dojo/domReady!"], function(testui) {
 <body>
 <div style="display:inline-block;">
 <p>
-<input type="text" dicta_in="a" dicta_type="number"></input>
+<input type="text" dicta_in="index" dicta_type="number"></input>
 </p>
 <p>
-<b dicta_out="c"></b>
+<input type="text" dicta_in="count" dicta_type="number"></input>
+</p>
+<p>
+<b dicta_out="array"></b>
 </p>
 </div>
 </body>
