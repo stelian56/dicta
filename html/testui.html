@@ -3,14 +3,16 @@
 <head>
 <title>Dicta</title>
 <link rel="stylesheet" type="text/css" href="css/testui.css"/>
-<script type="text/javascript" src="lib/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="dojo/dojo.js" data-dojo-config="locale: 'en-us'"></script>
+<script type="text/javascript" src="js/lib/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="js/lib/require-2.1.14.js"></script>
 <script type="text/javascript">
-require(["dicta/test/ui", "dojo/domReady!"], function(testui) {
-    testui.startUp("sample/ui.dicta").then(function() {
-        $("body").append(
-            "<div class='modelText'>" +
-            testui.model.text.replace(/\n/g, "<br>").replace(/\s/g, "&nbsp;") + "</div>");
+require(["js/test/ui"], function(testui) {
+    $(document).ready(function() {
+        testui.startUp("sample/ui.dicta").then(function() {
+            $("body").append(
+                "<div class='modelText'>" +
+                testui.model.text.replace(/\n/g, "<br>").replace(/\s/g, "&nbsp;") + "</div>");
+        });
     });
 });
 </script>
