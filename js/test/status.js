@@ -1,6 +1,7 @@
 define([
-    "js/DModel"
-], function(DModel) {
+    "js/DModel",
+    "js/DUtils"
+], function(DModel, utils) {
 
     var statusListener;
 
@@ -14,14 +15,14 @@ define([
             model.statusListener = {
                 statusChanged: function(variables) {
                     varNames = [];
-                    $.each(variables, function(varName) {
+                    utils.each(variables, function(varName) {
                         varNames.push(varName);
                     });
                     vars = varNames.sort().join("|");
                 }
             };
             model.parse(text);
-            $.each(["a", "b", "c", "d"], function(index, varName) {
+            utils.each(["a", "b", "c", "d"], function(index, varName) {
                 model.watch(varName);
             });
             model.get("d");

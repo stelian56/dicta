@@ -4,10 +4,10 @@
 
     var evaluate = function(variable) {
         if (variable.isStale()) {
-            $.each(variable.definers, function() {
+            utils.each(variable.definers, function() {
                 evaluate(this);
             });
-            $.each(variable.definitions, function(index, definition) {
+            utils.each(variable.definitions, function(index, definition) {
                 eval(definition);
             });
             variable._stale = false;
@@ -15,7 +15,7 @@
     };
 
     var invalidate = function(variable, staleVarNames) {
-        $.each(variable.dependents, function() {
+        utils.each(variable.dependents, function() {
             invalidate(this, staleVarNames);
         });
         staleVarNames[variable.name] = true;

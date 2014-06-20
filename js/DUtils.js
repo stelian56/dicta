@@ -15,6 +15,27 @@
         }
     };
     
+    var each = function(obj, callback) {
+        var index, key, value;
+        if (Array.isArray(obj)) {
+            for (index = 0; index < obj.length; index++) {
+                value = callback.call( obj[index], index, obj[index] );
+                if (value === false) {
+                    break;
+                }
+            }
+        }
+        else {
+            for (key in obj) {
+                value = callback.call(obj[key], key, obj[key] );
+                if (value === false) {
+                    break;
+                }
+            }
+        }
+        return obj;
+    };
+
     var prependVariableNames = function(ast) {
         if (ast.type == "Identifier") {
             if (ast.notOwned) {
@@ -23,12 +44,12 @@
         }
         else if (ast.type == "CallExpression") {
             ast.callee.name = fullNamePrefix + ast.callee.name;
-            $.each(ast.arguments, function() {
+            each(ast.arguments, function() {
                 prependVariableNames(this);
             });
         }
         else if (typeof ast === "object" || Array.isArray(ast)) {
-            $.each(ast, function(key, value) {
+            each(ast, function(key, value) {
                 if (value) {
                     prependVariableNames(value);
                 }
@@ -41,6 +62,9 @@
     };
     
     return {
+
+        each: each,
+    
         readModel: function(url, model, sync) {
             var deferred = $.Deferred();
             

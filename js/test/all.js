@@ -14,20 +14,23 @@ define([
             console.log("Start Dicta tests");
             var testGroups;
             var query = window.location.search;
+            var groupIndex;
             if (!query) {
                 testGroups = allTestGroups;
             }
             else {
                 testGroups = [];
                 var params = query.slice(1).split("&");
-                for (var paramIndex = 0; paramIndex < params.length; paramIndex++) {
+                var paramIndex;
+                for (paramIndex = 0; paramIndex < params.length; paramIndex++) {
                     var param = params[paramIndex];
-                    $.each(allTestGroups, function() {
-                        if (this.name == param) {
-                            testGroups.push(this);
-                            return false;
+                    for (groupIndex = 0; groupIndex < allTestGroups.length; groupIndex++) {
+                        testGroup = allTestGroups[groupIndex];
+                        if (testGroup.name == param) {
+                            testGroups.push(testGroup);
+                            break;
                         }
-                    });
+                    }
                 }
             }
             
@@ -38,11 +41,13 @@ define([
             var onFail = function(testGroup, name) {
                 console.warn("Test " + testGroup.name + "." + name + " FAILED");
             };
-
-            $.each(testGroups, function() {
-                var testGroup = this;
-                $.each(testGroup, function(name, f) {
-                    if (typeof(this) == "function") {
+            
+            for (groupIndex = 0; groupIndex < testGroups.length; groupIndex++) {
+                var testGroup = testGroups[groupIndex];
+                var key;
+                for (key in testGroup) {
+                    var f = testGroup[key];
+                    if (typeof(f) == "function") {
                         var result;
                         try {
                             result = f();
@@ -50,25 +55,15 @@ define([
                         catch (err) {
                             console.error(err);
                         }
-                        if (result instanceof Promise) {
-                            result.then(
-                                function() {
-                                    onPass(testGroup, name);
-                                },
-                                function() {
-                                    onFail(testGroup, name);
-                                }
-                            );
-                        }
-                        else if (result) {
-                            onPass(testGroup, name);
+                        if (result) {
+                            onPass(testGroup, key);
                         }
                         else {
-                            onFail(testGroup, name);
+                            onFail(testGroup, key);
                         }
                     }
-                });
-            });
+                }
+            }
             console.log("End Dicta tests");
         }
     };

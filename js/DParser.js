@@ -16,13 +16,13 @@
     };
 
     var parseObjectExpression = function(model, ast, vars, owned) {
-        $.each(ast.properties, function() {
+        utils.each(ast.properties, function() {
             parseExpression(model, this.value, vars);
         });
     };
 
     var parseArrayExpression = function(model, ast, vars, owned) {
-        $.each(ast.elements, function(index, element) {
+        utils.each(ast.elements, function(index, element) {
             if (element) {
                 parseExpression(model, element, vars);
             }
@@ -61,7 +61,7 @@
         if (vars.indexOf(variable) < 0) {
             vars.push(variable);
         }
-        $.each(ast.arguments, function() {
+        utils.each(ast.arguments, function() {
             parseExpression(model, this, vars);
         });
     };
@@ -84,7 +84,7 @@
                 parseMemberExpression(model, ast, vars, owned);
                 break;
             case "BinaryExpression":
-                $.each([ast.left, ast.right], function() {
+                utils.each([ast.left, ast.right], function() {
                     parseExpression(model, this, vars);
                 });
                 break;
@@ -100,10 +100,10 @@
         var rightVars = [];
         parseExpression(model, ast.right, rightVars);
         var definedVar = leftVars[0];
-        $.each(rightVars, function() {
+        utils.each(rightVars, function() {
             bind(definedVar, this);
         });
-        $.each(leftVars, function(index) {
+        utils.each(leftVars, function(index) {
             if (index > 0) {
                 bind(definedVar, this);
             }
@@ -113,7 +113,7 @@
     };
 
     var parseBind = function(model, ast, vars) {
-        $.each(ast.body, function() {
+        utils.each(ast.body, function() {
             var statement = this;
             if (statement.type == "ExpressionStatement") {
                 var expression = statement.expression;

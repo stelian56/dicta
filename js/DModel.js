@@ -34,7 +34,7 @@
                 varName = utils.newAuxiliaryVarName();
                 var statementText = varName + "=" + text + ";";
                 var vars = [];
-                $.each(this.variables, function() {
+                utils.each(this.variables, function() {
                     vars.push(this);
                 });
                 parser.parse(this, statementText, vars);
@@ -63,7 +63,7 @@
         var statement = utils.generateCode(ast);
         eval(statement);
         if (variable.auxiliary) {
-            $.each(variable.definers, function() {
+            utils.each(variable.definers, function() {
                 parser.parse(model, text + "=" + value + ";");
                 model.invalidate(this);
                 return false;
