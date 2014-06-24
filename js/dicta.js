@@ -1,6 +1,6 @@
 require([
-    "js/DModel",
-    "js/DParser",
-    "js/DUtils",
-    "js/DVariable"
-], function(DModel, DParser, DUtils, DVariable) {});
+    "./js/DModel.js",
+    "./js/DParser.js",
+    "./js/DUtils.js",
+    "./js/DVariable.js"
+], function() {});

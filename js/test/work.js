@@ -1,13 +1,13 @@
 define([
-    "js/DModel",
-    "js/DUtils"
+    "../DModel.js",
+    "../DUtils.js"
 ], function(DModel, utils) {
 
     var statusListener;
 
     var readModel = function(name) {
         var model = new DModel();
-        var url = "../../sample/" + name + ".dicta";
+        var url = "js/test/sample/" + name + ".dicta";
         utils.readModel(url, model, true);
         return model;
     }

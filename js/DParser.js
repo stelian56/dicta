@@ -1,7 +1,7 @@
 ﻿define([
-    "js/lib/acorn",
-    "js/DUtils",
-    "js/DVariable"
+    "./lib/acorn.js",
+    "./DUtils.js",
+    "./DVariable.js"
 ], function(acorn, utils, DVariable) {
     
     var parseOptions = {

@@ -1,4 +1,6 @@
-({
+var requirejs = require('../../r.js');
+
+var config = {
     appDir: "..",
     baseUrl: ".",
     paths: {
@@ -16,4 +18,10 @@
     uglify: {
         ascii_only: true
     }
-})
+};
+
+requirejs.optimize(config, function (buildResponse) {
+    var contents = fs.readFileSync(config.out, 'utf8');
+}, function(err) {
+    console.log(err);
+});

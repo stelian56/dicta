@@ -1,6 +1,6 @@
 define([
-    "js/DModel",
-    "js/DUtils"
+    "../DModel.js",
+    "../DUtils.js"
 ], function(DModel, utils) {
 
     var statusListener;

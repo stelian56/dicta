@@ -37,8 +37,8 @@
 
 define([
     "exports",
-    "js/lib/estraverse",
-    "js/lib/esutils"
+    "./estraverse.js",
+    "./esutils.js"
 ], function(exports, estraverse, esutils) {
   "use strict";
 

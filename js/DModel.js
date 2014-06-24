@@ -1,8 +1,8 @@
 ﻿define([
-    "js/lib/acorn",
-    "js/DParser",
-    "js/DUtils",
-    "js/DVariable"
+    "./lib/acorn.js",
+    "./DParser.js",
+    "./DUtils.js",
+    "./DVariable.js"
 ], function(acorn, parser, utils, DVariable) {
     
     var DModel = function(statusListener) {

@@ -1,5 +1,5 @@
 ﻿define([
-    "js/lib/escodegen"
+    "./lib/escodegen.js"
 ], function(escodegen) {
     
     var auxiliaryVarPrefix = "$aux";
@@ -66,19 +66,18 @@
         each: each,
     
         readModel: function(url, model, sync) {
-            var deferred = $.Deferred();
-            
-            var onSuccess = function(text) {
-                model.parse(text);
-                deferred.resolve(model);
-            };
-            
-            var onError = function() {
-                deferred.reject();
-            };
-            
-            $.ajax({url: url, async: !sync}).then(onSuccess, onError);
-            return deferred.promise();
+            var text;
+            if (typeof XMLHttpRequest == "undefined") {
+                text = fs.readFileSync(url, { encoding: "utf8" });
+            }
+            else {
+                var request = new XMLHttpRequest();
+                request.open("GET", url, false);
+                request.send();
+                text = request.responseText;
+            }
+            model.parse(text);
+            return model;
         },
 
         generateCode: function(ast) {

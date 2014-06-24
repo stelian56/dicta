@@ -1,6 +1,6 @@
 ﻿define([
-    "js/DModel",
-    "js/DUtils"
+    "../DModel.js",
+    "../DUtils.js"
 ], function(DModel, utils) {
 
     return {
@@ -38,13 +38,9 @@
 
         startUp: function(url) {
             var ui = this;
-            var deferred = $.Deferred();
             ui.model = new DModel(ui);
-            utils.readModel(url, ui.model).then(function() {
-                ui.parsePage();
-                deferred.resolve();
-            });
-            return deferred.promise();
+            utils.readModel(url, ui.model);
+            ui.parsePage();
         },
 
         statusChanged : function(varNames) {

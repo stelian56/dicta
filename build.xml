@@ -22,10 +22,7 @@
       <fileset dir="html" includes="**"/>
     </copy>
     <copy todir="${test.dir}/js">
-      <fileset dir="js" excludes="dicta.js dicta.build.js lib/r.js"/>
-    </copy>
-    <copy todir="${test.dir}">
-      <fileset dir="${basedir}" includes="sample/**"/>
+      <fileset dir="js" excludes="dicta.js optimize.js lib/r.js"/>
     </copy>
   </target>
     
@@ -44,15 +41,20 @@
     <exec executable="cmd" dir="${build.dir}/dicta/js">
       <arg value="/c"/>
       <arg value="node"/>
-      <arg value="../../r.js"/>
-      <arg value="-o"/>
-      <arg value="dicta.build.js"/>
+      <arg value="optimize.js"/>
     </exec>
     <mkdir dir="${package.dir}"/>
-    <tstamp/>
-    <copy todir="${package.dir}/js">
+    <copy todir="${package.dir}/browser/js">
       <fileset dir="${build.dir}/release" includes="dicta.js"/>
-      <globmapper from="*.js" to="*-${app.version}.${DSTAMP}.js"/>
+    </copy>
+    <copy todir="${package.dir}/node/js">
+      <fileset dir="js" includes="**/*" excludes="
+          dicta.js
+          optimize.js
+          test/ui.js
+          lib/jquery*.js
+          lib/require*.js
+      "/>
     </copy>
   </target>
   

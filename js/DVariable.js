@@ -1,5 +1,5 @@
 ﻿define([
-    "js/DUtils"
+    "./DUtils.js"
 ], function(utils) {
 
     var evaluate = function(variable) {
