@@ -8,7 +8,7 @@
 <script type="text/javascript">
 require(["js/test/ui"], function(testui) {
     $(document).ready(function() {
-        testui.startUp("js/test/sample/ui.dicta");
+        testui.startUp("sample/ui.dicta");
         $("body").append("<div class='modelText'>" +
             testui.model.text.replace(/\n/g, "<br>").replace(/\s/g, "&nbsp;") + "</div>");
     });

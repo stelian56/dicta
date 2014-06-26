@@ -1,11 +1,11 @@
 define([
-    "../DUtils.js",
-    "./array.js",
-    "./function.js",
-    "./model.js",
-    "./object.js",
-    "./status.js",
-    "./work.js"
+    "../DUtils",
+    "./array",
+    "./function",
+    "./model",
+    "./object",
+    "./status",
+    "./work"
 ], function(utils) {
 
     var allTestGroups = Array.prototype.slice.call(arguments, 1);

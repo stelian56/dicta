@@ -15,18 +15,35 @@
     <delete dir="${package.dir}"/>
   </target>
 
-  <target name="test">
-    <copy todir="${test.dir}">
+  <target name="test" depends="testbrowser,testdotnet"/>
+
+  <target name="testbrowser">
+    <copy todir="${test.dir}/browser">
       <fileset dir="${basedir}" includes="css/**"/>
       <fileset dir="bin" includes="**"/>
       <fileset dir="html" includes="**"/>
+      <fileset dir="${basedir}" includes="sample/**"/>
     </copy>
-    <copy todir="${test.dir}/js">
-      <fileset dir="js" excludes="dicta.js optimize.js lib/r.js"/>
+    <copy todir="${test.dir}/browser/js">
+      <fileset dir="js" excludes="dicta.js test.js optimize.js lib/r.js"/>
     </copy>
   </target>
-    
-  <target name="package">
+  
+  <target name="testdotnet">
+    <copy todir="${test.dir}/dotnet">
+      <fileset dir="dotnet" includes="**/*"/>
+      <fileset dir="${basedir}" includes="sample/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/edge/js">
+      <fileset dir="js" includes="**/*" excludes="
+        dicta.js optimize.js lib/jquery* lib/require*
+      "/>
+    </copy>
+  </target>
+  
+  <target name="package" depends="packagebrowser,packagedotnet"/>
+  
+  <target name="packagebrowser">
   <copy todir="${build.dir}" file="js/lib/r.js"/>
     <copy todir="${build.dir}/dicta/js">
       <fileset dir="js" includes="**/*" excludes="dicta.js lib/r.js test/**"/>
@@ -57,6 +74,8 @@
       "/>
     </copy>
   </target>
+  
+  <target name="packagedotnet"/>
   
   <target name="all" depends="clean,package,test"/>
 

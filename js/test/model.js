@@ -1,5 +1,5 @@
 define([
-    "../DModel.js"
+    "../DModel"
 ], function(DModel) {
 
     var statusListener;

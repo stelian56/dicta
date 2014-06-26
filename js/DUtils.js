@@ -1,5 +1,5 @@
 ﻿define([
-    "./lib/escodegen.js"
+    "./lib/escodegen"
 ], function(escodegen) {
     
     var auxiliaryVarPrefix = "$aux";
@@ -68,6 +68,7 @@
         readModel: function(url, model, sync) {
             var text;
             if (typeof XMLHttpRequest == "undefined") {
+                var fs = require("fs");
                 text = fs.readFileSync(url, { encoding: "utf8" });
             }
             else {

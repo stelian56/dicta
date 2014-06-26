@@ -1,7 +1,0 @@
-f = function(x, y) {
-    a = [0, 1, 2, 3, 4];
-    a.splice(x, y);
-    return a.join();
-};
-
-array = f(index, count);
