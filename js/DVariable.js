@@ -15,7 +15,7 @@
     };
 
     var invalidate = function(variable, staleVarNames) {
-        utils.each(variable.dependents, function() {
+        utils.each(variable.dependents, function () {
             invalidate(this, staleVarNames);
         });
         staleVarNames[variable.name] = true;
@@ -42,7 +42,7 @@
         invalidate(this, staleVarNames);
     };
 
-    DVariable.prototype.get = function() {
+    DVariable.prototype.get = function () {
         evaluate(this);
         var fullName = utils.getFullName(this);
         return eval(fullName);
@@ -56,7 +56,6 @@
         else {
             this.pinned = pinned;
         }
-        this.invalidate({});
     };
     
     return DVariable;

@@ -1,0 +1,36 @@
+var requirejs = require('./js/lib/r.js');
+var edge = require('./edge.js');
+var DModel = requirejs('js/DModel');
+var model;
+
+return function (args, callback) {
+    var result;
+    var query = args.query;
+    switch (query) {
+        case "setUp":
+            var statusChanged = args.statusChanged;
+            model = new DModel({
+                statusChanged: function(staleVarNames) {
+                    statusChanged(staleVarNames);
+                }
+            });
+            result = "Setup OK";
+            break;
+        case "parse":
+            model.parse(args.text);
+            result = "Parse OK";
+            break;
+        case "get":
+            result = model.get(args.varName);
+            break;
+        case "set":
+            model.set(args.varName, args.varValue);
+            result = "Set OK";
+            break;
+        case "watch":
+            model.watch(args.varName);
+            result = "Watch OK"
+            break;
+    }
+    callback(null, result);
+}
