@@ -34,15 +34,22 @@
       <fileset dir="${basedir}" includes="dotnet/**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaWPFHelper/edge/js">
-      <fileset dir="js" includes="**/*"/>
+      <fileset dir="js" includes="**/*" excludes="
+        dicta.js test.js optimize.js *.js.func test/**
+      "/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaTest/edge/js">
+      <fileset dir="js" includes="**/*" excludes="
+        dicta.js test.js optimize.js query.js.func
+      "/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaTest/sample">
+      <fileset dir="${basedir}/sample" includes="**" excludes="ui.dicta"/>
     </copy>
     <copy todir="${test.dir}/dotnet/SampleWPFApplication/edge/js">
       <fileset dir="js" includes="**/*" excludes="
-        dicta.js optimize.js lib/jquery* lib/require*
+        dicta.js optimize.js test.js.func lib/jquery* lib/require* test/**
       "/>
-    </copy>
-    <copy todir="${test.dir}/dotnet/DictaWPFHelper/sample">
-      <fileset dir="${basedir}/sample" includes="**" excludes="ui.dicta"/>
     </copy>
     <copy todir="${test.dir}/dotnet/SampleWPFApplication/sample">
       <fileset dir="${basedir}/sample" includes="ui.dicta"/>

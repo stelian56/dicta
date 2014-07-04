@@ -13,6 +13,7 @@ define([
     return {
         run: function() {
             console.log("Start Dicta tests");
+            console.log();
             var params;
             if (typeof window == "undefined" && arguments) {
                 var args = Array.prototype.slice.call(arguments, 0);
@@ -49,7 +50,7 @@ define([
             var onFail = function(testGroup, name) {
                 console.warn("Test " + testGroup.name + "." + name + " FAILED");
             };
-            var result;
+            var result, allResult = true;
             for (groupIndex = 0; groupIndex < testGroups.length; groupIndex++) {
                 var testGroup = testGroups[groupIndex];
                 var key;
@@ -69,8 +70,16 @@ define([
                         else {
                             onFail(testGroup, key);
                         }
+                        allResult &= result;
                     }
                 }
+            }
+            console.log();
+            if (allResult) {
+                console.log("All tests OK");
+            }
+            else {
+                console.log("Some of the tests FAILED");
             }
             console.log("End Dicta tests");
         }

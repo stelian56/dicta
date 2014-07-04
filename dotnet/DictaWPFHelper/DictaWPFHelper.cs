@@ -19,7 +19,6 @@ namespace Dicta
         {
             ParseModel(uiElement);
             ParseUIElements(uiElement);
-            //Task.Run((Action)Test).Wait();
         }
 
         private void ParseModel(UIElement uiElement)
@@ -66,21 +65,6 @@ namespace Dicta
                 {
                     ParseUIElements(child);
                 }
-            }
-        }
-
-        private async void Test()
-        {
-            string text = File.ReadAllText(@".\edge\js\test.js.func");
-            try
-            {
-                var func = Edge.Func(text);
-                var result = await func(null);
-                Console.WriteLine(result);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.InnerException.Message);
             }
         }
 
