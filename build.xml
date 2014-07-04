@@ -25,19 +25,27 @@
       <fileset dir="${basedir}" includes="sample/**"/>
     </copy>
     <copy todir="${test.dir}/browser/js">
-      <fileset dir="js" excludes="dicta.js test.js optimize.js lib/r.js"/>
+      <fileset dir="js" excludes="dicta.js test.js optimize.js lib/r.js *.js.func"/>
     </copy>
   </target>
   
   <target name="testdotnet">
-    <copy todir="${test.dir}/dotnet">
-      <fileset dir="dotnet" includes="**/*"/>
-      <fileset dir="${basedir}" includes="sample/**"/>
+    <copy todir="${test.dir}">
+      <fileset dir="${basedir}" includes="dotnet/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/edge/js">
+    <copy todir="${test.dir}/dotnet/DictaWPFHelper/edge/js">
+      <fileset dir="js" includes="**/*"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/SampleWPFApplication/edge/js">
       <fileset dir="js" includes="**/*" excludes="
         dicta.js optimize.js lib/jquery* lib/require*
       "/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaWPFHelper/sample">
+      <fileset dir="${basedir}/sample" includes="**" excludes="ui.dicta"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/SampleWPFApplication/sample">
+      <fileset dir="${basedir}/sample" includes="ui.dicta"/>
     </copy>
   </target>
   

@@ -77,6 +77,7 @@
     DModel.prototype.unset = function(text) {
         var variable = this.getVariable(text);
         variable.setPinned(false);
+        this.invalidate(variable);
     };
     
     DModel.prototype.invalidate = function(variable) {
