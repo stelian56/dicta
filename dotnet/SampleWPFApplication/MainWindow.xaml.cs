@@ -5,13 +5,13 @@ namespace WpfApplication
 {
     public partial class MainWindow : Window
     {
-        private DictaWPFHelper dictaHelper;
+        private DictaWPF dicta;
 
         public MainWindow()
         {
             InitializeComponent();
-            dictaHelper = new DictaWPFHelper();
-            dictaHelper.Init(this);
+            dicta = new DictaWPF();
+            dicta.Init(this);
         }
     }
 }

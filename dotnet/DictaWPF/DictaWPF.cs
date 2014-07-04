@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace Dicta
 {
-    public class DictaWPFHelper : IDictaStatusListener
+    public class DictaWPF : IDictaStatusListener
     {
         private DictaModel model;
         private List<BindSource> inSources = new List<BindSource>();

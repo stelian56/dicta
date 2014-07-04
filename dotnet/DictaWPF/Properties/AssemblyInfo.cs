@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DictaWPFHelper")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DictaWPF")]
+[assembly: AssemblyDescription("WPF scripting tool based on Dicta")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dicta Contributors")]
-[assembly: AssemblyProduct("DictaWPFHelper")]
+[assembly: AssemblyProduct("DictaWPF")]
 [assembly: AssemblyCopyright("Copyright © Dicta Contributors 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

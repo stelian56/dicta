@@ -33,7 +33,7 @@
     <copy todir="${test.dir}">
       <fileset dir="${basedir}" includes="dotnet/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaWPFHelper/edge/js">
+    <copy todir="${test.dir}/dotnet/DictaWPF/edge/js">
       <fileset dir="js" includes="**/*" excludes="
         dicta.js test.js optimize.js *.js.func test/**
       "/>
