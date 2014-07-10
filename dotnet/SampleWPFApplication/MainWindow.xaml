@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sample WPF Application" Height="350" Width="525"
         xmlns:dicta="clr-namespace:Dicta;assembly=DictaWPF"
-        dicta:DictaProperty.Model="sample/ui.dicta">
+        dicta:DictaProperty.Model="dicta/ui.dicta">
     <Grid>
         <Label Content="Index" Margin="32,55,432,237"/>
         <TextBox dicta:DictaProperty.In="index" dicta:DictaProperty.Type="number"

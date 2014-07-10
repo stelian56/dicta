@@ -8,7 +8,7 @@ namespace DictaTest
     public class DictaTest
     {
 
-        private static async void Test()
+        private static async void AllJsTests()
         {
             string text = File.ReadAllText(@".\edge\js\test.js.func");
             try
@@ -25,7 +25,7 @@ namespace DictaTest
 
         public static void Main(string[] args)
         {
-            Task.Run((Action)Test).Wait();
+            Task.Run((Action)AllJsTests).Wait();
             Console.ReadKey();
         }
     }

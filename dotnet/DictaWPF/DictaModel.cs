@@ -21,40 +21,6 @@ namespace Dicta
             edge = Edge.Func(queryScript);
         }
 
-        public void SetStatusListener(IDictaStatusListener statusListener)
-        {
-            this.statusListener = statusListener;
-            Func<object, object> action = ((dynamic varNames) =>
-            {
-                foreach (dynamic keyValue in varNames)
-                {
-                    this.staleVarNames.Add(keyValue.Key);
-                };
-                return true;
-            });
-
-            var statusChanged = (Func<object, Task<object>>)((dynamic varNames) =>
-            {
-                Task<object> t = new Task<object>(action, varNames);
-                t.Start();
-                return t;
-            });
-            try
-            {
-                object args = new
-                {
-                    query = "setUp",
-                    statusChanged = statusChanged
-                };
-                var result = edge(args).Result;
-                Console.WriteLine(result);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.InnerException.Message);
-            }
-        }
-
         public void Parse(string text)
         {
             try
@@ -107,8 +73,45 @@ namespace Dicta
                     varValue = value
                 };
                 var result = edge(args).Result;
-                statusListener.StatusChanged(staleVarNames.ToArray());
-                staleVarNames.Clear();
+                if (statusListener != null)
+                {
+                    statusListener.StatusChanged(staleVarNames.ToArray());
+                    staleVarNames.Clear();
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.InnerException.Message);
+            }
+        }
+
+        public void SetStatusListener(IDictaStatusListener statusListener)
+        {
+            this.statusListener = statusListener;
+            Func<object, object> action = ((dynamic varNames) =>
+            {
+                foreach (dynamic keyValue in varNames)
+                {
+                    this.staleVarNames.Add(keyValue.Key);
+                };
+                return true;
+            });
+
+            var statusChanged = (Func<object, Task<object>>)((dynamic varNames) =>
+            {
+                Task<object> t = new Task<object>(action, varNames);
+                t.Start();
+                return t;
+            });
+            try
+            {
+                object args = new
+                {
+                    query = "setStatusListener",
+                    statusChanged = statusChanged
+                };
+                var result = edge(args).Result;
+                Console.WriteLine(result);
             }
             catch (Exception exception)
             {
@@ -124,6 +127,32 @@ namespace Dicta
             };
             try
             {
+                var result = edge(args).Result;
+                Console.WriteLine(result);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.InnerException.Message);
+            }
+        }
+
+        public void AddFunction(string name, Func<object, object> action)
+        {
+            var func = (Func<object, Task<object>>)((dynamic parameters) =>
+            {
+                Task<object> t = new Task<object>(action, parameters);
+                t.Start();
+                t.Wait();
+                return t;
+            });
+            try
+            {
+                object args = new
+                {
+                    query = "addFunction",
+                    name = name,
+                    func  = func
+                };
                 var result = edge(args).Result;
                 Console.WriteLine(result);
             }

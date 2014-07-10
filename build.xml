@@ -22,7 +22,7 @@
       <fileset dir="${basedir}" includes="css/**"/>
       <fileset dir="bin" includes="**"/>
       <fileset dir="html" includes="**"/>
-      <fileset dir="${basedir}" includes="sample/**"/>
+      <fileset dir="${basedir}" includes="dicta/**"/>
     </copy>
     <copy todir="${test.dir}/browser/js">
       <fileset dir="js" excludes="dicta.js test.js optimize.js lib/r.js *.js.func"/>
@@ -34,25 +34,25 @@
       <fileset dir="${basedir}" includes="dotnet/**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaWPF/edge/js">
-      <fileset dir="js" includes="**/*" excludes="
-        dicta.js test.js optimize.js *.js.func test/**
-      "/>
+      <fileset dir="js" includes="**/*"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaTest/edge/js">
-      <fileset dir="js" includes="**/*" excludes="
-        dicta.js test.js optimize.js query.js.func
-      "/>
+      <fileset dir="js" includes="**/*"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaTest/sample">
-      <fileset dir="${basedir}/sample" includes="**" excludes="ui.dicta"/>
+    <copy todir="${test.dir}/dotnet/DictaTest/dicta">
+      <fileset dir="${basedir}/dicta" includes="**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSqlite/edge/js">
+      <fileset dir="js" includes="**/*"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSqlite/dicta">
+      <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/SampleWPFApplication/edge/js">
-      <fileset dir="js" includes="**/*" excludes="
-        dicta.js optimize.js test.js.func lib/jquery* lib/require* test/**
-      "/>
+      <fileset dir="js" includes="**/*"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/SampleWPFApplication/sample">
-      <fileset dir="${basedir}/sample" includes="ui.dicta"/>
+    <copy todir="${test.dir}/dotnet/SampleWPFApplication/dicta">
+      <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
   </target>
   
@@ -79,15 +79,6 @@
     <copy todir="${package.dir}/browser/js">
       <fileset dir="${build.dir}/release" includes="dicta.js"/>
     </copy>
-    <copy todir="${package.dir}/node/js">
-      <fileset dir="js" includes="**/*" excludes="
-          dicta.js
-          optimize.js
-          test/ui.js
-          lib/jquery*.js
-          lib/require*.js
-      "/>
-    </copy>
   </target>
   
   <target name="packagedotnet"/>
@@ -95,4 +86,3 @@
   <target name="all" depends="clean,package,test"/>
 
 </project>
-

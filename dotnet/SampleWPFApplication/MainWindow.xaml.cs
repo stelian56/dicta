@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Dicta;
+using System;
 
 namespace WpfApplication
 {

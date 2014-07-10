@@ -7,7 +7,7 @@ define([
 
     var readModel = function(name) {
         var model = new DModel();
-        var url = "sample/" + name + ".dicta";
+        var url = "dicta/" + name + ".dicta";
         utils.readModel(url, model, false);
         return model;
     }

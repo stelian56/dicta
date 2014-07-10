@@ -92,6 +92,19 @@
         variable = this.getVariable(text);
         variable.watched = true;
     };
+
+    DModel.prototype.addFunction = function (name, func) {
+        var fullName = utils.getFullName({ name: name });
+        var funcDef = function (args) {
+            var res;
+            func(args, function(foo, result) {
+                res = result;
+            });
+            return res;
+        };
+        eval(fullName + "=funcDef");
+    }
     
+
     return DModel;
 });
