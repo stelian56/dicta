@@ -15,12 +15,19 @@ define([
     return {
         name: "work",
 
-        noargs: function() {
-            var model = readModel("noargs");
-            var a = model.get("a");
-            if (a != 1) {
-                return false;
+        setget: function() {
+            var model = readModel("setget");
+            var queryCount = 1e4;
+            var queryIndex;
+            var id, name;
+            var start = new Date();
+            for (queryIndex = 0; queryIndex < queryCount; queryIndex++) {
+                id = Math.floor(Math.random()*10) + 1;
+                model.set("id", 1);
+                name = model.get("name");
             }
+            var elapsed = new Date().getTime() - start.getTime();
+            console.info(queryCount + " queries at " + 1e3*queryCount/elapsed + " queries/second");
             return true;
         }
     };

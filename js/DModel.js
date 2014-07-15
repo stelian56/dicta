@@ -33,11 +33,7 @@
             if (!variable) {
                 varName = utils.newAuxiliaryVarName();
                 var statementText = varName + "=" + text + ";";
-                var vars = [];
-                utils.each(this.variables, function() {
-                    vars.push(this);
-                });
-                parser.parse(this, statementText, vars);
+                parser.parse(this, statementText);
                 variable = this.variables[varName];
                 variable.auxiliary = true;
                 this.auxVarNames[text] = varName;
@@ -59,8 +55,8 @@
         var variable = model.getVariable(text);
         variable.get();
         variable.setPinned(true);
-        var ast = parser.parse(model, variable.name + "=" + value + ";");
-        var statement = utils.generateCode(ast);
+        var statement = variable.name + "=" + value + ";";
+        parser.parse(model, statement);
         eval(statement);
         if (variable.auxiliary) {
             utils.each(variable.definers, function() {

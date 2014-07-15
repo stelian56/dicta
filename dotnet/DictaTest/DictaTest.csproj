@@ -130,10 +130,13 @@
     <None Include="dicta\noargs.dicta">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="dicta\setget.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="dicta\varargs.dicta">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="edge\js\test.js.func">
+    <None Include="edge\js\testDotNet.func">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="edge\x64\edge.node">

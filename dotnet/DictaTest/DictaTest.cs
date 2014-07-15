@@ -10,7 +10,7 @@ namespace DictaTest
 
         private static async void AllJsTests()
         {
-            string text = File.ReadAllText(@".\edge\js\test.js.func");
+            string text = File.ReadAllText(@".\edge\js\testDotNet.func");
             try
             {
                 var func = Edge.Func(text);

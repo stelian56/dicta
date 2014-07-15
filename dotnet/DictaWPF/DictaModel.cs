@@ -17,7 +17,7 @@ namespace Dicta
 
         public DictaModel()
         {
-            string queryScript = File.ReadAllText(@".\edge\js\query.js.func");
+            string queryScript = File.ReadAllText(@".\edge\js\queryDotNet.func");
             edge = Edge.Func(queryScript);
         }
 

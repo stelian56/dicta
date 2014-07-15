@@ -15,7 +15,7 @@
     <delete dir="${package.dir}"/>
   </target>
 
-  <target name="test" depends="testbrowser,testdotnet"/>
+  <target name="test" depends="testbrowser,testdotnet,testjava"/>
 
   <target name="testbrowser">
     <copy todir="${test.dir}/browser">
@@ -25,7 +25,7 @@
       <fileset dir="${basedir}" includes="dicta/**"/>
     </copy>
     <copy todir="${test.dir}/browser/js">
-      <fileset dir="js" excludes="dicta.js test.js optimize.js lib/r.js *.js.func"/>
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
     </copy>
   </target>
   
@@ -34,37 +34,61 @@
       <fileset dir="${basedir}" includes="dotnet/**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaWPF/edge/js">
-      <fileset dir="js" includes="**/*"/>
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaTest/edge/js">
-      <fileset dir="js" includes="**/*"/>
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
+      <fileset dir="js/dotnet" includes="**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaTest/dicta">
       <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaSqlite/edge/js">
-      <fileset dir="js" includes="**/*"/>
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
+      <fileset dir="js/dotnet" includes="**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaSqlite/dicta">
       <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/SampleWPFApplication/edge/js">
-      <fileset dir="js" includes="**/*"/>
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
+      <fileset dir="js/dotnet" includes="**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/SampleWPFApplication/dicta">
       <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
   </target>
   
-  <target name="package" depends="packagebrowser,packagedotnet"/>
+  <target name="testjava">
+    <copy todir="${test.dir}">
+      <fileset dir="${basedir}" includes="java/**"/>
+    </copy>
+    <copy todir="${test.dir}/java/DictaTest/js">
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
+      <fileset dir="js/java" includes="**"/>
+    </copy>
+    <copy todir="${test.dir}/java/DictaTest/dicta">
+      <fileset dir="${basedir}/dicta" includes="**"/>
+    </copy>
+    <copy todir="${test.dir}/java/DictaSqlite/js">
+      <fileset dir="js" includes="**" excludes="browser/** dotnet/** java/**"/>
+      <fileset dir="js/java" includes="**"/>
+    </copy>
+    <copy todir="${test.dir}/java/DictaSqlite/dicta">
+      <fileset dir="${basedir}/dicta" includes="**"/>
+    </copy>
+  </target>
+
+  <target name="package" depends="packagebrowser,packagedotnet,packagejava"/>
   
   <target name="packagebrowser">
   <copy todir="${build.dir}" file="js/lib/r.js"/>
     <copy todir="${build.dir}/dicta/js">
-      <fileset dir="js" includes="**/*" excludes="dicta.js lib/r.js test/**"/>
+      <fileset dir="js" includes="**/*" excludes="browser/** dotnet/** java/** lib/r.js test/**"/>
+      <fileset dir="js/browser" includes="optimize.js"/>
     </copy>
     <copy todir="${build.dir}/dicta">
-      <fileset dir="js" includes="dicta.js"/>
+      <fileset dir="js/browser" includes="dicta.js"/>
     </copy>
     <copy todir="${build.dir}/dicta">
       <fileset dir="js/lib" includes="require*.js"/>
@@ -82,6 +106,8 @@
   </target>
   
   <target name="packagedotnet"/>
+
+  <target name="packagejava"/>
   
   <target name="all" depends="clean,package,test"/>
 

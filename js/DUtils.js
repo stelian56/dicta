@@ -68,8 +68,15 @@
         readModel: function(url, model, sync) {
             var text;
             if (typeof XMLHttpRequest == "undefined") {
-                var fs = require("fs");
-                text = fs.readFileSync(url, { encoding: "utf8" });
+                if (typeof readFile == "undefined") {
+                    var fs = require("fs");
+                    if (fs) {
+                        text = fs.readFileSync(url, { encoding: "utf8" });
+                    }
+                }
+                else {
+                    text = readFile(url);
+                }
             }
             else {
                 var request = new XMLHttpRequest();

@@ -96,7 +96,7 @@
     <None Include="dicta\ui.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="edge\js\query.js.func">
+    <None Include="edge\js\queryDotNet.func">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="edge\x64\edge.node">

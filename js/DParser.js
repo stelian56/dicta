@@ -112,22 +112,22 @@
         definedVar.definitions.push(definition);
     };
 
-    var parseBind = function(model, ast, vars) {
+    var parseBind = function(model, ast) {
         utils.each(ast.body, function() {
             var statement = this;
             if (statement.type == "ExpressionStatement") {
                 var expression = statement.expression;
                 var varName, variable;
                 if (expression.type == "AssignmentExpression") {
-                    parseBindAssignment(model, expression, vars);
+                    parseBindAssignment(model, expression);
                 }
             }
         });
     };
 
-    var parse = function(model, text, vars) {
+    var parse = function(model, text) {
         var ast = acorn.parse(text, parseOptions);
-        parseBind(model, ast, vars);
+        parseBind(model, ast);
         return ast;
     };
     
