@@ -1,5 +1,6 @@
 console = { log: print, info: print, warn: print, error: print }
-load("js/lib/r.js");
+load("js/lib/r.js"); // test build
+//load("js/dicta.js"); // package build
 var model;
 require(["js/DModel"], function(DModel) {
     model = new DModel();

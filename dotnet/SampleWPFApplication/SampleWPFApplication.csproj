@@ -37,9 +37,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DictaWPF">
-      <HintPath>..\DictaWPF\bin\Debug\DictaWPF.dll</HintPath>
-    </Reference>
     <Reference Include="EdgeJs">
       <HintPath>packages\Edge.js.0.9.0\lib\EdgeJs.dll</HintPath>
     </Reference>
@@ -155,6 +152,16 @@
     <Content Include="edge\x86\node.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DictaDotNet\DictaDotNet.csproj">
+      <Project>{326cfedf-30a0-4b3d-8db0-b07dfd286e4a}</Project>
+      <Name>DictaDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DictaWPF\DictaWPF.csproj">
+      <Project>{0444c202-4a17-48c3-aac1-0b226a758472}</Project>
+      <Name>DictaWPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

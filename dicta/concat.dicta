@@ -1,0 +1,9 @@
+f = function(count, base) {
+    s = base || "";
+    for (index = 0; index < count; index++) {
+        s += "foo";
+    }
+    return s;
+};
+
+a = f(count, base);

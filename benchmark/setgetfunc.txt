@@ -1,0 +1,70 @@
+﻿Model:
+f = function(id) {
+    count = 1;
+    sum = 0;
+    for (index = 0; index < count; index++) {
+        sum += index;
+    }
+    return "got" + id;
+};
+
+name = f(id);
+
+***
+SET random id
+GET name
+
+count = 1;
+
+.NET DL
+x10K at 110K/sec
+x100K at 250K/sec
+x1M at 280K/sec
+
+.NET dicta
+x10K at 5.5K/sec
+x100K at 5.5K/sec
+
+Java dicta
+x10K at 1.8K/sec
+x100K at 3K/sec
+
+Browser dicta
+x10K at 3.5K/sec
+x100K at 3.5K/sec
+
+count = 100;
+
+.NET DL
+x10K at 110K/sec
+x100K at 230K/sec
+x1M at 270K/sec
+
+.NET dicta
+x10K at 4.5K/sec
+x100K at 4.5K/sec
+
+Java dicta
+x10K at 1.6K/sec
+x100K at 2.5K/sec
+
+Browser dicta
+x10K at 3.2K/sec
+x100K at 3.2K/sec
+
+count = 10,000;
+
+.NET DL
+x10K at 30K/sec
+x100K at 40K/sec
+x1M at 40K/sec
+
+.NET dicta
+x10K at 0.5K/sec
+
+Java dicta
+x10K at 0.2K/sec
+
+Browser dicta
+x10K at 0.5K/sec
+x100K at 0.5K/sec

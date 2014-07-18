@@ -1,0 +1,74 @@
+﻿Model:
+name = "got" + id;
+
+***
+GET name
+
+.NET DL
+x10K at 160K/sec
+x100K at 1M/sec
+x1M at 1.8M/sec
+x10M at 2.2M/sec
+
+Java DL
+10K at 120K/sec
+100K at 600K/sec
+1M at 1.5M/sec
+10M at 1.7M/sec
+
+.NET dicta
+x10K at 16K/sec
+x100K at 16K/sec
+x1M at 15K/sec
+
+Java dicta
+x10K at 14K/sec
+x100K at 60K/sec
+x1M at 160K/sec
+x10M at 200K/sec
+
+Browser dicta
+x10K at 180K/sec
+x100K at 180K/sec;
+x1M at 180K/sec;
+
+***
+SET random id
+GET name
+
+.NET DL
+x10K at 110-120K/sec
+x100K at 240-300K/sec
+x1M at 280-350K/sec
+x10M at 280-350K/sec
+
+Java DL
+10K at 22-24K/sec
+100K at 120-130K/sec
+1M at 270-320K/sec
+10M at 300-400K/sec
+
+node.js
+10K at 29K/sec
+100K at 33K/sec
+
+node.js barebone $dicta set get 
+1M at 1.5M/sec
+
+.NET dicta
+x10K at 5.5K/sec
+x100K at 5.5K/sec
+
+Java dicta compiled/interpreted
+x10K at 2K/sec
+x100K at 3K/sec
+
+Java dicta barebone compiled $dicta set get
+1M at 110K/sec
+
+Java dicta barebone interpreted $dicta set get
+10K at 0.6K/sec
+
+Browser dicta
+x10K at 3.5K/sec
+x100K at 3.5K/sec;

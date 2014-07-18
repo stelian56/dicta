@@ -1,0 +1,13 @@
+﻿***
+Append 3-character strings (loop)
+
+Rhino
+10K in 100 milliseconds
+100K in 350 milliseconds
+1M in 2 seconds
+
+***
+Append 3-character strings (bulk-coded)
+10K
+First set-get in 350 milliseconds
+Subsequent set-gets in 20 milliseconds each

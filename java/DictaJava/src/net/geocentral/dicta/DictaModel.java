@@ -5,6 +5,7 @@ import java.io.FileReader;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.tools.shell.Global;
@@ -13,40 +14,47 @@ public class DictaModel {
 
     private Context cx;
     private Global scope;
+    private Function parseFunc;
+    private Function getFunc;
+    private Function setFunc;
+    private Function addFunctionFunc;
     
-    public DictaModel() throws Exception {
+    public DictaModel() {
         cx = Context.enter();
         scope = new Global(cx);
         Scriptable argsObj = cx.newArray(scope, new Object[] {});
         scope.defineProperty("arguments", argsObj, ScriptableObject.DONTENUM);
-        cx.evaluateReader(scope, new FileReader("js/queryJava.js"), null, 1, null);
+    }
+    
+    public void init() throws Exception {
+        Script script = cx.compileReader(new FileReader("js/queryJava.js"), null, 1, null);
+        script.exec(cx, scope);
+        parseFunc = (Function)scope.get("parse", scope);
+        getFunc = (Function)scope.get("get", scope);
+        setFunc = (Function)scope.get("set", scope);
+        addFunctionFunc = (Function)scope.get("addFunction", scope);
     }
     
     public void parse(String text) {
-        Function f = (Function)scope.get("parse", scope);
         Object functionArgs[] = { text };
-        Object result = f.call(cx,  scope, scope, functionArgs);
+        Object result = parseFunc.call(cx,  scope, null, functionArgs);
         System.out.println(result);
     }
 
     public Object get(String varName) {
-        Function f = (Function)scope.get("get", scope);
         Object functionArgs[] = { varName };
-        Object result = f.call(cx, scope, scope, functionArgs);
+        Object result = getFunc.call(cx, scope, null, functionArgs);
         return result instanceof NativeJavaObject ? ((NativeJavaObject)result).unwrap() : result;
     }
 
     public void set(String varName, Object value) {
-        Function f = (Function)scope.get("set", scope);
         Object functionArgs[] = { varName, value };
-        f.call(cx, scope, scope, functionArgs);
+        setFunc.call(cx, scope, null, functionArgs);
     }
 
     public void AddFunction(String name, Object owner, String methodName) {
-        scope.defineProperty(name, owner, ScriptableObject.CONST);
-        Function f = (Function)scope.get("addFunction", scope);
         Object functionArgs[] = { name, owner, methodName };
-        f.call(cx, scope, scope, functionArgs);
+        addFunctionFunc.call(cx, scope, null, functionArgs);
     }
 
     

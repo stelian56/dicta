@@ -89,9 +89,9 @@
         variable.watched = true;
     };
 
-    DModel.prototype.addFunction = function (name, func) {
+    DModel.prototype.addDotNetFunction = function (name, func) {
         var fullName = utils.getFullName({ name: name });
-        var funcDef = function (args) {
+        var funcDef = function(args) {
             var res;
             func(args, function(foo, result) {
                 res = result;
@@ -99,8 +99,15 @@
             return res;
         };
         eval(fullName + "=funcDef");
-    }
+    };
     
+    DModel.prototype.addJavaFunction = function(name, owner, methodName) {
+        var fullName = utils.getFullName({ name: name });
+        var funcDef = function(args) {
+            return owner[methodName](args);
+        };
+        eval(fullName + "=funcDef");
+    };
 
     return DModel;
 });

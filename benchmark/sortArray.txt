@@ -1,0 +1,12 @@
+﻿***
+Sort random array of integers
+
+.NET DL
+10K in 50ms
+100K in 250ms
+1M in 600ms
+
+Rhino
+10K in 50ms
+100K in 250 ms
+1M in 1200ms

@@ -6,13 +6,13 @@ namespace WpfApplication
 {
     public partial class MainWindow : Window
     {
-        private DictaWPF dicta;
+        private DictaWPF dictaWpf;
 
         public MainWindow()
         {
             InitializeComponent();
-            dicta = new DictaWPF();
-            dicta.Init(this);
+            dictaWpf = new DictaWPF();
+            dictaWpf.Init(this);
         }
     }
 }

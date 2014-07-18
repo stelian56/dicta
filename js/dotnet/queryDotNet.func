@@ -29,7 +29,7 @@ return function (args, callback) {
             result = "Watch OK"
             break;
 		case "addFunction":
-			model.addFunction(args.name, args.func);
+			model.addDotNetFunction(args.name, args.func);
             result = "Add function OK";
 			break;
     }
