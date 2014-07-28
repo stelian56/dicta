@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+         
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <property name="driverClassName" value="org.sqlite.JDBC"/>
+    <property name="url" value="jdbc:sqlite:sqlite/numbers.sqlite"/>
+  </bean>
+
+  <bean id="sql" class="org.apache.camel.component.sql.SqlComponent">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+  
+  <camelContext id="camelTest" xmlns="http://camel.apache.org/schema/spring">
+    <route>
+      <from uri="stream:in"/>
+      <to uri="sql:select name from numbers where id=#?outputType=SelectOne"/>
+      <to uri="stream:out"/>
+    </route>
+  </camelContext>
+
+</beans>
