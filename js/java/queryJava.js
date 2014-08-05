@@ -1,9 +1,13 @@
 console = { log: print, info: print, warn: print, error: print }
-load("js/lib/r.js"); // test build
-//load("js/dicta.js"); // package build
+load("js/r.js");
+requirejs.config({
+    bundles: {
+        'js/Dicta.min': ['Dicta']
+    }
+});
 var model;
-require(["js/DModel"], function(DModel) {
-    model = new DModel();
+require(["Dicta"], function(Dicta) {
+    model = new Dicta();
 });
 
 parse = function(text) {

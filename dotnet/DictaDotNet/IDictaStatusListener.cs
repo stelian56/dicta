@@ -1,4 +1,4 @@
-﻿namespace Dicta
+﻿namespace DictaDotNet
 {
     public interface IDictaStatusListener
     {

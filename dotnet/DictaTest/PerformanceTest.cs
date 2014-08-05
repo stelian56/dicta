@@ -2,17 +2,16 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Dicta;
 
-namespace DictaTest
+namespace DictaDotNet
 {
     public class PerformanceTest
     {
         private void TestConcat()
         {
             Console.WriteLine("***\nTestConcat");
-            string text = File.ReadAllText(@"dicta\concat.dicta");
-            DictaModel model = new DictaModel();
+            string text = File.ReadAllText(@"dicta\coretest\concat.dicta");
+            Dicta model = new Dicta();
             model.Parse(text);
             int queryCount = (int)1e4;
             model.Set("count", queryCount);

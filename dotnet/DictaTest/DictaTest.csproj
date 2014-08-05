@@ -84,31 +84,10 @@
     <Content Include="edge\edge.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="edge\js\DModel.js">
+    <Content Include="edge\js\Dicta.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="edge\js\DParser.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\DUtils.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\DVariable.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\lib\acorn.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\lib\escodegen.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\lib\estraverse.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\lib\esutils.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="edge\js\lib\r.js">
+    <Content Include="edge\js\r.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="edge\js\test\core\all.js">
@@ -156,25 +135,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="dicta\concat.dicta">
+    <None Include="dicta\coretest\concat.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\constargs.dicta">
+    <None Include="dicta\coretest\constargs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\localvars.dicta">
+    <None Include="dicta\coretest\localvars.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\noargs.dicta">
+    <None Include="dicta\coretest\noargs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\setget.dicta">
+    <None Include="dicta\coretest\setget.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\sqlite.dicta">
+    <None Include="dicta\coretest\varargs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\varargs.dicta">
+    <None Include="dicta\samples\sqlite.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="edge\js\queryDotNet.func">

@@ -42,7 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictaModel.cs" />
+    <Compile Include="DictaFunctions.cs" />
+    <Compile Include="Dicta.cs" />
     <Compile Include="IDictaStatusListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

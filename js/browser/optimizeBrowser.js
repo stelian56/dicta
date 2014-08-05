@@ -1,17 +1,22 @@
-var requirejs = require('../../r.js');
+var requirejs = require('../r.js');
 
 var config = {
     appDir: "..",
-    baseUrl: ".",
+    baseUrl: "./package",
     paths: {
         requireLib: "require",
-        jquery: "js/lib/jquery-2.1.1"
+        jquery: "lib/jquery-2.1.1"
     },
-    dir: "../../release",
+    dir: "../release",
     modules: [
         {
-            name: "dicta",
-            include: [ "requireLib", "jquery", "dictaBrowser" ],
+            name: "Dicta.min",
+            include: [ "requireLib", "Dicta" ],
+            create: true
+        },
+        {
+            name: "DictaBrowser.min",
+            include: [ "requireLib", "jquery", "Dicta", "DictaBrowser" ],
             create: true
         }
     ],

@@ -1,0 +1,9 @@
+f = function(x) {
+    var request = new XMLHttpRequest();
+    var url = "/" + x;
+    request.open("GET", url, false);
+    request.send();
+    return request.responseText;
+};
+
+content = f(fileName);

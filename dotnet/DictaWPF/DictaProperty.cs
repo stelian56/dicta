@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Dicta
+namespace DictaDotNet
 {
     public static class DictaProperty
     {

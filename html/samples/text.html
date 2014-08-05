@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Dicta Sample Application</title>
+<script type="text/javascript" src="/js/lib/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/lib/require-2.1.14.js"></script>
+<script type="text/javascript">
+require(["../../js/DictaBrowser"], function(dictaBrowser) {
+    $(document).ready(function() {
+        dictaBrowser.init("dicta/samples/text.dicta");
+    });
+});
+</script>
+</head>
+<body>
+<div style="display:inline-block;">
+<p>
+<input type="text" dicta_in="index" dicta_type="number"></input>
+</p>
+<p>
+<input type="text" dicta_in="count" dicta_type="number"></input>
+</p>
+<p>
+<b dicta_out="array"></b>
+</p>
+</div>
+</body>

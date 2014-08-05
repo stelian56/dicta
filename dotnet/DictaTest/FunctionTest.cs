@@ -2,18 +2,17 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Dicta;
 using System.Data.SQLite;
 
-namespace DictaTest
+namespace DictaDotNet
 {
     public class FunctionTest
     {
         private void TestSqlite()
         {
             Console.WriteLine("***\nTestSqlite");
-            string text = File.ReadAllText(@"dicta\sqlite.dicta");
-            DictaModel model = new DictaModel();
+            string text = File.ReadAllText(@"dicta\samples\sqlite.dicta");
+            Dicta model = new Dicta();
             model.Parse(text);
             model.AddFunction("sqlite", sqliteQuery);
             int id = 5;

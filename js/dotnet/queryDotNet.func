@@ -1,7 +1,12 @@
-var requirejs = require('./js/lib/r.js');
+var requirejs = require('./js/r.js');
+requirejs.config({
+    bundles: {
+        'js/Dicta.min': ['Dicta']
+    }
+});
 var edge = require('./edge.js');
-var DModel = requirejs('js/DModel');
-var model = new DModel();
+var Dicta = requirejs('Dicta');
+var model = new Dicta();
 
 return function (args, callback) {
     var result;

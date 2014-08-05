@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import net.geocentral.dicta.DictaModel;
+import net.geocentral.dicta.Dicta;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,9 +15,9 @@ public class FunctionTest {
     @Test
     public void testSqlite() throws Exception {
         System.out.println("\n***\ntestSqlite");
-        DictaModel model = TestUtils.readModel("sqlite");
+        Dicta model = TestUtils.read("samples/sqlite");
         SqliteHelper sqliteHelper = new SqliteHelper();
-        model.AddFunction("sqlite", sqliteHelper, "sqliteQuery");
+        model.addFunction("sqlite", sqliteHelper, "sqliteQuery");
         int id = 5;
         model.set("id", id);
         Object name = model.get("name");

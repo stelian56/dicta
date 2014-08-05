@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dicta
+namespace DictaDotNet
 {
-    public class DictaModel
+    public class Dicta
     {
         IDictaStatusListener statusListener;
         private Func<object, Task<object>> edge;
         private List<string> staleVarNames = new List<string>();
 
-        public DictaModel()
+        public Dicta()
         {
             string queryScript = File.ReadAllText(@".\edge\js\queryDotNet.func");
             edge = Edge.Func(queryScript);

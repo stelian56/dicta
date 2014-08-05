@@ -1,22 +1,11 @@
-define([
-    "../../DModel",
-    "../../DUtils"
-], function(DModel, utils) {
-
-    var statusListener;
-
-    var readModel = function(name) {
-        var model = new DModel();
-        var url = "dicta/" + name + ".dicta";
-        utils.readModel(url, model, true);
-        return model;
-    }
-    
+define([], function() {
     return {
+    
         name: "performance",
 
-        setget: function() {
-            var model = readModel("setget");
+        setget: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/setget.dicta");
             var queryCount = 1e4;
             var queryIndex;
             var id, name;

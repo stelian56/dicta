@@ -2,7 +2,7 @@ package net.geocentral.dicta.test;
 
 import java.util.Date;
 
-import net.geocentral.dicta.DictaModel;
+import net.geocentral.dicta.Dicta;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ public class PerformanceTest {
     @Test
     public void testConcat() throws Exception {
         System.out.println("\n***\ntestConcat");
-        DictaModel model = TestUtils.readModel("concat");
+        Dicta model = TestUtils.read("coretest/concat");
         int queryCount = (int)1e4;
         model.set("count", queryCount);
         for (int queryIndex = 0; queryIndex < 10; queryIndex++) {

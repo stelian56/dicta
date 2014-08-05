@@ -1,28 +1,23 @@
-define([
-    "../../DModel",
-    "../../DUtils"
-], function(DModel, utils) {
-
-    var statusListener;
-
+define([], function() {
     return {
+    
         name: "status",
 
-        watch: function() {
+        watch: function(Dicta) {
             var text = "d = a + b + c; c = 2*b; b = a + 1; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             var vars = "";
             model.statusListener = {
                 statusChanged: function(variables) {
                     varNames = [];
-                    utils.each(variables, function(varName) {
+                    model.utils.each(variables, function(varName) {
                         varNames.push(varName);
                     });
                     vars = varNames.sort().join("|");
                 }
             };
             model.parse(text);
-            utils.each(["a", "b", "c", "d"], function(index, varName) {
+            model.utils.each(["a", "b", "c", "d"], function(index, varName) {
                 model.watch(varName);
             });
             model.get("d");

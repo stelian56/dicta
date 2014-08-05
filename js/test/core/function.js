@@ -1,22 +1,11 @@
-define([
-    "../../DModel",
-    "../../DUtils"
-], function(DModel, utils) {
-
-    var statusListener;
-
-    var readModel = function(name) {
-        var model = new DModel();
-        var url = "dicta/" + name + ".dicta";
-        utils.readModel(url, model, false);
-        return model;
-    }
-    
+define([], function() {
     return {
+
         name: "function",
 
-        noargs: function() {
-            var model = readModel("noargs");
+        noargs: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/noargs.dicta");
             var a = model.get("a");
             if (a != 1) {
                 return false;
@@ -24,8 +13,9 @@ define([
             return true;
         },
         
-        constargs: function() {
-            var model = readModel("constargs");
+        constargs: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/constargs.dicta");
             var a = model.get("a");
             if (a != 3) {
                 return false;
@@ -33,8 +23,9 @@ define([
             return true;
         },
         
-        varargs: function() {
-            var model = readModel("varargs");
+        varargs: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/varargs.dicta");
             model.set("a", 1);
             model.set("b", 2);
             var c = model.get("c");
@@ -44,8 +35,9 @@ define([
             return true;
         },
         
-        localvars: function() {
-            var model = readModel("localvars");
+        localvars: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/localvars.dicta");
             model.set("a", 1);
             model.set("b", 2);
             var c = model.get("c");

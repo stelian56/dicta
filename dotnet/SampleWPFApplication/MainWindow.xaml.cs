@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Dicta;
+using DictaDotNet;
 using System;
 
 namespace WpfApplication

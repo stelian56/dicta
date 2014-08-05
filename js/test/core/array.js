@@ -1,15 +1,11 @@
-define([
-    "../../DModel"
-], function(DModel) {
-
-    var statusListener;
-
+define([], function() {
     return {
+
         name: "array",
 
-        constantInitializer: function() {
+        constantInitializer: function(Dicta) {
             var text = "a = [1];"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var a_0 = model.get("a[0]");
             if (a_0 != 1) {
@@ -23,9 +19,9 @@ define([
             return true;
         },
         
-        nullElementInitializer: function() {
+        nullElementInitializer: function(Dicta) {
             var text = "a = [, 2];"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var a_0 = model.get("a[0]");
             if (a_0) {
@@ -39,9 +35,9 @@ define([
             return true;
         },
         
-        variableInitializer: function() {
+        variableInitializer: function(Dicta) {
             var text = "b = [a]; a = 1;";
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_0 = model.get("b[0]");
             if (b_0 != 1) {
@@ -55,9 +51,9 @@ define([
             return true;
         },
         
-        objectInitializer: function() {
+        objectInitializer: function(Dicta) {
             var text = "b = [ {p: 1} ];"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_0_p = model.get("b[0]['p']");
             if (b_0_p != 1) {
@@ -71,9 +67,9 @@ define([
             return true;
         },
         
-        propInitializer: function() {
+        propInitializer: function(Dicta) {
             var text = "a = {}; b = [ a.p, a['p'] ]; a.p = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_0 = model.get("b[0]");
             var b_1 = model.get("b[1]");
@@ -92,9 +88,9 @@ define([
             return true;
         },
 
-        expressionInitializer: function() {
+        expressionInitializer: function(Dicta) {
             var text = "b = [ (4*a + 2)/2 - a ]; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_0 = model.get("b[0]");
             if (b_0 != 2) {
@@ -108,9 +104,9 @@ define([
             return true;
         },
         
-        depthInitializer: function() {
+        depthInitializer: function(Dicta) {
             var text = "b = [ [a, 2*a], [3*a] ]; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_0_0 = model.get("b[0][0]");
             var b_0_1 = model.get("b[0][1]");
@@ -134,9 +130,9 @@ define([
             return true;
         },
         
-        assignRight: function() {
+        assignRight: function(Dicta) {
             var text = "a = [1, 2]; b = a[1];"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 2) {
@@ -150,9 +146,9 @@ define([
             return true;
         },
 
-        assignLast: function() {
+        assignLast: function(Dicta) {
             var text = "b = []; b[1] = 2;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_0 = model.get("b[0]");
             var b_1 = model.get("b[1]");
@@ -171,9 +167,9 @@ define([
             return true;
         },
         
-        variableIndex: function() {
+        variableIndex: function(Dicta) {
             var text = "a = [1, 2]; b = a[x]; x = 0;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 1) {
@@ -187,9 +183,9 @@ define([
             return true;
         },
         
-        expressionIndex: function() {
+        expressionIndex: function(Dicta) {
             var text = "a = [1, 2, 3, 4, 5]; b = a[2*x - y]; x = 2; y = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 4) {
@@ -204,9 +200,9 @@ define([
             return true;
         },
         
-        depth: function() {
+        depth: function(Dicta) {
             var text = "b = [[[[[[[[[[[[[[[[[[[[[[[[[a]]]]]]]]]]]]]]]]]]]]]]]]]; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get(
                 "b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");

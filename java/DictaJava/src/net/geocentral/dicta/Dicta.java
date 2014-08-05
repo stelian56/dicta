@@ -10,7 +10,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.tools.shell.Global;
 
-public class DictaModel {
+public class Dicta {
 
     private Context cx;
     private Global scope;
@@ -19,7 +19,7 @@ public class DictaModel {
     private Function setFunc;
     private Function addFunctionFunc;
     
-    public DictaModel() {
+    public Dicta() {
         cx = Context.enter();
         scope = new Global(cx);
         Scriptable argsObj = cx.newArray(scope, new Object[] {});
@@ -52,7 +52,7 @@ public class DictaModel {
         setFunc.call(cx, scope, null, functionArgs);
     }
 
-    public void AddFunction(String name, Object owner, String methodName) {
+    public void addFunction(String name, Object owner, String methodName) {
         Object functionArgs[] = { name, owner, methodName };
         addFunctionFunc.call(cx, scope, null, functionArgs);
     }

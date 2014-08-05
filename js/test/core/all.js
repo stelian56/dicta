@@ -1,5 +1,4 @@
 define([
-    "../../DUtils",
     "./array",
     "./function",
     "./model",
@@ -7,20 +6,16 @@ define([
     "./performance",
     "./status",
     "./work"
-], function(utils) {
+], function() {
 
-    var allTestGroups = Array.prototype.slice.call(arguments, 1);
+    var allTestGroups = Array.prototype.slice.call(arguments);
 
     return {
-        run: function() {
-            console.log("Start Dicta tests");
+        run: function(Dicta) {
+            console.log("Start core Dicta tests");
             console.log();
             var params;
-            if (typeof window == "undefined" && arguments) {
-                var args = Array.prototype.slice.call(arguments, 0);
-                params = args.length && args;
-            }
-            else {
+            if (typeof window != "undefined") {
                 var query = window.location.search;
                 if (query) {
                     params = query.slice(1).split("&");
@@ -33,7 +28,9 @@ define([
             }
             else {
                 testGroups = [];
-                utils.each(params, function(paramIndex, param) {
+                var paramIndex;
+                for (paramIndex = 0; paramIndex < params.length; paramIndex++) {
+                    var param = params[paramIndex];
                     for (groupIndex = 0; groupIndex < allTestGroups.length; groupIndex++) {
                         var testGroup = allTestGroups[groupIndex];
                         if (testGroup.name == param) {
@@ -41,7 +38,7 @@ define([
                             break;
                         }
                     }
-                });
+                }
             }
             
             var onPass = function(testGroup, name) {
@@ -60,7 +57,7 @@ define([
                     if (typeof(f) == "function") {
                         result = false;
                         try {
-                            result = f();
+                            result = f(Dicta);
                         }
                         catch (err) {
                             console.error(err);
@@ -82,7 +79,7 @@ define([
             else {
                 console.log("Some of the tests FAILED");
             }
-            console.log("End Dicta tests");
+            console.log("End core Dicta tests");
         }
     };
 });

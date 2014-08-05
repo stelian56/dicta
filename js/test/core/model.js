@@ -1,15 +1,11 @@
-define([
-    "../../DModel"
-], function(DModel) {
-
-    var statusListener;
-
+define([], function() {
     return {
+
         name: "model",
 
-        constant: function() {
+        constant: function(Dicta) {
             var text = "a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var a = model.get("a");
             if (a != 1) {
@@ -23,9 +19,9 @@ define([
             return true;
         },
         
-        variable: function() {
+        variable: function(Dicta) {
             var text = "b = a; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 1) {
@@ -39,9 +35,9 @@ define([
             return true;
         },
 
-        operator: function() {
+        operator: function(Dicta) {
             var text = "b = (2*a + 4*a)/2 - a; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 2) {
@@ -55,9 +51,9 @@ define([
             return true;
         },
         
-        setunset: function() {
+        setunset: function(Dicta) {
             var text = "c = b; b = a; a = 1;";
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var c = model.get("c");
             if (c != 1) {
@@ -76,9 +72,9 @@ define([
             return true;
         },
         
-        setset: function() {
+        setset: function(Dicta) {
             var text = "a = {p: 1};";
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             a_p = model.get("a.p");
             if (a_p != 1) {

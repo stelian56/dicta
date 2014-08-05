@@ -1,0 +1,5 @@
+f = function(text) {
+    return text.toUpperCase();
+};
+
+upperCase = f(text);

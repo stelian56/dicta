@@ -1,15 +1,11 @@
-define([
-    "../../DModel"
-], function(DModel) {
-
-    var statusListener;
-
+define([], function() {
     return {
+    
         name: "object",
 
-        constantInitializer: function() {
+        constantInitializer: function(Dicta) {
             var text = "a = { p: 1 };"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var a_p = model.get("a.p");
             if (a_p != 1) {
@@ -23,9 +19,9 @@ define([
             return true;
         },
 
-        variableInitializer: function() {
+        variableInitializer: function(Dicta) {
             var text = "b = { p: a }; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_p = model.get("b.p");
             if (b_p != 1) {
@@ -39,9 +35,9 @@ define([
             return true;
         },
         
-        expressionInitializer: function() {
+        expressionInitializer: function(Dicta) {
             var text = "b = {p: (4*a + 2)/2 - a }; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_p = model.get("b.p");
             if (b_p != 2) {
@@ -55,9 +51,9 @@ define([
             return true;
         },
         
-        depthInitializer: function() {
+        depthInitializer: function(Dicta) {
             var text = "b = {q: { w: a }, e: { r: 2*a } }; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_q_w = model.get("b.q.w");
             var b_e_r = model.get("b.e.r");
@@ -76,9 +72,9 @@ define([
             return true;
         },
 
-        leftFixedIdentifier: function() {
+        leftFixedIdentifier: function(Dicta) {
             var text = "b = {}; b.p = a; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_p = model.get("b.p");
             if (b_p != 1) {
@@ -92,9 +88,9 @@ define([
             return true;
         },
         
-        leftLiteral: function() {
+        leftLiteral: function(Dicta) {
             var text = "b = {}; b['p'] = a; a = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_p = model.get("b.p");
             if (b_p != 1) {
@@ -108,9 +104,9 @@ define([
             return true;
         },
         
-        rightFixedIdentifier: function() {
+        rightFixedIdentifier: function(Dicta) {
             var text = "a = {}; b = a.p; a.p = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 1) {
@@ -124,9 +120,9 @@ define([
             return true;
         },
         
-        rightLiteral: function() {
+        rightLiteral: function(Dicta) {
             var text = "a = {}; b = a['p']; a['p'] = 1;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 1) {
@@ -140,9 +136,9 @@ define([
             return true;
         },
         
-        rightOperator: function() {
+        rightOperator: function(Dicta) {
             var text = "a = {}; c = (2*b*a.p - 6*b)/2 + 5*a['p']; a.p = 1; b = 2;"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var c = model.get("c");
             if (c != 1) {
@@ -157,9 +153,9 @@ define([
             return true;
         },
         
-        leftIdentifierRightInitializer: function() {
+        leftIdentifierRightInitializer: function(Dicta) {
             var text = "a = {}; a.p = {x: 1};"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var a_p_x = model.get("a.p.x");
             if (a_p_x != 1) {
@@ -173,9 +169,9 @@ define([
             return true;
         },
         
-        rightComputedIdentifier: function() {
+        rightComputedIdentifier: function(Dicta) {
             var text = "a = {x: 1, y: 2}; b = a[p]; p = 'x';"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b = model.get("b");
             if (b != 1) {
@@ -189,9 +185,9 @@ define([
             return true;
         },
         
-        leftComputedIdentifier: function() {
+        leftComputedIdentifier: function(Dicta) {
             var text = "b = {}; b[p] = a; a = 1; p = 'x';"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var b_p = model.get("b[p]");
             if (b_p != 1) {

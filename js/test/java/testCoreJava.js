@@ -1,5 +1,9 @@
-load("js/lib/r.js")
-
-require(["js/test/core/all.js"], function(all) {
-    all.run();
+load("js/r.js")
+requirejs.config({
+    bundles: {
+        "js/Dicta.min": ["Dicta"]
+    }
+});
+require(["Dicta", "js/test/core/all"], function(Dicta, all) {
+    all.run(Dicta);
 });

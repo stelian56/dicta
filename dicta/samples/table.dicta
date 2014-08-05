@@ -1,0 +1,6 @@
+principal = 0;
+compoundInterest = {
+    "2%": [],
+    "3%": [],
+    "4%": []
+};

@@ -1,15 +1,11 @@
-define([
-    "../../DModel"
-], function(DModel) {
-
-    var statusListener;
-
+define([], function() {
     return {
+
         name: "work",
 
-        constantInitializer: function() {
+        constantInitializer: function(Dicta) {
             var text = "a = [1];"
-            var model = new DModel();
+            var model = new Dicta();
             model.parse(text);
             var a_0 = model.get("a[0]");
             if (a_0 != 1) {

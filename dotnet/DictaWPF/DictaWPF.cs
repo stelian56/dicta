@@ -7,11 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dicta
+namespace DictaDotNet
 {
     public class DictaWPF : IDictaStatusListener
     {
-        private DictaModel model;
+        private Dicta model;
         private List<BindSource> inSources = new List<BindSource>();
         private List<BindSource> outSources = new List<BindSource>();
 
@@ -25,7 +25,7 @@ namespace Dicta
         {
             string fileName = DictaProperty.GetModel(uiElement);
             string text = File.ReadAllText(fileName);
-            model = new DictaModel();
+            model = new Dicta();
             model.SetStatusListener(this);
             model.Parse(text);
         }
@@ -86,7 +86,7 @@ namespace Dicta
     class BindSource : INotifyPropertyChanged
     {
         private UIElement uiElement;
-        private DictaModel model;
+        private Dicta model;
         private string varName;
         private string type;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -96,7 +96,7 @@ namespace Dicta
             PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
-        public BindSource(UIElement uiElement, DictaModel model)
+        public BindSource(UIElement uiElement, Dicta model)
         {
             this.uiElement = uiElement;
             this.model = model;
