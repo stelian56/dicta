@@ -3,7 +3,19 @@ define([], function() {
 
         name: "model",
 
-        constant: function(Dicta) {
+        unassigned: function(Dicta) {
+            var text = "a;";
+            var model = new Dicta();
+            model.parse(text);
+            model.set("a", 1);
+            var a = model.get("a");
+            if (a != 1) {
+                return false;
+            }
+            return true;
+        },
+        
+        assigned: function(Dicta) {
             var text = "a = 1;"
             var model = new Dicta();
             model.parse(text);
@@ -19,7 +31,30 @@ define([], function() {
             return true;
         },
         
-        variable: function(Dicta) {
+        
+        declared: function(Dicta) {
+            var text = "var a = 1;";
+            var model = new Dicta();
+            model.parse(text);
+            var a = model.get("a");
+            if (a != 1) {
+                return false;
+            }
+            return true;
+        },
+        
+        declaredAssigned: function(Dicta) {
+            var text = "var a = 0; a = 1;";
+            var model = new Dicta();
+            model.parse(text);
+            var a = model.get("a");
+            if (a != 1) {
+                return false;
+            }
+            return true;
+        },
+
+        dependents: function(Dicta) {
             var text = "b = a; a = 1;"
             var model = new Dicta();
             model.parse(text);
@@ -51,7 +86,7 @@ define([], function() {
             return true;
         },
         
-        setunset: function(Dicta) {
+        setUnset: function(Dicta) {
             var text = "c = b; b = a; a = 1;";
             var model = new Dicta();
             model.parse(text);
@@ -67,28 +102,6 @@ define([], function() {
             model.unset("b");
             c = model.get("c");
             if (c != 1) {
-                return false;
-            }
-            return true;
-        },
-        
-        setset: function(Dicta) {
-            var text = "a = {p: 1};";
-            var model = new Dicta();
-            model.parse(text);
-            a_p = model.get("a.p");
-            if (a_p != 1) {
-                return false;
-            }
-            var a_p = model.get("a.p");
-            model.set("a.p", 2);
-            a_p = model.get("a.p");
-            if (a_p != 2) {
-                return false;
-            }
-            model.set("a.p", 3);
-            a_p = model.get("a.p");
-            if (a_p != 3) {
                 return false;
             }
             return true;

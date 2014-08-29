@@ -3,7 +3,7 @@ define([], function() {
     
         name: "performance",
 
-        setget: function(Dicta) {
+        setGet: function(Dicta) {
             var model = new Dicta();
             model.read("dicta/coretest/setget.dicta");
             var queryCount = 1e4;

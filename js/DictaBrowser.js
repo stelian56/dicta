@@ -13,12 +13,27 @@
     var setValue = function(element, value) {
         switch (element.tagName.toLowerCase()) {
             case "table":
-                $(element).empty();
-                var $tableHeader = $(element).append("<tr>");
-                // $.each(value, function(header, colValues) {
-                    // $columnHeader = $tableHeader.append("<th>");
-                    // $columnHeader.text(header);
-                // });
+                var $table = $(element);
+                var $thead = $("<thead>").appendTo($table);
+                var $theadrow = $("<tr>").appendTo($thead);
+                var $tbody = $("<tbody>").appendTo($table);
+                var rowCount = 0;
+                $.each(value, function(header, colValues) {
+                    var $th = $("<th>").appendTo($theadrow);
+                    $th.text(header);
+                    rowCount = Math.max(rowCount, colValues.length);
+                });
+                var rowIndex;
+                for (rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                    var $tr = $("<tr>").appendTo($tbody);
+                    $.each(value, function(header, colValues) {
+                        var colValue = colValues[rowIndex];
+                        var $td = $("<td>").appendTo($tr);
+                        if (colValue) {
+                            $td.text(colValue);
+                        }
+                    });
+                }
                 break;
             default:
                 $(element).text(value);

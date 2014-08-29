@@ -200,6 +200,28 @@ define([], function() {
                 return false;
             }
             return true;
+        },
+        
+        setSet: function(Dicta) {
+            var text = "a = {p: 1};";
+            var model = new Dicta();
+            model.parse(text);
+            a_p = model.get("a.p");
+            if (a_p != 1) {
+                return false;
+            }
+            var a_p = model.get("a.p");
+            model.set("a.p", 2);
+            a_p = model.get("a.p");
+            if (a_p != 2) {
+                return false;
+            }
+            model.set("a.p", 3);
+            a_p = model.get("a.p");
+            if (a_p != 3) {
+                return false;
+            }
+            return true;
         }
     };
 });
