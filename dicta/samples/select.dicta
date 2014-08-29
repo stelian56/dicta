@@ -1,5 +1,5 @@
 f = function(text) {
-    return text.toUpperCase();
+    return text ? text.toUpperCase() : "";
 };
 
 upperCase = f(text);

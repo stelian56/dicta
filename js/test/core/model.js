@@ -70,7 +70,7 @@ define([], function() {
             return true;
         },
 
-        operator: function(Dicta) {
+        binaryOperator: function(Dicta) {
             var text = "b = (2*a + 4*a)/2 - a; a = 1;"
             var model = new Dicta();
             model.parse(text);
@@ -81,6 +81,29 @@ define([], function() {
             model.set("a", 10);
             b = model.get("b");
             if (b != 20) {
+                return false;
+            }
+            return true;
+        },
+        
+        ternaryOperator: function(Dicta) {
+            var text = "c = a > b ? a : b;"
+            var model = new Dicta();
+            model.parse(text);
+            model.set("a", 1);
+            model.set("b", 2);
+            c = model.get("c");
+            if (c != 2) {
+                return false;
+            }
+            model.set("a", 3);
+            c = model.get("c");
+            if (c != 3) {
+                return false;
+            }
+            model.set("b", 4);
+            c = model.get("c");
+            if (c != 4) {
                 return false;
             }
             return true;
@@ -102,6 +125,31 @@ define([], function() {
             model.unset("b");
             c = model.get("c");
             if (c != 1) {
+                return false;
+            }
+            return true;
+        },
+        
+        ifStatement: function(Dicta) {
+            var text = "if (a > b) c = 10; else if (d > e) f = 20; else g = 30;";
+            var model = new Dicta();
+            model.parse(text);
+            model.set("a", 2);
+            model.set("b", 1);
+            c = model.get("c");
+            if (c != 10) {
+                return false;
+            }
+            model.set("b", 3);
+            model.set("d", 2);
+            model.set("e", 1);
+            f = model.get("f");
+            if (f != 20) {
+                return false;
+            }
+            model.set("e", 3);
+            g = model.get("g");
+            if (g != 30) {
                 return false;
             }
             return true;

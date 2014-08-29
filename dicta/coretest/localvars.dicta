@@ -1,5 +1,0 @@
-f = function(x, y) {
-    return Math.max(x, y);
-};
-
-c = f(a, b);

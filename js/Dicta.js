@@ -1,4 +1,4 @@
-﻿define([
+define([
     "./lib/acorn",
     "./lib/escodegen"
 ], function(acorn, escodegen) {
@@ -20,6 +20,10 @@
                 },
                 newline: ""
             }
+        };
+
+        var clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
         };
         
         var each = function(obj, callback) {
@@ -43,6 +47,14 @@
             return obj;
         };
 
+        var appendArray = function(target, source) {
+            each(source, function() {
+                if (target.indexOf(this) < 0) {
+                    target.push(this);
+                }
+            });
+        };
+
         var generateCode = function(ast) {
             return escodegen.generate(ast, codegenOptions);
         };
@@ -57,6 +69,7 @@
             
         return {
             each: each,
+            appendArray: appendArray,
             generateCode: generateCode,
             newRuleName: newRuleName,
             newAuxiliaryVarName: newAuxiliaryVarName
@@ -79,7 +92,7 @@
             }
         };
 
-        var parseIdentifier = function(model, ast, vars, owned) {
+        var parseIdentifier = function(model, ast, owned) {
             var varName = ast.name;
             var variable;
             if (!owned) {
@@ -88,143 +101,221 @@
                     variable = model.createVariable(varName);
                 }
                 variable.stale = true;
-                if (vars.indexOf(variable) < 0) {
-                    vars.push(variable);
-                }
+                return [varName];
             }
+            return [];
         };
 
-        var parseObjectExpression = function(model, ast, vars, owned) {
+        var parseObjectExpression = function(model, ast) {
+            var definers = [];
             utils.each(ast.properties, function() {
-                parseExpression(model, this.value, vars);
+                var defs = parseExpression(model, this.value);
+                utils.appendArray(definers, defs);
             });
+            return definers;
         };
 
-        var parseArrayExpression = function(model, ast, vars, owned) {
+        var parseArrayExpression = function(model, ast) {
+            var definers = [];
             utils.each(ast.elements, function(index, element) {
                 if (element) {
-                    parseExpression(model, element, vars);
+                    var defs = parseExpression(model, element);
+                    utils.appendArray(definers, defs);
                 }
             });
+            return definers;
         };
 
-        var parseMemberExpression = function(model, ast, vars, owned) {
+        var parseMemberExpression = function(model, ast, owned) {
             var computed = ast.computed;
-            parseExpression(model, ast.object, vars, owned);
-            parseExpression(model, ast.property, vars, !computed);
+            var definers = [];
+            var defs = parseExpression(model, ast.object, owned);
+            utils.appendArray(definers, defs);
+            defs = parseExpression(model, ast.property, !computed);
+            utils.appendArray(definers, defs);
+            return definers;
         };
 
-        var parseCallExpression = function(model, ast, vars) {
-            var varName = ast.callee.name;
-            var variable;
-            variable = model.variables[varName];
-            if (!variable) {
-                variable = model.createVariable(varName);
+        var parseBinaryExpression = function(model, ast) {
+            var definers = [];
+            utils.each([ast.left, ast.right], function() {
+                var defs = parseExpression(model, this);
+                utils.appendArray(definers, defs);
+            });
+            return definers;
+        };
+        
+        var parseCallExpression = function(model, ast) {
+            var definers = [];
+            var code = utils.generateCode(ast.callee);
+            var callee;
+            try {
+                callee = eval(code);
             }
-            variable.stale = true;
-            if (vars.indexOf(variable) < 0) {
-                vars.push(variable);
+            catch (error) {}
+            if (!callee || typeof(callee) != "function") {
+                // Not a Javascript library function
+                var varName = ast.callee.name;
+                var variable;
+                variable = model.variables[varName];
+                if (!variable) {
+                    variable = model.createVariable(varName);
+                }
+                variable.stale = true;
+                definers.push(varName);
             }
             utils.each(ast.arguments, function() {
-                parseExpression(model, this, vars);
+                var defs = parseExpression(model, this);
+                utils.appendArray(definers, defs);
             });
+            return definers;
+        };
+
+        var parseConditionalExpression = function(model, ast) {
+            var definers = [];
+            var defs = parseExpression(model, ast.test);
+            utils.appendArray(definers, defs);
+            defs = parseExpression(model, ast.consequent);
+            utils.appendArray(definers, defs);
+            defs = parseExpression(model, ast.alternate);
+            utils.appendArray(definers, defs);
+            return definers;
         };
         
-        var parseExpression = function(model, ast, vars, owned) {
-
+        var parseExpression = function(model, ast, owned, createRule) {
             switch (ast.type) {
                 case "Literal":
-                    break;
+                    return [];
                 case "Identifier":
-                    parseIdentifier(model, ast, vars, owned);
-                    break;
+                    return parseIdentifier(model, ast, owned);
                 case "ObjectExpression":
-                    parseObjectExpression(model, ast, vars, owned);
-                    break;
+                    return parseObjectExpression(model, ast);
                 case "ArrayExpression":
-                    parseArrayExpression(model, ast, vars, owned);
-                    break;
+                    return parseArrayExpression(model, ast);
                  case "MemberExpression":
-                    parseMemberExpression(model, ast, vars, owned);
-                    break;
+                    return parseMemberExpression(model, ast, owned);
                 case "BinaryExpression":
-                    utils.each([ast.left, ast.right], function() {
-                        parseExpression(model, this, vars);
-                    });
-                    break;
+                    return parseBinaryExpression(model, ast);
                 case "CallExpression":
-                    parseCallExpression(model, ast, vars);
-                    break;
+                    return parseCallExpression(model, ast);
+                case "ConditionalExpression":
+                    return parseConditionalExpression(model, ast);
+                case "AssignmentExpression":
+                    return parseAssignment(model, ast, createRule);
             }
+            return [];
         };
 
-        var parseVariableDeclaration = function(model, ast) {
-            if (ast.init) {
-                var expression = { type: "AssignmentExpression", operator: "=" };
-                expression.left = { type: "Identifier", name: ast.id.name };
-                expression.right = ast.init;
-                parseAssignment(model, expression);
-            }
-            else {
-                if (!model.variables[ast.id.name]) {
-                    model.createVariable(ast.id.name);
-                }
-            }
-        };
-        
-        var parseFunctionDeclaration = function(model, ast) {
-                var expression = { type: "AssignmentExpression", operator: "=" };
-                expression.left = { type: "Identifier", name: ast.id.name };
-                expression.right =
-                    { type: "FunctionExpression", params: ast.params, body: ast.body };
-                parseAssignment(model, expression);
-        };
-        
-        var parseAssignment = function(model, ast)  {
-            var leftVars = [];
-            parseExpression(model, ast.left, leftVars);
-            var rightVars = [];
-            parseExpression(model, ast.right, rightVars);
-            var definedVar = leftVars[0];
-            utils.each(rightVars, function() {
-                bind(definedVar, this);
+        var parseAssignment = function(model, ast, createRule)  {
+            var rightDefiners = parseExpression(model, ast.right);
+            var leftDefiners = parseExpression(model, ast.left);
+            var varName = leftDefiners[0];
+            var definedVar = model.variables[varName];
+            utils.each(rightDefiners, function() {
+                var variable = model.variables[this];
+                bind(definedVar, variable);
             });
-            utils.each(leftVars, function(index) {
+            utils.each(leftDefiners, function(index) {
                 if (index > 0) {
-                    bind(definedVar, this);
+                    var variable = model.variables[this];
+                    bind(definedVar, variable);
                 }
             });
-            var rule = utils.generateCode(ast);
-            var ruleName = model.createRule(rule);
-            definedVar.rules.push(ruleName);
+            if (createRule) {
+                var rule = utils.generateCode(ast);
+                var ruleName = model.createRule(rule);
+                definedVar.rules.push(ruleName);
+            }
+            return [ varName ];
         };
 
-        var parseStatements = function(model, ast) {
-            utils.each(ast, function() {
-                var statement = this;
-                if (statement.type == "ExpressionStatement") {
-                    var expression = statement.expression;
-                    if (expression.type == "AssignmentExpression") {
-                        parseAssignment(model, expression);
-                    }
-                    else if (expression.type == "Identifier") {
-                        parseIdentifier(model, expression, []);
-                    }
+        var parseVariableDeclaration = function(model, ast, createRules) {
+            var definers = [];
+            utils.each(ast.declarations, function() {
+                if (this.init) {
+                    var expression = { type: "AssignmentExpression", operator: "=" };
+                    expression.left = { type: "Identifier", name: this.id.name };
+                    expression.right = this.init;
+                    var defs = parseAssignment(model, expression, createRules);
+                    utils.appendArray(definers, defs);
                 }
-                else if (statement.type == "VariableDeclaration") {
-                    utils.each(statement.declarations, function() {
-                        parseVariableDeclaration(model, this);
-                    });
-                }
-                else if (statement.type == "FunctionDeclaration") {
-                    parseFunctionDeclaration(model, this);
+                else {
+                    if (!model.variables[this.id.name]) {
+                        model.createVariable(this.id.name);
+                    }
                 }
             });
+            return definers;
+        };
+        
+        var parseFunctionDeclaration = function(model, ast, createRules) {
+            var expression = { type: "AssignmentExpression", operator: "=" };
+            expression.left = { type: "Identifier", name: ast.id.name };
+            expression.right =
+                { type: "FunctionExpression", params: ast.params, body: ast.body };
+            return parseAssignment(model, expression, createRules);
+        };
+        
+        var parseIfStatement = function(model, ast, createRule) {
+            var ruleName;
+            if (createRule) {
+                var rule = utils.generateCode(ast);
+                ruleName = model.createRule(rule);
+            }
+            var testDefiners = parseExpression(model, ast.test);
+            var consequentDefiners = [];
+            var statements = [];
+            if (ast.consequent) {
+                var defs = parseStatements(model, [ ast.consequent ]);
+                utils.appendArray(consequentDefiners, defs);
+            }
+            if (ast.alternate) {
+                var defs = parseStatements(model, [ ast.alternate ]);
+                utils.appendArray(consequentDefiners, defs);
+            }
+            utils.each(consequentDefiners, function() {
+                var consequentDefiner = model.variables[this];
+                utils.each(testDefiners, function() {
+                    var testDefiner = model.variables[this];
+                    bind(consequentDefiner, testDefiner);
+                });
+                if (ruleName) {
+                    consequentDefiner.rules.push(ruleName);
+                }
+            });
+            return consequentDefiners;
+        }
+        
+        var parseStatements = function(model, ast, createRules) {
+            var definers = [];
+            utils.each(ast, function() {
+                var defs = [];
+                var statement = this;
+                switch (statement.type) {
+                    case "ExpressionStatement":
+                        defs = parseExpression(model, statement.expression, false, createRules);
+                        break;
+                    case "VariableDeclaration":
+                        defs = parseVariableDeclaration(model, this, createRules);
+                        break;
+                    case "FunctionDeclaration":
+                        defs = parseFunctionDeclaration(model, this, createRules);
+                        break;
+                    case "IfStatement":
+                        defs = parseIfStatement(model, this, createRules);
+                        break;
+                    case "BlockStatement":
+                        defs = parseStatements(mode, ast.body, createRules);
+                        break;
+                }
+                utils.appendArray(definers, defs);
+            });
+            return definers;
         };
 
         var parse = function(model, text) {
             var ast = acorn.parse(text, parseOptions);
-            parseStatements(model, ast.body);
+            parseStatements(model, ast.body, true);
         };
         
         return {
@@ -242,7 +333,7 @@
 
         constructor.prototype.get = function(varName) {
             with (this) {
-                return eval(varName);
+                return this[varName];
             }
         };
 
@@ -255,12 +346,6 @@
                 this[ruleName]();
             }
         };
-
-        // constructor.prototype.evaluate = function(text) {
-            // with (this) {
-                // return eval(text);
-            // }
-        // };
         
         constructor.prototype.createVariable = function(varName) {
             this[varName] = undefined;
