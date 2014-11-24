@@ -155,14 +155,8 @@ define([
             catch (error) {}
             if (!callee || typeof(callee) != "function") {
                 // Not a Javascript library function
-                var varName = ast.callee.name;
-                var variable;
-                variable = model.variables[varName];
-                if (!variable) {
-                    variable = model.createVariable(varName);
-                }
-                variable.stale = true;
-                definers.push(varName);
+                var defs = parseExpression(model, ast.callee);
+                utils.appendArray(definers, defs);
             }
             utils.each(ast.arguments, function() {
                 var defs = parseExpression(model, this);
@@ -180,6 +174,10 @@ define([
             defs = parseExpression(model, ast.alternate);
             utils.appendArray(definers, defs);
             return definers;
+        };
+        
+        var parseUpdateExpression = function(model, ast) {
+            return parseExpression(model, ast.argument);
         };
         
         var parseExpression = function(model, ast, owned, createRule) {
@@ -200,6 +198,8 @@ define([
                     return parseCallExpression(model, ast);
                 case "ConditionalExpression":
                     return parseConditionalExpression(model, ast);
+                case "UpdateExpression":
+                    return parseUpdateExpression(model, ast);
                 case "AssignmentExpression":
                     return parseAssignment(model, ast, createRule);
             }
@@ -213,12 +213,16 @@ define([
             var definedVar = model.variables[varName];
             utils.each(rightDefiners, function() {
                 var variable = model.variables[this];
-                bind(definedVar, variable);
+                if (variable != definedVar) {
+                    bind(definedVar, variable);
+                }
             });
             utils.each(leftDefiners, function(index) {
                 if (index > 0) {
                     var variable = model.variables[this];
-                    bind(definedVar, variable);
+                    if (variable != definedVar) {
+                        bind(definedVar, variable);
+                    }
                 }
             });
             if (createRule) {
@@ -264,7 +268,6 @@ define([
             }
             var testDefiners = parseExpression(model, ast.test);
             var consequentDefiners = [];
-            var statements = [];
             if (ast.consequent) {
                 var defs = parseStatements(model, [ ast.consequent ]);
                 utils.appendArray(consequentDefiners, defs);
@@ -277,14 +280,74 @@ define([
                 var consequentDefiner = model.variables[this];
                 utils.each(testDefiners, function() {
                     var testDefiner = model.variables[this];
-                    bind(consequentDefiner, testDefiner);
+                    if (testDefiner != consequentDefiner) {
+                        bind(consequentDefiner, testDefiner);
+                    }
                 });
                 if (ruleName) {
                     consequentDefiner.rules.push(ruleName);
                 }
             });
             return consequentDefiners;
-        }
+        };
+        
+        var parseWhileStatement = function(model, ast, createRule) {
+            var ruleName;
+            if (createRule) {
+                var rule = utils.generateCode(ast);
+                ruleName = model.createRule(rule);
+            }
+            var testDefiners = parseExpression(model, ast.test);
+            var bodyDefiners = parseStatements(model, [ ast.body ]);
+            utils.each(bodyDefiners, function() {
+                var bodyDefiner = model.variables[this];
+                utils.each(testDefiners, function() {
+                    var testDefiner = model.variables[this];
+                    if (testDefiner != bodyDefiner) {
+                        bind(bodyDefiner, testDefiner);
+                    }
+                });
+                if (ruleName) {
+                    bodyDefiner.rules.push(ruleName);
+                }
+            });
+            return bodyDefiners;
+        };
+
+        var parseForStatement = function(model, ast, createRule) {
+            var ruleName;
+            if (createRule) {
+                var rule = utils.generateCode(ast);
+                ruleName = model.createRule(rule);
+            }
+            var testDefiners = [];
+            if (ast.init) {
+                var defs = parseExpression(model, ast.init);
+                utils.appendArray(testDefiners, defs);
+            }
+            if (ast.test) {
+                var defs = parseExpression(model, ast.test);
+                utils.appendArray(testDefiners, defs);
+            }
+            if (ast.update) {
+                var defs = parseExpression(model, ast.update);
+                utils.appendArray(testDefiners, defs);
+            }
+            var bodyDefiners = parseStatements(model, [ ast.body ]);
+            utils.each(bodyDefiners, function() {
+                var bodyDefiner = model.variables[this];
+                utils.each(testDefiners, function() {
+                    var testDefiner = model.variables[this];
+                    if (testDefiner != bodyDefiner) {
+                        bind(bodyDefiner, testDefiner);
+                    }
+                });
+                if (ruleName) {
+                    bodyDefiner.rules.push(ruleName);
+                }
+            });
+            return bodyDefiners;
+        };
         
         var parseStatements = function(model, ast, createRules) {
             var definers = [];
@@ -296,16 +359,23 @@ define([
                         defs = parseExpression(model, statement.expression, false, createRules);
                         break;
                     case "VariableDeclaration":
-                        defs = parseVariableDeclaration(model, this, createRules);
+                        defs = parseVariableDeclaration(model, statement, createRules);
                         break;
                     case "FunctionDeclaration":
-                        defs = parseFunctionDeclaration(model, this, createRules);
+                        defs = parseFunctionDeclaration(model, statement, createRules);
                         break;
                     case "IfStatement":
-                        defs = parseIfStatement(model, this, createRules);
+                        defs = parseIfStatement(model, statement, createRules);
+                        break;
+                    case "WhileStatement":
+                    case "DoWhileStatement":
+                        defs = parseWhileStatement(model, statement, createRules);
+                        break;
+                    case "ForStatement":
+                        defs = parseForStatement(model, statement, createRules);
                         break;
                     case "BlockStatement":
-                        defs = parseStatements(mode, ast.body, createRules);
+                        defs = parseStatements(model, statement.body, createRules);
                         break;
                 }
                 utils.appendArray(definers, defs);

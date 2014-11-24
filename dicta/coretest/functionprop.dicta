@@ -1,0 +1,6 @@
+a = {
+    f: function() {
+        return 1;
+    }
+};
+b = a.f();

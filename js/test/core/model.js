@@ -109,6 +109,50 @@ define([], function() {
             return true;
         },
         
+        postIncrement: function(Dicta) {
+            var text = "b = a++;";
+            var model = new Dicta();
+            model.parse(text);
+            model.set("a", 1);
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            };
+            var a = model.get("a");
+            if (a != 2) {
+                return false;
+            }
+            return true;
+        },
+        
+        preIncrement: function(Dicta) {
+            var text = "b = ++a;";
+            var model = new Dicta();
+            model.parse(text);
+            model.set("a", 1);
+            var b = model.get("b");
+            if (b != 2) {
+                return false;
+            };
+            var a = model.get("a");
+            if (a != 2) {
+                return false;
+            }
+            return true;
+        },
+        
+        selfDependent: function(Dicta) {
+            var text = "b = (a = a + 1);";
+            var model = new Dicta();
+            model.parse(text);
+            model.set("a", 1);
+            var b = model.get("b");
+            if (b != 2) {
+                return false;
+            }
+            return true;
+        },
+
         setUnset: function(Dicta) {
             var text = "c = b; b = a; a = 1;";
             var model = new Dicta();
@@ -150,6 +194,44 @@ define([], function() {
             model.set("e", 3);
             g = model.get("g");
             if (g != 30) {
+                return false;
+            }
+            return true;
+        },
+        
+        whileLoop: function(Dicta) {
+            var text = "a = 0; i = 1; while (i < 10) { a = a + i++; }";
+            var model = new Dicta();
+            model.parse(text);
+            var a = model.get("a");
+            if (a != 45) {
+                return false;
+            }
+            return true;
+        },
+        
+        doWhileLoop: function(Dicta) {
+            var text = "a = 0; i = 1; do { a = a + i++; } while (i < 10);";
+            var model = new Dicta();
+            model.parse(text);
+            var a = model.get("a");
+            if (a != 45) {
+                return false;
+            }
+            return true;
+        },
+        
+        forLoop: function(Dicta) {
+            var text = "a = 1; b = 0; for (i = a; i < 10; i++) { b += i; }";
+            var model = new Dicta();
+            model.parse(text);
+            var b = model.get("b");
+            if (b != 45) {
+                return false;
+            }
+            model.set("a", 2);
+            b = model.get("b");
+            if (b != 44) {
                 return false;
             }
             return true;

@@ -9,7 +9,9 @@ public class TestUtils {
 
     public static Dicta read(String modelName) throws Exception {
         String fileName = String.format("dicta/%s.dicta", modelName);
-        String text = new Scanner(new File(fileName)).useDelimiter("\\A").next();
+        Scanner scanner = new Scanner(new File(fileName));
+        String text = scanner.useDelimiter("\\A").next();
+        scanner.close();
         Dicta model = new Dicta(); 
         model.init();
         model.parse(text);

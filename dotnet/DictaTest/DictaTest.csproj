@@ -144,6 +144,9 @@
     <None Include="dicta\coretest\declaration.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="dicta\coretest\functionprop.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="dicta\coretest\localvar.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

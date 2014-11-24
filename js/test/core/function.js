@@ -79,6 +79,16 @@ define([], function() {
                 return false;
             }
             return true;
+        },
+        
+        functionProp: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/functionprop.dicta");
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            return true;
         }
     };
 });
