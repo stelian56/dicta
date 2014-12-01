@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EdgeJs">
-      <HintPath>..\SampleWPFApplication\packages\Edge.js.0.9.0\lib\EdgeJs.dll</HintPath>
+      <HintPath>..\packages\Edge.js.0.9.2\lib\EdgeJs.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -49,6 +49,12 @@
     <Compile Include="DictaProperty.cs" />
     <Compile Include="DictaWPF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DictaDotNet\DictaDotNet.csproj">
+      <Project>{326cfedf-30a0-4b3d-8db0-b07dfd286e4a}</Project>
+      <Name>DictaDotNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="edge\double_edge.js">
@@ -72,12 +78,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DictaDotNet\DictaDotNet.csproj">
-      <Project>{326cfedf-30a0-4b3d-8db0-b07dfd286e4a}</Project>
-      <Name>DictaDotNet</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

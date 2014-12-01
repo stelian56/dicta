@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EdgeJs">
-      <HintPath>..\SampleWPFApplication\packages\Edge.js.0.9.0\lib\EdgeJs.dll</HintPath>
+      <HintPath>..\packages\Edge.js.0.9.2\lib\EdgeJs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictaFunctions.cs" />
     <Compile Include="Dicta.cs" />
     <Compile Include="IDictaStatusListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
