@@ -2,7 +2,7 @@
     "./Dicta"
 ], function(Dicta) {
 
-    var model = null;
+    var model;
     
     var init = function(filePath) {
         model = new Dicta(this);
@@ -14,6 +14,7 @@
         switch (element.tagName.toLowerCase()) {
             case "table":
                 var $table = $(element);
+                $table.empty();
                 var $thead = $("<thead>").appendTo($table);
                 var $theadrow = $("<tr>").appendTo($thead);
                 var $tbody = $("<tbody>").appendTo($table);
@@ -29,9 +30,7 @@
                     $.each(value, function(header, colValues) {
                         var colValue = colValues[rowIndex];
                         var $td = $("<td>").appendTo($tr);
-                        if (colValue) {
-                            $td.text(colValue);
-                        }
+                        $td.text(colValue);
                     });
                 }
                 break;

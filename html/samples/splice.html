@@ -7,7 +7,7 @@
 <script type="text/javascript">
 require(["../../js/DictaBrowser"], function(dictaBrowser) {
     $(document).ready(function() {
-        dictaBrowser.init("dicta/samples/text.dicta");
+        dictaBrowser.init("dicta/samples/splice.dicta");
     });
 });
 </script>
@@ -15,9 +15,14 @@ require(["../../js/DictaBrowser"], function(dictaBrowser) {
 <body>
 <div style="display:inline-block;">
 <p>
+a = [1, 2, 3, 4, 5];
+</p>
+<p>
+index =
 <input type="text" dicta_in="index" dicta_type="number"></input>
 </p>
 <p>
+count =
 <input type="text" dicta_in="count" dicta_type="number"></input>
 </p>
 <p>

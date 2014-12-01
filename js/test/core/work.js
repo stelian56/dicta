@@ -3,20 +3,22 @@ define([], function() {
 
         name: "work",
         
-        forLoop: function(Dicta) {
-            var text = "a = 1; b = 0; for (i = a; i < 10; i++) { b += i; }";
+        watchGet: function(Dicta) {
+            var text = "a = 0; b = a + 1;"
             var model = new Dicta();
+            var b;
+            model.statusListener = {
+                statusChanged: function(variables) {
+                    b = model.get("b");
+                }
+            };
             model.parse(text);
-            var b = model.get("b");
-            if (b != 45) {
-                return false;
+            model.watch("b");
+            model.set("a", 1);
+            if (b == 2) {
+                return true;
             }
-            model.set("a", 2);
-            b = model.get("b");
-            if (b != 44) {
-                return false;
-            }
-            return true;
+            return false;
         }
     };
 });

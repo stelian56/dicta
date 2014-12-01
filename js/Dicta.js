@@ -464,18 +464,20 @@ define([
             }
         };
         
-        var invalidate = function(model, variable) {
+        var invalidate = function(model, variable, dependentsOnly) {
 
-            var invalidateDependents = function(variable, staleVarNames) {
+            var invalidateDependents = function(variable, staleVarNames, dependentsOnly) {
                 utils.each(variable.dependents, function () {
                     invalidateDependents(this, staleVarNames);
                 });
-                staleVarNames[variable.name] = true;
-                variable.stale = true;
+                if (!dependentsOnly) {
+                    variable.stale = true;
+                    staleVarNames[variable.name] = true;
+                }
             };
             
             var staleVarNames = {};
-            invalidateDependents(variable, staleVarNames);
+            invalidateDependents(variable, staleVarNames, dependentsOnly);
             if (model.statusListener) {
                 model.statusListener.statusChanged(staleVarNames);
             }
@@ -548,15 +550,17 @@ define([
                 });
             }
             else {
-                invalidate(model, variable);
                 variable.stale = false;
+                invalidate(model, variable, true);
             }
         };
         
         constructor.prototype.unset = function(text) {
             var variable = getVariable(this, text);
-            variable.pinned = false;
-            invalidate(this, variable);
+            if (variable.pinned) {
+                variable.pinned = false;
+                invalidate(this, variable);
+            }
         };
         
         constructor.prototype.watch = function(text) {

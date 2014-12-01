@@ -4,7 +4,7 @@ define([], function() {
         name: "status",
 
         watch: function(Dicta) {
-            var text = "d = a + b + c; c = 2*b; b = a + 1; a = 1;"
+            var text = "a = 0; d = a + b + c; c = 2*b; b = a + 1;"
             var model = new Dicta();
             var vars = "";
             model.statusListener = {
@@ -25,24 +25,42 @@ define([], function() {
                 return false;
             }
             model.set("a", 1);
-            if (vars != "a|b|c|d") {
-                return false;
-            }
-            model.get("d");
-            model.set("b", 1);
             if (vars != "b|c|d") {
                 return false;
             }
             model.get("d");
-            model.set("c", 1);
+            model.set("b", 1);
             if (vars != "c|d") {
                 return false;
             }
-            model.set("d");
+            model.get("d");
+            model.set("c", 1);
             if (vars != "d") {
                 return false;
             }
+            model.set("d");
+            if (vars != "") {
+                return false;
+            }
             return true;
+        },
+        
+        watchGet: function(Dicta) {
+            var text = "a = 0; b = a + 1;"
+            var model = new Dicta();
+            var b;
+            model.statusListener = {
+                statusChanged: function(variables) {
+                    b = model.get("b");
+                }
+            };
+            model.parse(text);
+            model.watch("b");
+            model.set("a", 1);
+            if (b == 2) {
+                return true;
+            }
+            return false;
         }
     };
 });
