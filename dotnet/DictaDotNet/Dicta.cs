@@ -101,6 +101,7 @@ namespace DictaDotNet
             {
                 Task<object> t = new Task<object>(action, varNames);
                 t.Start();
+                t.Wait();
                 return t;
             });
             try

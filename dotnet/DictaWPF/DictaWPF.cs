@@ -38,13 +38,20 @@ namespace DictaDotNet
                 string varName = DictaProperty.GetIn(uiElement);
                 if (varName != null)
                 {
-                    TextBox control = uiElement as TextBox;
+                    Control control = uiElement as Control;
                     BindSource source = new BindSource(control, model);
                     inSources.Add(source);
                     control.DataContext = source;
                     Binding binding = new Binding("Action");
                     binding.Mode = BindingMode.OneWayToSource;
-                    control.SetBinding(TextBox.TextProperty, binding);
+                    if (control is TextBox)
+                    {
+                        control.SetBinding(TextBox.TextProperty, binding);
+                    }
+                    else if (control is ComboBox)
+                    {
+                        control.SetBinding(ComboBox.SelectedValueProperty, binding);
+                    }
                 }
                 varName = DictaProperty.GetOut(uiElement);
                 if (varName != null)
@@ -117,7 +124,7 @@ namespace DictaDotNet
             set { throw new NotImplementedException(); }
         }
 
-        public string Action
+        public object Action
         {
             get {
                 string varValue = model.Get(varName);
@@ -125,30 +132,35 @@ namespace DictaDotNet
             }
             set
             {
-                if (value != null)
+                string text;
+                TextBlock control = value as TextBlock;
+                if (control != null)
                 {
-                    TextBox control = uiElement as TextBox;
-                    string text = (value as String).Trim();
-                    if (text.Length > 0)
+                    text = control.Text;
+                }
+                else
+                {
+                    text = (value as String).Trim();
+                }
+                if (text.Length > 0)
+                {
+                    object varValue = null;
+                    switch (type)
                     {
-                        object varValue = null;
-                        switch (type)
-                        {
-                            case "number":
-                                int intValue;
-                                if (Int32.TryParse(text, out intValue))
-                                {
-                                    varValue = intValue;
-                                }
-                                break;
-                            default:
-                                varValue = string.Format("\"{0}\"", text);
-                                break;
-                        }
-                        if (varValue != null)
-                        {
-                            model.Set(varName, varValue);
-                        }
+                        case "number":
+                            int intValue;
+                            if (Int32.TryParse(text, out intValue))
+                            {
+                                varValue = intValue;
+                            }
+                            break;
+                        default:
+                            varValue = text;
+                            break;
+                    }
+                    if (varValue != null)
+                    {
+                        model.Set(varName, varValue);
                     }
                 }
             }

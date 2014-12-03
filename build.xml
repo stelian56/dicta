@@ -56,12 +56,20 @@
     <copy todir="${test.dir}/dotnet/DictaTest">
       <fileset dir="${basedir}" includes="dicta/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/SampleWPFApplication/edge/js">
+    <copy todir="${test.dir}/dotnet/DictaSamples/Splice/edge/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
       <fileset dir="js/dotnet" includes="**"/>
       <fileset dir="js/lib" includes="r.js"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/SampleWPFApplication">
+    <copy todir="${test.dir}/dotnet/DictaSamples/Select/edge/js">
+      <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
+      <fileset dir="js/dotnet" includes="**"/>
+      <fileset dir="js/lib" includes="r.js"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Splice">
+      <fileset dir="${basedir}" includes="dicta/samples/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Select">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
   </target>

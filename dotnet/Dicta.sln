@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictaWPF", "DictaWPF\DictaW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpliceSample", "DictaSamples\Splice\SpliceSample.csproj", "{325A8FD1-C722-4D45-9EA0-46BF1E05103F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectSample", "DictaSamples\Select\SelectSample.csproj", "{F7B716FF-53F8-4520-A89E-2BF6C5832784}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{325A8FD1-C722-4D45-9EA0-46BF1E05103F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{325A8FD1-C722-4D45-9EA0-46BF1E05103F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{325A8FD1-C722-4D45-9EA0-46BF1E05103F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
