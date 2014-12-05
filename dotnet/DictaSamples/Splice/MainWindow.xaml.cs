@@ -2,7 +2,7 @@
 using DictaDotNet;
 using System;
 
-namespace WpfApplication
+namespace DictaSamples
 {
     public partial class MainWindow : Window
     {

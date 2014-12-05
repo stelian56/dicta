@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpliceSample", "DictaSample
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectSample", "DictaSamples\Select\SelectSample.csproj", "{F7B716FF-53F8-4520-A89E-2BF6C5832784}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterestSample", "DictaSamples\Interest\InterestSample.csproj", "{24792111-BF9F-4644-B847-7F54622A62AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpSample", "DictaSamples\Http\HttpSample.csproj", "{2EA969B8-E82C-41C6-BC40-31F75F77F287}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7B716FF-53F8-4520-A89E-2BF6C5832784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24792111-BF9F-4644-B847-7F54622A62AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24792111-BF9F-4644-B847-7F54622A62AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24792111-BF9F-4644-B847-7F54622A62AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24792111-BF9F-4644-B847-7F54622A62AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EA969B8-E82C-41C6-BC40-31F75F77F287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA969B8-E82C-41C6-BC40-31F75F77F287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA969B8-E82C-41C6-BC40-31F75F77F287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA969B8-E82C-41C6-BC40-31F75F77F287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

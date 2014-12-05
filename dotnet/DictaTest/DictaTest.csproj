@@ -6,7 +6,7 @@
     <ProjectGuid>{182B3040-6F71-4840-8A30-0DF78FFA7E16}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DictaTest</RootNamespace>
+    <RootNamespace>DictaDotNet</RootNamespace>
     <AssemblyName>DictaTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -39,11 +39,12 @@ namespace DictaDotNet
                 if (varName != null)
                 {
                     Control control = uiElement as Control;
-                    BindSource source = new BindSource(control, model);
-                    inSources.Add(source);
-                    control.DataContext = source;
                     Binding binding = new Binding("Action");
+//                    binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     binding.Mode = BindingMode.OneWayToSource;
+                    BindSource source = new BindSource(control, model);
+                    binding.Source = source;
+                    inSources.Add(source);
                     if (control is TextBox)
                     {
                         control.SetBinding(TextBox.TextProperty, binding);
