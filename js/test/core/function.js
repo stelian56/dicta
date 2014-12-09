@@ -89,6 +89,18 @@ define([], function() {
                 return false;
             }
             return true;
+        },
+        
+        mutableargs: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/mutableargs.dicta");
+            var d = model.get("d");
+            var c = model.get("c");
+            d = model.get("d");
+            if (d != 1) {
+                return false;
+            }
+            return true;
         }
     };
 });

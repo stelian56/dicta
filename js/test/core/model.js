@@ -153,6 +153,28 @@ define([], function() {
             return true;
         },
 
+        circularDependency: function(Dicta) {
+            var model = new Dicta();
+            var text = "b = a; c = b; a = c;";
+            model.parse(text);
+            model.set("a", 1);
+            var c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            model.set("b", 2);
+            var a = model.get("a");
+            if (a != 2) {
+                return false;
+            }
+            model.set("c", 3);
+            var b = model.get("b");
+            if (b != 3) {
+                return false;
+            }
+            return true;
+        },
+
         setUnset: function(Dicta) {
             var text = "c = b; b = a; a = 1;";
             var model = new Dicta();

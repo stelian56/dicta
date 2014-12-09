@@ -142,7 +142,13 @@
     <None Include="dicta\coretest\functionprop.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="dicta\coretest\implicitchange.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="dicta\coretest\localvar.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\mutableargs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="dicta\coretest\noargs.dicta">

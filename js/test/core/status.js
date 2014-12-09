@@ -25,21 +25,21 @@ define([], function() {
                 return false;
             }
             model.set("a", 1);
-            if (vars != "b|c|d") {
+            if (vars != "a|b|c|d") {
                 return false;
             }
             model.get("d");
             model.set("b", 1);
-            if (vars != "c|d") {
+            if (vars != "b|c|d") {
                 return false;
             }
             model.get("d");
             model.set("c", 1);
-            if (vars != "d") {
+            if (vars != "c|d") {
                 return false;
             }
             model.set("d");
-            if (vars != "") {
+            if (vars != "d") {
                 return false;
             }
             return true;

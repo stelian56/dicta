@@ -1,0 +1,9 @@
+f = function(x) {
+    x[0] = 1;
+    return 1;
+};
+
+a = [0];
+c = f(a);
+//@force
+d = a[0];
