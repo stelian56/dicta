@@ -9,7 +9,7 @@ define([], function() {
             var vars = "";
             model.statusListener = {
                 statusChanged: function(variables) {
-                    varNames = [];
+                    var varNames = [];
                     model.utils.each(variables, function(varName) {
                         varNames.push(varName);
                     });

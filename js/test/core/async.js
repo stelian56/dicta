@@ -1,8 +1,8 @@
 define([], function() {
     return {
 
-        name: "work",
-        
+        name: "async",
+
         httpget: function(Dicta, callback) {
             var model = new Dicta();
             model.read("dicta/coretest/httpget.dicta");

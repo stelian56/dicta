@@ -1,0 +1,12 @@
+f = function(url) {
+    var request = new XMLHttpRequest();
+    request.open("GET", url);
+    request.send();
+    request.onload = function() {
+        onResponse(request.responseText);
+    };
+};
+
+onResponse;
+response;
+sendRequest = f("/dicta/coretest/httpget.dicta");

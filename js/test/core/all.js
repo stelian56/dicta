@@ -1,4 +1,6 @@
 define([
+    "../../Dicta",
+    "./async",
     "./array",
     "./function",
     "./model",
@@ -6,10 +8,12 @@ define([
     "./performance",
     "./status",
     "./work"
-], function() {
+], function(Dicta) {
 
-    var allTestGroups = Array.prototype.slice.call(arguments);
-
+    var delay = 2000; // milliseconds
+    var allTestGroups = Array.prototype.slice.call(arguments, 1);
+    var utils = new Dicta().utils;
+    
     return {
         run: function(Dicta) {
             console.log("Start core Dicta tests");
@@ -41,45 +45,73 @@ define([
                 }
             }
             
-            var onPass = function(testGroup, name) {
-                console.info("Test " + testGroup.name + "." + name + " OK");
+            var allResults = {};
+            for (groupIndex = 0; groupIndex < testGroups.length; groupIndex++) {
+                var testGroup = testGroups[groupIndex];
+                var key, fullName;
+                for (key in testGroup) {
+                    if (typeof(testGroup[key]) == "function") {
+                        fullName = testGroup.name + "." + key;
+                        allResults[fullName] = null;
+                    }
+                }
+            }
+            
+            var processResult = function(testGroup, name, timer) {
+                return function(result) {
+                    var fullName = testGroup.name + "." + name;
+                    if (result == true) {
+                        console.info("Test " + fullName + " OK");
+                        allResults[fullName] = true;
+                    }
+                    else if (result == false) {
+                        console.warn("Test " + testGroup.name + "." + name + " FAILED");
+                        allResults[fullName] = false;
+                    }
+                    else {
+                        console.warn("Test " + testGroup.name + "." + name + " TIMED OUT");
+                        allResults[fullName] = false;
+                    }
+                    var allTestsResult = true;
+                    utils.each(allResults, function(fullName, result) {
+                        if (result == false || result == null) {
+                            allTestsResult = result;
+                            return false;
+                        }
+                    });
+                    if (allTestsResult == true || allTestsResult == false) {
+                        console.log(allTestsResult ? "All tests OK" : "Some of the tests FAILED");
+                        console.log("End core Dicta tests");
+                        console.log();
+                    }
+                    if (timer) {
+                        clearTimeout(timer);
+                    }
+                };
             };
             
-            var onFail = function(testGroup, name) {
-                console.warn("Test " + testGroup.name + "." + name + " FAILED");
-            };
-            var result, allResult = true;
+            var result;
             for (groupIndex = 0; groupIndex < testGroups.length; groupIndex++) {
                 var testGroup = testGroups[groupIndex];
                 var key;
                 for (key in testGroup) {
                     var f = testGroup[key];
                     if (typeof(f) == "function") {
+                        var timer = setTimeout(processResult(testGroup, key), delay);
+                        var callback = processResult(testGroup, key, timer);
                         result = false;
                         try {
-                            result = f(Dicta);
+                            result = f(Dicta, callback);
                         }
                         catch (err) {
                             console.error(err);
                         }
-                        if (result) {
-                            onPass(testGroup, key);
+                        if (result == true || result == false) {
+                            processResult(testGroup, key, timer)(result);
                         }
-                        else {
-                            onFail(testGroup, key);
-                        }
-                        allResult &= result;
                     }
                 }
             }
-            console.log();
-            if (allResult) {
-                console.log("All tests OK");
-            }
-            else {
-                console.log("Some of the tests FAILED");
-            }
-            console.log("End core Dicta tests");
         }
     };
 });
