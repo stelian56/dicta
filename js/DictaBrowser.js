@@ -55,6 +55,10 @@
                         value = text;
                 }
                 model.set(varName, value);
+                var trigger = $(element).attr("dicta_trigger");
+                if (trigger) {
+                    model.get(trigger);
+                }
             });
         });
         $("[dicta_out]").each(function() {
@@ -63,6 +67,12 @@
             var value = model.get(varName);
             setValue(element, value);
             model.watch(varName);
+            var callback = $(element).attr("dicta_callback");
+            if (callback) {
+                model.set(callback, function(value) {
+                    model.set(varName, value);
+                });
+            }
         });
     };
 

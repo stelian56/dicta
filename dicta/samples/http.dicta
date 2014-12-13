@@ -1,9 +1,12 @@
-f = function(x) {
+f = function(url) {
     var request = new XMLHttpRequest();
-    var url = "/" + x;
-    request.open("GET", url, false);
+    request.open("GET", url);
     request.send();
-    return request.responseText;
+    request.onload = function() {
+        onResponse(request.responseText);
+    };
 };
 
-content = f(fileName);
+onResponse;
+response;
+sendRequest = f(url);

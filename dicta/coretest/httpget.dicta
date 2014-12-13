@@ -9,4 +9,4 @@ f = function(url) {
 
 onResponse;
 response;
-sendRequest = f("/dicta/coretest/httpget.dicta");
+sendRequest = f(url);

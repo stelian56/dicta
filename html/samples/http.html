@@ -15,10 +15,14 @@ require(["../../js/DictaBrowser"], function(dictaBrowser) {
 <body>
 <div style="display:inline-block;">
 <p>
-<input type="text" dicta_in="fileName"></input>
+URL:
+<input type="text" dicta_in="url" dicta_trigger="sendRequest"></input>
 </p>
 <p>
-<b dicta_out="content"></b>
+Response:
+</p>
+<p>
+<b dicta_out="response" dicta_callback="onResponse"></b>
 </p>
 </div>
 </body>

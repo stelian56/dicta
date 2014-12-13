@@ -23,6 +23,7 @@ define([], function() {
                 model.set("response", responseText);
             });
             model.watch("response");
+            model.set("url", "/dicta/coretest/httpget.dicta");
             model.get("sendRequest");
         }
     };
