@@ -10,7 +10,7 @@ define([], function() {
                 statusChanged: function(variables) {
                     if (variables["response"]) {
                         var response = model.get("response");
-                        if (response.indexOf("f =") == 0) {
+                        if (response.indexOf("<html>") == 0) {
                             callback(true);
                         }
                         else {
@@ -23,7 +23,7 @@ define([], function() {
                 model.set("response", responseText);
             });
             model.watch("response");
-            model.set("url", "/dicta/coretest/httpget.dicta");
+            model.set("url", "http://localhost/index.html");
             model.get("sendRequest");
         }
     };

@@ -1,5 +1,4 @@
 define([
-    "../../Dicta",
     "./async",
     "./array",
     "./function",
@@ -11,13 +10,13 @@ define([
 ], function(Dicta) {
 
     var delay = 2000; // milliseconds
-    var allTestGroups = Array.prototype.slice.call(arguments, 1);
-    var utils = new Dicta().utils;
+    var allTestGroups = Array.prototype.slice.call(arguments);
     
     return {
         run: function(Dicta) {
             console.log("Start core Dicta tests");
             console.log();
+            var utils = new Dicta().utils;
             var params;
             if (typeof window != "undefined") {
                 var query = window.location.search;

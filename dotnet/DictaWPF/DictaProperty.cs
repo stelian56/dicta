@@ -10,7 +10,13 @@ namespace DictaDotNet
         public static readonly DependencyProperty In = DependencyProperty.RegisterAttached("In",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
+        public static readonly DependencyProperty Trigger = DependencyProperty.RegisterAttached("Trigger",
+            typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
+
         public static readonly DependencyProperty Out = DependencyProperty.RegisterAttached("Out",
+            typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
+
+        public static readonly DependencyProperty Callback = DependencyProperty.RegisterAttached("Callback",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
         public static readonly DependencyProperty Type = DependencyProperty.RegisterAttached("Type",
@@ -34,12 +40,30 @@ namespace DictaDotNet
         {
         }
 
+        public static string GetTrigger(UIElement element)
+        {
+            return (string)element.GetValue(Trigger);
+        }
+
+        public static void SetTrigger(UIElement element, string value)
+        {
+        }
+
         public static string GetOut(UIElement element)
         {
             return (string)element.GetValue(Out);
         }
 
         public static void SetOut(UIElement element, string value)
+        {
+        }
+
+        public static string GetCallback(UIElement element)
+        {
+            return (string)element.GetValue(Callback);
+        }
+
+        public static void SetCallback(UIElement element, string value)
         {
         }
 

@@ -65,6 +65,15 @@ namespace DictaDotNet
                     binding.Mode = BindingMode.OneWay;
                     control.SetBinding(TextBlock.TextProperty, binding);
                     model.Watch(varName);
+                    string callback = DictaProperty.GetCallback(uiElement);
+                    if (callback != null)
+                    {
+                        model.AddFunction(callback, delegate(object value)
+                        {
+                            model.Set(varName, value);
+                            return true;
+                        }, true);
+                    }
                 }
             }
             if (element is DependencyObject)
@@ -162,6 +171,11 @@ namespace DictaDotNet
                     if (varValue != null)
                     {
                         model.Set(varName, varValue);
+                        string trigger = DictaProperty.GetTrigger(uiElement);
+                        if (trigger != null)
+                        {
+                            model.Get(trigger);
+                        }
                     }
                 }
             }

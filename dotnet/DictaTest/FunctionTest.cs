@@ -27,7 +27,7 @@ namespace DictaDotNet
 
         private static Func<object, object> sqliteQuery = ((dynamic id) =>
         {
-            SQLiteConnection connection = new SQLiteConnection(@"Data Source=sqlite\dicta.sqlite;");
+            SQLiteConnection connection = new SQLiteConnection(@"Data Source=sqlite\test.sqlite;");
             connection.Open();
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = "SELECT name FROM numbers WHERE id=" + id;
