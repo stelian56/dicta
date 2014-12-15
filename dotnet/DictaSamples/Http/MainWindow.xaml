@@ -1,13 +1,15 @@
 ﻿<Window x:Class="DictaSamples.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Splice" Height="350" Width="525"
+        Title="HTTP" Height="350" Width="525"
         xmlns:dicta="clr-namespace:DictaDotNet;assembly=DictaWPF"
         dicta:DictaProperty.Model="dicta/samples/http.dicta">
     <Grid>
-        <Label Content="File: " Margin="10,21,416,271"/>
-        <TextBox dicta:DictaProperty.In="fileName"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="59,24,0,0" Width="448"/>
-        <TextBlock Margin="10,64,10,10" VerticalAlignment="Center" Height="246" FontWeight="Bold"/>
+        <Label Content="URL: " Margin="10,21,416,271"/>
+        <TextBox dicta:DictaProperty.In="url" dicta:DictaProperty.Trigger="sendRequest"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="59,24,0,0" Width="300"/>
+        <TextBlock dicta:DictaProperty.Out="response" dicta:DictaProperty.Callback="onResponse"
+               Margin="10,64,10,10" VerticalAlignment="Center" Height="246" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="378,24,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

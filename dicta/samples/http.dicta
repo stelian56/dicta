@@ -1,10 +1,26 @@
 f = function(url) {
-    var request = new XMLHttpRequest();
-    request.open("GET", url);
-    request.send();
-    request.onload = function() {
-        onResponse(request.responseText);
-    };
+    if (typeof XMLHttpRequest != "undefined") {
+        var request = new XMLHttpRequest();
+        request.open("GET", url);
+        request.send();
+        request.onload = function() {
+            onResponse(request.responseText);
+        };
+    }
+    else {
+        var http = require("http");
+        var request = http.get(url, function(res) {
+            var responseText = "";
+            res.on("data", function(chunk) {
+                responseText += chunk;
+            });
+            res.on("end", function() {
+                onResponse(responseText);
+            });
+        }).on("error", function(error) {
+			onResponse("Error: " + error.message);
+		});
+    }
 };
 
 onResponse;

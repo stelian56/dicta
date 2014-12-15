@@ -49,7 +49,7 @@ namespace DictaDotNet
                     query = "get",
                     varName = varName
                 };
-                object res =edge(args).Result;
+                object res = edge(args).Result;
                 if (res != null)
                 {
                     result = res.ToString();
@@ -73,6 +73,7 @@ namespace DictaDotNet
                     varValue = value
                 };
                 var result = edge(args).Result;
+                Console.WriteLine(result);
                 if (statusListener != null)
                 {
                     statusListener.StatusChanged(staleVarNames.ToArray());
@@ -139,11 +140,19 @@ namespace DictaDotNet
 
         public void AddFunction(string name, Func<object, object> action)
         {
+            AddFunction(name, action, false);
+        }
+
+        public void AddFunction(string name, Func<object, object> action, bool asynchronous)
+        {
             var func = (Func<object, Task<object>>)((dynamic parameters) =>
             {
                 Task<object> t = new Task<object>(action, parameters);
                 t.Start();
-                t.Wait();
+                if (!asynchronous)
+                {
+                    t.Wait();
+                }
                 return t;
             });
             try

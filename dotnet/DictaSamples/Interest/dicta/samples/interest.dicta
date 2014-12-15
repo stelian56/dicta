@@ -1,2 +1,0 @@
-principal = 0;
-compoundInterest = Math.floor(principal*Math.pow(1 + 0.01*interest/12, 12*years));

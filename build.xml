@@ -19,12 +19,13 @@
 
   <target name="testbrowser">
     <copy todir="${test.dir}/browser">
-      <fileset dir="bin" includes="**"/>
+      <fileset dir="lib/mongoose" includes="Startup.exe"/>
       <fileset dir="${basedir}" includes="html/**"/>
       <fileset dir="${basedir}" includes="dicta/**"/>
     </copy>
     <copy todir="${test.dir}/browser/js">
       <fileset dir="js" includes="*.js lib/** test/core/** test/sundry/**"/>
+      <fileset dir="js/browser" includes="DictaBrowser.js"/>
     </copy>
   </target>
   
@@ -47,6 +48,12 @@
     <copy todir="${test.dir}">
       <fileset dir="${basedir}" includes="dotnet/**"/>
     </copy>
+    <copy todir="${test.dir}/dotnet/DictaDotNet">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaTest">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
     <copy todir="${test.dir}/dotnet/DictaTest/edge/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
       <fileset dir="js" includes="test/core/** test/dotnet/** test/sundry/**"/>
@@ -56,20 +63,51 @@
     <copy todir="${test.dir}/dotnet/DictaTest">
       <fileset dir="${basedir}" includes="dicta/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaSamples/Splice/edge/js">
+    <copy todir="${test.dir}/dotnet/DictaWPF">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Http">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Http/edge/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
       <fileset dir="js/dotnet" includes="**"/>
       <fileset dir="js/lib" includes="r.js"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Http">
+      <fileset dir="${basedir}" includes="dicta/samples/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Interest">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Interest/edge/js">
+      <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
+      <fileset dir="js/dotnet" includes="**"/>
+      <fileset dir="js/lib" includes="r.js"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Interest">
+      <fileset dir="${basedir}" includes="dicta/samples/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Select">
+      <fileset dir="lib" includes="edge/**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaSamples/Select/edge/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
       <fileset dir="js/dotnet" includes="**"/>
       <fileset dir="js/lib" includes="r.js"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaSamples/Splice">
+    <copy todir="${test.dir}/dotnet/DictaSamples/Select">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaSamples/Select">
+    <copy todir="${test.dir}/dotnet/DictaSamples/Splice">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Splice/edge/js">
+      <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
+      <fileset dir="js/dotnet" includes="**"/>
+      <fileset dir="js/lib" includes="r.js"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Splice">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
   </target>
@@ -79,7 +117,7 @@
   <target name="preparepackage">
   <copy todir="${build.dir}/browser" file="js/lib/r.js"/>
     <copy todir="${build.dir}/browser/package">
-      <fileset dir="js" includes="lib/** Dicta.js DictaBrowser.js"/>
+      <fileset dir="js" includes="*.js lib/**"/>
       <fileset dir="js/browser" includes="**"/>
     </copy>
     <copy todir="${build.dir}/browser/package">
