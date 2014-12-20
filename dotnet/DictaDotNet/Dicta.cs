@@ -39,9 +39,8 @@ namespace DictaDotNet
             }
         }
 
-        public string Get(string varName)
+        public object Get(string varName)
         {
-            string result = null;
             try
             {
                 var args = new
@@ -49,17 +48,13 @@ namespace DictaDotNet
                     query = "get",
                     varName = varName
                 };
-                object res = edge(args).Result;
-                if (res != null)
-                {
-                    result = res.ToString();
-                }
+                return edge(args).Result;
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.InnerException.Message);
+                return null;
             }
-            return result;
         }
 
         public void Set(string varName, object value)

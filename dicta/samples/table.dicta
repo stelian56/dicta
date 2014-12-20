@@ -16,7 +16,7 @@ principal = 0;
 yearRange = [1, 2, 3, 4, 5];
 
 interestValues = {
-    "2%": interestRange(principal, 2, yearRange),
     "3%": interestRange(principal, 3, yearRange),
-    "4%": interestRange(principal, 4, yearRange)
+    "4%": interestRange(principal, 4, yearRange),
+    "5%": interestRange(principal, 5, yearRange)
 };
