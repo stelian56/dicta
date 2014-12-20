@@ -110,6 +110,17 @@
     <copy todir="${test.dir}/dotnet/DictaSamples/Splice">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Table">
+      <fileset dir="lib" includes="edge/**"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Table/edge/js">
+      <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
+      <fileset dir="js/dotnet" includes="**"/>
+      <fileset dir="js/lib" includes="r.js"/>
+    </copy>
+    <copy todir="${test.dir}/dotnet/DictaSamples/Table">
+      <fileset dir="${basedir}" includes="dicta/samples/**"/>
+    </copy>
   </target>
 
   <target name="package" depends="packagebrowser,packagejava,packagedotnet"/>

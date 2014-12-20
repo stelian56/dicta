@@ -17,7 +17,7 @@ namespace DictaDotNet
             model.AddFunction("sqlite", sqliteQuery);
             int id = 5;
             model.Set("id", id);
-            string name = model.Get("name");
+            string name = model.Get("name") as string;
             if (name != "five")
             {
                 throw new Exception("Sqlite test FAILED");

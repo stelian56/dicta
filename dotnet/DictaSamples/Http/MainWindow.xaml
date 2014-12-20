@@ -9,7 +9,6 @@
         <TextBox dicta:DictaProperty.In="url" dicta:DictaProperty.Trigger="sendRequest"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="59,24,0,0" Width="300"/>
         <TextBlock dicta:DictaProperty.Out="response" dicta:DictaProperty.Callback="onResponse"
-               Margin="10,64,10,10" VerticalAlignment="Center" Height="246" FontWeight="Bold"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="378,24,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+               Margin="10,64,10,10" VerticalAlignment="Center" Height="246" FontWeight="Bold" Focusable="true"/>
     </Grid>
 </Window>

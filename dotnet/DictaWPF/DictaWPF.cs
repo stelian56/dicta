@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Data.Common;
+using System.Dynamic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,7 +43,6 @@ namespace DictaDotNet
                 {
                     Control control = uiElement as Control;
                     Binding binding = new Binding("Action");
-//                    binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     binding.Mode = BindingMode.OneWayToSource;
                     BindSource source = new BindSource(control, model);
                     binding.Source = source;
@@ -57,22 +59,46 @@ namespace DictaDotNet
                 varName = DictaProperty.GetOut(uiElement);
                 if (varName != null)
                 {
-                    TextBlock control = uiElement as TextBlock;
-                    BindSource source = new BindSource(control, model);
-                    outSources.Add(source);
-                    control.DataContext = source;
-                    Binding binding = new Binding("Action");
-                    binding.Mode = BindingMode.OneWay;
-                    control.SetBinding(TextBlock.TextProperty, binding);
-                    model.Watch(varName);
-                    string callback = DictaProperty.GetCallback(uiElement);
-                    if (callback != null)
+                    TextBlock textBlock = uiElement as TextBlock;
+                    if (textBlock != null)
                     {
-                        model.AddFunction(callback, delegate(object value)
+                        BindSource source = new BindSource(textBlock, model);
+                        outSources.Add(source);
+                        textBlock.DataContext = source;
+                        Binding binding = new Binding("Action");
+                        binding.Mode = BindingMode.OneWay;
+                        textBlock.SetBinding(TextBlock.TextProperty, binding);
+                        model.Watch(varName);
+                        string callback = DictaProperty.GetCallback(uiElement);
+                        if (callback != null)
                         {
-                            model.Set(varName, value);
-                            return true;
-                        }, true);
+                            model.AddFunction(callback, delegate(object value)
+                            {
+                                model.Set(varName, value);
+                                return true;
+                            }, true);
+                        }
+                    }
+                    DataGrid dataGrid = uiElement as DataGrid;
+                    if (dataGrid != null)
+                    {
+                        BindSource source = new BindSource(dataGrid, model);
+                        outSources.Add(source);
+                        dataGrid.DataContext = source;
+                        Binding binding = new Binding("Action");
+                        binding.Mode = BindingMode.OneWay;
+                        dataGrid.SetBinding(DataGrid.ItemsSourceProperty, binding);
+                        model.Watch(varName);
+                        //DataTable dataTable = new DataTable("myTable");
+                        //dataTable.Columns.Add("2%");
+                        //dataTable.Columns.Add("3%");
+                        //dataTable.Columns.Add("4%");
+                        //dataTable.Columns.Add("5%");
+                        //dataTable.Rows.Add(11, 12, 13, 14);
+                        //dataTable.Rows.Add(21, 22, 23, 24);
+                        //DataSet dataset = new DataSet("myDataset");
+                        //dataset.Tables.Add(dataTable);
+                        //dataGrid.ItemsSource = dataTable.DefaultView;
                     }
                 }
             }
@@ -137,8 +163,41 @@ namespace DictaDotNet
         public object Action
         {
             get {
-                string varValue = model.Get(varName);
-                return varValue;
+                object varValue = model.Get(varName);
+                if (uiElement is TextBlock)
+                {
+                    return varValue; // TODO ToString() ?
+                }
+                if (uiElement is DataGrid)
+                {
+                    dynamic expObj = varValue as ExpandoObject;
+                    if (expObj != null)
+                    {
+                        List<object[]> values = new List<object[]>();
+                        DataTable dataTable = new DataTable();
+                        foreach (KeyValuePair<string, object> keyValue in expObj)
+                        {
+                            
+                            dataTable.Columns.Add(keyValue.Key);
+                            values.Add(keyValue.Value as object[]);
+                        }
+                        int columnCount = dataTable.Columns.Count;
+                        int rowCount = values[0].Length;
+                        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+                        {
+                            object[] row = new object[columnCount];
+                            for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
+                            {
+                                row[columnIndex] = values[columnIndex][rowIndex];
+                            }
+                            dataTable.Rows.Add(row);
+                        }
+                        DataView dataView = dataTable.DefaultView;
+                        dataView.AllowEdit = false;
+                        return dataView;
+                    }
+                }
+                return null;
             }
             set
             {
