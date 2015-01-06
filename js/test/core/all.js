@@ -1,4 +1,5 @@
 define([
+    "./annotation",
     "./async",
     "./array",
     "./function",

@@ -1,0 +1,2 @@
+// @include{dicta/coretest/module.dicta}
+b = a + 1;

@@ -1,0 +1,7 @@
+a = [2, 1];
+b = a.sort();
+//@force
+c = 0;
+for (i = 0; i < a.length; i++) {
+    c += i*a[i];
+}

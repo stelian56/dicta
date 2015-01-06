@@ -3,28 +3,14 @@ define([], function() {
 
         name: "work",
         
-        httpget: function(Dicta, callback) {
+        include: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/httpget.dicta");
-            model.statusListener = {
-                statusChanged: function(variables) {
-                    if (variables["response"]) {
-                        var response = model.get("response");
-                        if (response.indexOf("<html>") == 0) {
-                            callback(true);
-                        }
-                        else {
-                            callback(false);
-                        }
-                    }
-                }
-            };
-            model.set("onResponse", function(responseText) {
-                model.set("response", responseText);
-            });
-            model.watch("response");
-            model.set("url", "http://localhost/index.html");
-            model.get("sendRequest");
+            model.read("dicta/coretest/include.dicta");
+            var b = model.get("b");
+            if (b != 2) {
+                return false;
+            }
+            return true;
         }
     };
 });

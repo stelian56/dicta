@@ -222,22 +222,32 @@ define([], function() {
         },
         
         whileLoop: function(Dicta) {
-            var text = "a = 0; i = 1; while (i < 10) { a = a + i++; }";
+            var text = "a = 1; b = 0; i = a; while (i < 10) { b += i++; }";
             var model = new Dicta();
             model.parse(text);
-            var a = model.get("a");
-            if (a != 45) {
+            var b = model.get("b");
+            if (b != 45) {
+                return false;
+            }
+            model.set("a", 2);
+            b = model.get("b");
+            if (b != 44) {
                 return false;
             }
             return true;
         },
         
         doWhileLoop: function(Dicta) {
-            var text = "a = 0; i = 1; do { a = a + i++; } while (i < 10);";
+            var text = "a = 1; b = 0; i = a; do { b += i++; } while (i < 10);";
             var model = new Dicta();
             model.parse(text);
-            var a = model.get("a");
-            if (a != 45) {
+            var b = model.get("b");
+            if (b != 45) {
+                return false;
+            }
+            model.set("a", 2);
+            b = model.get("b");
+            if (b != 44) {
                 return false;
             }
             return true;
@@ -254,6 +264,16 @@ define([], function() {
             model.set("a", 2);
             b = model.get("b");
             if (b != 44) {
+                return false;
+            }
+            return true;
+        },
+        
+        include: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/include.dicta");
+            var b = model.get("b");
+            if (b != 2) {
                 return false;
             }
             return true;
