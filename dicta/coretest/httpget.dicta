@@ -1,5 +1,6 @@
 f = function(url) {
     if (typeof XMLHttpRequest != "undefined") {
+        // Browser
         var request = new XMLHttpRequest();
         request.open("GET", url);
         request.send();
@@ -8,16 +9,24 @@ f = function(url) {
         };
     }
     else {
-        var http = require("http");
-        var request = http.get(url, function(res) {
-            var responseText = "";
-            res.on("data", function(chunk) {
-                responseText += chunk;
+        if (typeof readUrl != "undefined") {
+            // Rhino
+            var res = readUrl(url);
+            onResponse(res);
+        }
+        else {
+            // Node.js
+            var http = require("http");
+            http.get(url, function(res) {
+                var responseText = "";
+                res.on("data", function(chunk) {
+                    responseText += chunk;
+                });
+                res.on("end", function() {
+                    onResponse(responseText);
+                });
             });
-            res.on("end", function() {
-                onResponse(responseText);
-            });
-        });
+        }
     }
 };
 

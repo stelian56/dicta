@@ -98,6 +98,10 @@ define([
             return text;
         };
 
+        var resetRegex = function(regex) {
+            regex.lastIndex = 0;
+        };
+        
         var generateCode = function(ast) {
             return escodegen.generate(ast, codegenOptions);
         };
@@ -115,6 +119,7 @@ define([
             iterator: iterator,
             appendArray: appendArray,
             read: read,
+            resetRegex: resetRegex,
             generateCode: generateCode,
             newRuleName: newRuleName,
             newAuxiliaryVarName: newAuxiliaryVarName
@@ -125,12 +130,15 @@ define([
      * Dicta Annotator
      */
     var DAnnotator = (function() {
+        var textRegex = /^\s*\@(\w*)\s*(\{[\s\S]*\})?\s*$/gm;
+        var paramRegex = /\{([^\{\}]*)\}/gm;
+
         var constructor = function() {
             this.annotations = [];
         };
 
         constructor.prototype.parseComment = function(text, start, end) {
-            var textRegex = /^\s*\@(\w*)\s*(\{[\s\S]*\})?\s*$/gm;
+            utils.resetRegex(textRegex);
             var textMatch = textRegex.exec(text);
             if (textMatch) {
                 var type = textMatch[1].trim();
@@ -138,7 +146,7 @@ define([
                 var paramsText = textMatch[2];
                 if (paramsText) {
                     var paramMatch;
-                    var paramRegex = /\{([^\{\}]*)\}/gm;
+                    utils.resetRegex(paramRegex);
                     while ((paramMatch = paramRegex.exec(paramsText)) != null) {
                         var param = paramMatch[1].trim();
                         params.push(param);
@@ -453,6 +461,7 @@ define([
                             switch (annotation.type) {
                                 case "include":
                                     include(parser, annotation);
+                                    break;
                                 case "force":
                                     if (!ruleAnnotations) {
                                         ruleAnnotations = [];

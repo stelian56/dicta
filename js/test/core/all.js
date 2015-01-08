@@ -74,10 +74,11 @@ define([
                     }
                     var allTestsResult = true;
                     utils.each(allResults, function(fullName, result) {
-                        if (result == false || result == null) {
-                            allTestsResult = result;
+                        if (result == null) {
+                            allTestsResult = null;
                             return false;
                         }
+                        allTestsResult &= result;
                     });
                     if (allTestsResult == true || allTestsResult == false) {
                         console.log(allTestsResult ? "All tests OK" : "Some of the tests FAILED");
