@@ -36,9 +36,8 @@ define([], function() {
         },
         
         variableInitializer: function(Dicta) {
-            var text = "b = [a]; a = 1;";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/variableInitializer.dicta");
             var b_0 = model.get("b[0]");
             if (b_0 != 1) {
                 return false;
@@ -68,9 +67,8 @@ define([], function() {
         },
         
         propInitializer: function(Dicta) {
-            var text = "a = {}; b = [ a.p, a['p'] ]; a.p = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/propInitializer.dicta");
             var b_0 = model.get("b[0]");
             var b_1 = model.get("b[1]");
             if (b_0 != 1 || b_1 != 1) {
@@ -89,9 +87,8 @@ define([], function() {
         },
 
         expressionInitializer: function(Dicta) {
-            var text = "b = [ (4*a + 2)/2 - a ]; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/expressionInitializer.dicta");
             var b_0 = model.get("b[0]");
             if (b_0 != 2) {
                 return false;
@@ -105,9 +102,8 @@ define([], function() {
         },
         
         depthInitializer: function(Dicta) {
-            var text = "b = [ [a, 2*a], [3*a] ]; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/depthInitializer.dicta");
             var b_0_0 = model.get("b[0][0]");
             var b_0_1 = model.get("b[0][1]");
             var b_1_0 = model.get("b[1][0]");
@@ -131,9 +127,8 @@ define([], function() {
         },
         
         assignRight: function(Dicta) {
-            var text = "a = [1, 2]; b = a[1];"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/assignRight.dicta");
             var b = model.get("b");
             if (b != 2) {
                 return false;
@@ -147,9 +142,8 @@ define([], function() {
         },
 
         assignLast: function(Dicta) {
-            var text = "b = []; b[1] = 2;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/assignLast.dicta");
             var b_0 = model.get("b[0]");
             var b_1 = model.get("b[1]");
             if (b_0 || b_1 != 2) {
@@ -168,9 +162,8 @@ define([], function() {
         },
         
         variableIndex: function(Dicta) {
-            var text = "a = [1, 2]; b = a[x]; x = 0;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/variableIndex.dicta");
             var b = model.get("b");
             if (b != 1) {
                 return false;
@@ -184,9 +177,8 @@ define([], function() {
         },
         
         expressionIndex: function(Dicta) {
-            var text = "a = [1, 2, 3, 4, 5]; b = a[2*x - y]; x = 2; y = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/expressionIndex.dicta");
             var b = model.get("b");
             if (b != 4) {
                 return false;
@@ -201,9 +193,8 @@ define([], function() {
         },
         
         depth: function(Dicta) {
-            var text = "b = [[[[[[[[[[[[[[[[[[[[[[[[[a]]]]]]]]]]]]]]]]]]]]]]]]]; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/array/depth.dicta");
             var b = model.get(
                 "b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
             if (b != 1) {

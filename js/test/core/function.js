@@ -5,7 +5,7 @@ define([], function() {
 
         noArgs: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/noargs.dicta");
+            model.read("dicta/coretest/function/noArgs.dicta");
             var a = model.get("a");
             if (a != 1) {
                 return false;
@@ -15,7 +15,7 @@ define([], function() {
         
         constArgs: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/constargs.dicta");
+            model.read("dicta/coretest/function/constArgs.dicta");
             var a = model.get("a");
             if (a != 3) {
                 return false;
@@ -25,7 +25,7 @@ define([], function() {
         
         varArgs: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/varargs.dicta");
+            model.read("dicta/coretest/function/varArgs.dicta");
             model.set("a", 1);
             model.set("b", 2);
             var c = model.get("c");
@@ -37,7 +37,7 @@ define([], function() {
         
         localVar: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/localvar.dicta");
+            model.read("dicta/coretest/function/localVar.dicta");
             var b = model.get("b");
             var a = model.get("a");
             if (a != 1) {
@@ -46,9 +46,20 @@ define([], function() {
             return true;
         },
 
+                globalVar: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/function/globalVar.dicta");
+            var b = model.get("b");
+            var a = model.get("a");
+            if (a != 2) {
+                return false;
+            }
+            return true;
+        },
+        
         declaration: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/declaration.dicta");
+            model.read("dicta/coretest/function/declaration.dicta");
             var a = model.get("a");
             if (a != 1) {
                 return false;
@@ -83,7 +94,7 @@ define([], function() {
         
         functionProp: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/functionprop.dicta");
+            model.read("dicta/coretest/function/functionProp.dicta");
             var b = model.get("b");
             if (b != 1) {
                 return false;
@@ -93,7 +104,7 @@ define([], function() {
         
         mutableargs: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/mutableargs.dicta");
+            model.read("dicta/coretest/function/mutableArgs.dicta");
             var d = model.get("d");
             var c = model.get("c");
             d = model.get("d");

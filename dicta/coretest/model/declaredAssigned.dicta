@@ -1,0 +1,4 @@
+// @once
+var a = 0;
+// @once
+a = 1;

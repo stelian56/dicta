@@ -11,7 +11,7 @@ public class PerformanceTest {
     @Test
     public void testConcat() throws Exception {
         System.out.println("\n***\ntestConcat");
-        Dicta model = TestUtils.read("coretest/concat");
+        Dicta model = TestUtils.read("coretest/performance/concat");
         int queryCount = (int)1e4;
         model.set("count", queryCount);
         for (int queryIndex = 0; queryIndex < 10; queryIndex++) {

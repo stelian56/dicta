@@ -3,16 +3,19 @@ define([], function() {
 
         name: "work",
         
-        append: function(Dicta) {
+        whileLoop: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/module.dicta");
-            var rule = "b = a + 1;";
-            model.parse(rule);
+            model.read("dicta/coretest/model/whileLoop.dicta");
             var b = model.get("b");
-            if (b != 2) {
+            if (b != 45) {
+                return false;
+            }
+            model.set("a", 2);
+            b = model.get("b");
+            if (b != 44) {
                 return false;
             }
             return true;
-        }
+        },
     };
 });

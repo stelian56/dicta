@@ -4,9 +4,8 @@ define([], function() {
         name: "object",
 
         constantInitializer: function(Dicta) {
-            var text = "a = { p: 1 };"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/constantInitializer.dicta");
             var a_p = model.get("a.p");
             if (a_p != 1) {
                 return false;
@@ -20,9 +19,8 @@ define([], function() {
         },
 
         variableInitializer: function(Dicta) {
-            var text = "b = { p: a }; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/variableInitializer.dicta");
             var b_p = model.get("b.p");
             if (b_p != 1) {
                 return false;
@@ -36,9 +34,8 @@ define([], function() {
         },
         
         expressionInitializer: function(Dicta) {
-            var text = "b = {p: (4*a + 2)/2 - a }; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/expressionInitializer.dicta");
             var b_p = model.get("b.p");
             if (b_p != 2) {
                 return false;
@@ -52,9 +49,8 @@ define([], function() {
         },
         
         depthInitializer: function(Dicta) {
-            var text = "b = {q: { w: a }, e: { r: 2*a } }; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/depthInitializer.dicta");
             var b_q_w = model.get("b.q.w");
             var b_e_r = model.get("b.e.r");
             if (b_q_w != 1 || b_e_r != 2) {
@@ -72,10 +68,9 @@ define([], function() {
             return true;
         },
 
-        leftFixedIdentifier: function(Dicta) {
-            var text = "b = {}; b.p = a; a = 1;"
+        fixedIdentifierLeft: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/fixedIdentifierLeft.dicta");
             var b_p = model.get("b.p");
             if (b_p != 1) {
                 return false;
@@ -88,10 +83,9 @@ define([], function() {
             return true;
         },
         
-        leftLiteral: function(Dicta) {
-            var text = "b = {}; b['p'] = a; a = 1;"
+        literalLeft: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/literalLeft.dicta");
             var b_p = model.get("b.p");
             if (b_p != 1) {
                 return false;
@@ -104,10 +98,9 @@ define([], function() {
             return true;
         },
         
-        rightFixedIdentifier: function(Dicta) {
-            var text = "a = {}; b = a.p; a.p = 1;"
+        fixedIdentifierRight: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/fixedIdentifierRight.dicta");
             var b = model.get("b");
             if (b != 1) {
                 return false;
@@ -120,10 +113,9 @@ define([], function() {
             return true;
         },
         
-        rightLiteral: function(Dicta) {
-            var text = "a = {}; b = a['p']; a['p'] = 1;"
+        literalRight: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/fixedIdentifierRight.dicta");
             var b = model.get("b");
             if (b != 1) {
                 return false;
@@ -136,10 +128,9 @@ define([], function() {
             return true;
         },
         
-        rightOperator: function(Dicta) {
-            var text = "a = {}; c = (2*b*a.p - 6*b)/2 + 5*a['p']; a.p = 1; b = 2;"
+        opratorRight: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/operatorRight.dicta");
             var c = model.get("c");
             if (c != 1) {
                 return false;
@@ -153,10 +144,9 @@ define([], function() {
             return true;
         },
         
-        leftIdentifierRightInitializer: function(Dicta) {
-            var text = "a = {}; a.p = {x: 1};"
+        identifierLeftInitializerRight: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/identifierLeftInitializerRight.dicta");
             var a_p_x = model.get("a.p.x");
             if (a_p_x != 1) {
                 return false;
@@ -169,10 +159,9 @@ define([], function() {
             return true;
         },
         
-        rightComputedIdentifier: function(Dicta) {
-            var text = "a = {x: 1, y: 2}; b = a[p]; p = 'x';"
+        computedIdentifierRight: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/computedIdentifierRight.dicta");
             var b = model.get("b");
             if (b != 1) {
                 return false;
@@ -185,10 +174,9 @@ define([], function() {
             return true;
         },
         
-        leftComputedIdentifier: function(Dicta) {
-            var text = "b = {}; b[p] = a; a = 1; p = 'x';"
+        computedIdentifierLeft: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/object/computedIdentifierLeft.dicta");
             var b_p = model.get("b[p]");
             if (b_p != 1) {
                 return false;
@@ -203,7 +191,7 @@ define([], function() {
         },
         
         setSet: function(Dicta) {
-            var text = "a = {p: 1};";
+            var text = "/* @once */ a = {p: 1};";
             var model = new Dicta();
             model.parse(text);
             a_p = model.get("a.p");

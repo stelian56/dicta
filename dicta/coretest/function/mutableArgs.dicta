@@ -3,6 +3,7 @@ f = function(x) {
     return 1;
 };
 
+// @once
 a = [0];
 c = f(a);
 //@force

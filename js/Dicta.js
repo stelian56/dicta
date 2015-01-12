@@ -322,12 +322,12 @@ define([
             });
             if (createRule) {
                 var rule = model.createRule(ast, ruleAnnotations);
-                model.addRule(definedVar, rule);
+                model.applyRule(definedVar, rule);
             }
             return [ varName ];
         };
 
-        var parseVariableDeclaration = function(parser, ast, createRules) {
+        var parseVariableDeclaration = function(parser, ast, createRules, ruleAnnotations) {
             var model = parser.model;
             var definers = [];
             utils.each(ast.declarations, function() {
@@ -335,7 +335,7 @@ define([
                     var expression = { type: "AssignmentExpression", operator: "=" };
                     expression.left = { type: "Identifier", name: this.id.name };
                     expression.right = this.init;
-                    var defs = parseAssignment(parser, expression, createRules);
+                    var defs = parseAssignment(parser, expression, createRules, ruleAnnotations);
                     utils.appendArray(definers, defs);
                 }
                 else {
@@ -347,12 +347,12 @@ define([
             return definers;
         };
         
-        var parseFunctionDeclaration = function(parser, ast, createRules) {
+        var parseFunctionDeclaration = function(parser, ast, createRules, ruleAnnotations) {
             var expression = { type: "AssignmentExpression", operator: "=" };
             expression.left = { type: "Identifier", name: ast.id.name };
             expression.right =
                 { type: "FunctionExpression", params: ast.params, body: ast.body };
-            return parseAssignment(parser, expression, createRules);
+            return parseAssignment(parser, expression, createRules, ruleAnnotations);
         };
         
         var parseIfStatement = function(parser, ast, createRule, ruleAnnotations) {
@@ -380,7 +380,7 @@ define([
                     }
                 });
                 if (rule) {
-                    model.addRule(consequentDefiner, rule);
+                    model.applyRule(consequentDefiner, rule);
                 }
             });
             return consequentDefiners;
@@ -403,17 +403,17 @@ define([
                     }
                 });
                 if (rule) {
-                    model.addRule(bodyDefiner, rule);
+                    model.applyRule(bodyDefiner, rule);
                 }
             });
             return bodyDefiners;
         };
 
-        var parseForStatement = function(parser, ast, createRule) {
+        var parseForStatement = function(parser, ast, createRule, ruleAnnotations) {
             var model = parser.model;
             var rule;
             if (createRule) {
-                rule = model.createRule(ast);
+                rule = model.createRule(ast, ruleAnnotations);
             }
             var testDefiners = [];
             if (ast.init) {
@@ -438,7 +438,7 @@ define([
                     }
                 });
                 if (rule) {
-                    model.addRule(bodyDefiner, rule);
+                    model.applyRule(bodyDefiner, rule);
                 }
             });
             return bodyDefiners;
@@ -458,16 +458,14 @@ define([
                     while ((annotation = annotationIterator.peek()) != null &&
                             annotation.end < statement.end) {
                         if (annotation.start < statement.start) {
-                            switch (annotation.type) {
-                                case "include":
-                                    include(parser, annotation);
-                                    break;
-                                case "force":
-                                    if (!ruleAnnotations) {
-                                        ruleAnnotations = [];
-                                    }
-                                    ruleAnnotations.push(annotation);
-                                    break;
+                            if (annotation.type == "include") {
+                                include(parser, annotation);
+                            }
+                            else {
+                                if (!ruleAnnotations) {
+                                    ruleAnnotations = [];
+                                }
+                                ruleAnnotations.push(annotation);
                             }
                         }
                         annotationIterator.next();
@@ -477,13 +475,15 @@ define([
                 switch (statement.type) {
                     case "ExpressionStatement":
                         defs = parseExpression(parser, statement.expression, false,
-                            createRules, ruleAnnotations);
+                                createRules, ruleAnnotations);
                         break;
                     case "VariableDeclaration":
-                        defs = parseVariableDeclaration(parser, statement, createRules);
+                        defs = parseVariableDeclaration(parser, statement, createRules,
+                                ruleAnnotations);
                         break;
                     case "FunctionDeclaration":
-                        defs = parseFunctionDeclaration(parser, statement, createRules);
+                        defs = parseFunctionDeclaration(parser, statement, createRules,
+                                ruleAnnotations);
                         break;
                     case "IfStatement":
                         defs = parseIfStatement(parser, statement, createRules, ruleAnnotations);
@@ -493,7 +493,7 @@ define([
                         defs = parseWhileStatement(parser, statement, createRules, ruleAnnotations);
                         break;
                     case "ForStatement":
-                        defs = parseForStatement(parser, statement, createRules);
+                        defs = parseForStatement(parser, statement, createRules, ruleAnnotations);
                         break;
                     case "BlockStatement":
                         defs = parseStatements(parser, statement.body, false);
@@ -651,18 +651,29 @@ define([
             var code = utils.generateCode(ast);
             var ruleName = utils.newRuleName();
             var rule = { name: ruleName, code: code, annotations: ruleAnnotations };
-            this.context.createRule(rule);
-            return rule;
-        };
-        
-        constructor.prototype.addRule = function(variable, rule) {
-            variable.rules.push(rule);
             utils.each(rule.annotations, function() {
-                if (this.type == "force") {
-                    variable.force = true;
+                if (this.type == "once") {
+                    rule.once = true;
                     return false;
                 }
             });
+            this.context.createRule(rule);
+            if (rule.once) {
+                this.context.executeRule(rule);
+            }
+            return rule;
+        };
+        
+        constructor.prototype.applyRule = function(variable, rule) {
+            if (!rule.once) {
+                variable.rules.push(rule);
+                utils.each(rule.annotations, function() {
+                    if (this.type == "force") {
+                        variable.force = true;
+                        return false;
+                    }
+                });
+            }
         };
         
         constructor.prototype.get = function(text) {

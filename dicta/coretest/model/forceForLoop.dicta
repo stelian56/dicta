@@ -1,3 +1,4 @@
+// @once
 a = [2, 1];
 b = a.sort();
 //@force

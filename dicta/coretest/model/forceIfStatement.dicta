@@ -1,6 +1,7 @@
+// @once
 a = [2, 1];
 b = a.sort();
-//@force
+// @force
 if (a[0] < a[1]) {
     c = 1;
 }

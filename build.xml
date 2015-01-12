@@ -42,6 +42,11 @@
     <copy todir="${test.dir}/java/DictaTest/dicta">
       <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
+    <copy todir="${test.dir}/java/DictaCamel/js">
+      <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
+      <fileset dir="js/java" includes="**"/>
+      <fileset dir="js/lib" includes="r.js"/>
+    </copy>
   </target>
 
   <target name="testdotnet" depends="preparepackage">

@@ -4,8 +4,8 @@ define([], function() {
         name: "status",
 
         watch: function(Dicta) {
-            var text = "a = 0; d = a + b + c; c = 2*b; b = a + 1;"
             var model = new Dicta();
+            model.read("dicta/coretest/status/watch.dicta");
             var vars = "";
             model.statusListener = {
                 statusChanged: function(variables) {
@@ -16,7 +16,6 @@ define([], function() {
                     vars = varNames.sort().join("|");
                 }
             };
-            model.parse(text);
             model.utils.each(["a", "b", "c", "d"], function(index, varName) {
                 model.watch(varName);
             });
@@ -46,15 +45,14 @@ define([], function() {
         },
         
         watchGet: function(Dicta) {
-            var text = "a = 0; b = a + 1;"
             var model = new Dicta();
+            model.read("dicta/coretest/status/watchGet.dicta");
             var b;
             model.statusListener = {
                 statusChanged: function(variables) {
                     b = model.get("b");
                 }
             };
-            model.parse(text);
             model.watch("b");
             model.set("a", 1);
             if (b == 2) {

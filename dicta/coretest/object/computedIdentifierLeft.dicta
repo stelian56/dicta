@@ -1,0 +1,7 @@
+// @once
+b = {};
+b[p] = a;
+// @once
+a = 1;
+// @once
+p = 'x';

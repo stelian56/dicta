@@ -5,7 +5,7 @@ define([], function() {
 
         httpget: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/httpget.dicta");
+            model.read("dicta/coretest/async/httpget.dicta");
             model.statusListener = {
                 statusChanged: function(variables) {
                     if (variables["response"]) {

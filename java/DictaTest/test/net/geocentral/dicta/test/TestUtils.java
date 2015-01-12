@@ -13,7 +13,6 @@ public class TestUtils {
         String text = scanner.useDelimiter("\\A").next();
         scanner.close();
         Dicta model = new Dicta(); 
-        model.init();
         model.parse(text);
         return model;
     }

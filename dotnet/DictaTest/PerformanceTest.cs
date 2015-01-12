@@ -10,7 +10,7 @@ namespace DictaDotNet
         private void TestConcat()
         {
             Console.WriteLine("***\nTestConcat");
-            string text = File.ReadAllText(@"dicta\coretest\concat.dicta");
+            string text = File.ReadAllText(@"dicta\coretest\performance\concat.dicta");
             Dicta model = new Dicta();
             model.Parse(text);
             int queryCount = (int)1e4;

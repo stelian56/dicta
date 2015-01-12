@@ -1,0 +1,7 @@
+if (a > b) {
+    c = 10;
+}
+else if (d > e) {
+    f = 20;
+}
+else g = 30;

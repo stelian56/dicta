@@ -94,9 +94,6 @@
     <Content Include="edge\js\test\core\all.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="edge\js\test\core\annotation.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="edge\js\test\core\array.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -136,55 +133,151 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="dicta\coretest\concat.dicta">
+    <None Include="dicta\coretest\array\assignLast.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\constargs.dicta">
+    <None Include="dicta\coretest\array\assignRight.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\declaration.dicta">
+    <None Include="dicta\coretest\array\depth.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\forceassignment.dicta">
+    <None Include="dicta\coretest\array\depthInitializer.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\forceforloop.dicta">
+    <None Include="dicta\coretest\array\expressionIndex.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\forceifstatement.dicta">
+    <None Include="dicta\coretest\array\expressionInitializer.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\forcewhileloop.dicta">
+    <None Include="dicta\coretest\array\propInitializer.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\functionprop.dicta">
+    <None Include="dicta\coretest\array\variableIndex.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\httpget.dicta">
+    <None Include="dicta\coretest\array\variableInitializer.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\implicitchange.dicta">
+    <None Include="dicta\coretest\async\httpget.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\include.dicta">
+    <None Include="dicta\coretest\function\constArgs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\localvar.dicta">
+    <None Include="dicta\coretest\function\declaration.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\module.dicta">
+    <None Include="dicta\coretest\function\functionProp.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\mutableargs.dicta">
+    <None Include="dicta\coretest\function\globalVar.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\noargs.dicta">
+    <None Include="dicta\coretest\function\localVar.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\setget.dicta">
+    <None Include="dicta\coretest\function\mutableArgs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\varargs.dicta">
+    <None Include="dicta\coretest\function\noArgs.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\function\varArgs.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\binaryOperator.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\declaredAssigned.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\dependents.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\doWhileLoop.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\forceAssignment.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\forceForLoop.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\forceIfStatement.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\forceWhileLoop.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\forLoop.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\ifStatement.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\include.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\module.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\selfIncrement.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\setUnset.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\whileLoop.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\computedIdentifierLeft.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\computedIdentifierRight.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\constantInitializer.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\depthInitializer.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\expressionInitializer.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\fixedIdentifierLeft.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\fixedIdentifierRight.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\identifierLeftInitializerRight.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\literalLeft.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\literalRight.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\operatorRight.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\object\variableInitializer.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\performance\concat.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\performance\setGet.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\status\watch.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\status\watchGet.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="dicta\samples\sqlite.dicta">

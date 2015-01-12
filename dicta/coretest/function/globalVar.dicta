@@ -1,5 +1,7 @@
 f = function() {
     a = 2;
 };
+
+// @once
 a = 1;
 b = f();

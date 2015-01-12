@@ -16,7 +16,7 @@ define([], function() {
         },
         
         assigned: function(Dicta) {
-            var text = "a = 1;"
+            var text = "/* @once */ a = 1;"
             var model = new Dicta();
             model.parse(text);
             var a = model.get("a");
@@ -31,6 +31,17 @@ define([], function() {
             return true;
         },
         
+        forceAssignment: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/forceAssignment.dicta");
+            var c = model.get("c");
+            model.get("b");
+            c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            return true;
+        },
         
         declared: function(Dicta) {
             var text = "var a = 1;";
@@ -44,9 +55,8 @@ define([], function() {
         },
         
         declaredAssigned: function(Dicta) {
-            var text = "var a = 0; a = 1;";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/declaredAssigned.dicta");
             var a = model.get("a");
             if (a != 1) {
                 return false;
@@ -55,9 +65,8 @@ define([], function() {
         },
 
         dependents: function(Dicta) {
-            var text = "b = a; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/dependents.dicta");
             var b = model.get("b");
             if (b != 1) {
                 return false;
@@ -71,9 +80,8 @@ define([], function() {
         },
 
         binaryOperator: function(Dicta) {
-            var text = "b = (2*a + 4*a)/2 - a; a = 1;"
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/binaryOperator.dicta");
             var b = model.get("b");
             if (b != 2) {
                 return false;
@@ -141,6 +149,22 @@ define([], function() {
             return true;
         },
         
+        selfIncrement: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/selfIncrement.dicta");
+            model.set("a", 1);
+            b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            model.set("a", 2);
+            b = model.get("b");
+            if (b != 3) {
+                return false;
+            }
+            return true;
+        },
+
         selfDependent: function(Dicta) {
             var text = "b = (a = a + 1);";
             var model = new Dicta();
@@ -176,9 +200,8 @@ define([], function() {
         },
 
         setUnset: function(Dicta) {
-            var text = "c = b; b = a; a = 1;";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/setUnset.dicta");
             var c = model.get("c");
             if (c != 1) {
                 return false;
@@ -197,9 +220,8 @@ define([], function() {
         },
         
         ifStatement: function(Dicta) {
-            var text = "if (a > b) c = 10; else if (d > e) f = 20; else g = 30;";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/ifStatement.dicta");
             model.set("a", 2);
             model.set("b", 1);
             c = model.get("c");
@@ -222,9 +244,8 @@ define([], function() {
         },
         
         whileLoop: function(Dicta) {
-            var text = "a = 1; b = 0; i = a; while (i < 10) { b += i++; }";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/whileLoop.dicta");
             var b = model.get("b");
             if (b != 45) {
                 return false;
@@ -238,9 +259,8 @@ define([], function() {
         },
         
         doWhileLoop: function(Dicta) {
-            var text = "a = 1; b = 0; i = a; do { b += i++; } while (i < 10);";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/doWhileLoop.dicta");
             var b = model.get("b");
             if (b != 45) {
                 return false;
@@ -254,9 +274,8 @@ define([], function() {
         },
         
         forLoop: function(Dicta) {
-            var text = "a = 1; b = 0; for (i = a; i < 10; i++) { b += i; }";
             var model = new Dicta();
-            model.parse(text);
+            model.read("dicta/coretest/model/forLoop.dicta");
             var b = model.get("b");
             if (b != 45) {
                 return false;
@@ -269,9 +288,45 @@ define([], function() {
             return true;
         },
         
+        forceIfStatement: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/forceIfStatement.dicta");
+            var c = model.get("c");
+            model.get("b");
+            c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            return true;
+        },
+        
+        forceWhileLoop: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/forceWhileLoop.dicta");
+            var c = model.get("c");
+            model.get("b");
+            c = model.get("c");
+            if (c != 2) {
+                return false;
+            }
+            return true;
+        },
+        
+        forceForLoop: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/forceForLoop.dicta");
+            var c = model.get("c");
+            model.get("b");
+            c = model.get("c");
+            if (c != 2) {
+                return false;
+            }
+            return true;
+        },
+        
         include: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/include.dicta");
+            model.read("dicta/coretest/model/include.dicta");
             var b = model.get("b");
             if (b != 2) {
                 return false;
@@ -281,7 +336,7 @@ define([], function() {
         
         append: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/module.dicta");
+            model.read("dicta/coretest/model/module.dicta");
             var rule = "b = a + 1;";
             model.parse(rule);
             var b = model.get("b");
