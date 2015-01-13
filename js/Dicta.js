@@ -245,7 +245,9 @@ define([
             var code = utils.generateCode(ast.callee);
             var callee;
             try {
-                callee = eval(code);
+                with (parser.model.context) {
+                    callee = eval(code);
+                }
             }
             catch (error) {}
             if (!callee || typeof(callee) != "function") {
@@ -532,6 +534,10 @@ define([
         var constructor = function() {
         };
 
+        constructor.prototype.use = function(lib) {
+            this.lib = lib;
+        };
+        
         constructor.prototype.get = function(varName) {
             with (this) {
                 return this[varName];
@@ -631,6 +637,10 @@ define([
             this.utils = utils;
         };
 
+        constructor.prototype.use = function(lib) {
+            this.context.use(lib);
+        };
+        
         constructor.prototype.parse = function(text) {
             this.parser.parse(text);
         };

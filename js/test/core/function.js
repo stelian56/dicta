@@ -1,4 +1,4 @@
-define([], function() {
+define(["./lib"], function(lib) {
     return {
 
         name: "function",
@@ -46,7 +46,7 @@ define([], function() {
             return true;
         },
 
-                globalVar: function(Dicta) {
+        globalVar: function(Dicta) {
             var model = new Dicta();
             model.read("dicta/coretest/function/globalVar.dicta");
             var b = model.get("b");
@@ -102,13 +102,24 @@ define([], function() {
             return true;
         },
         
-        mutableargs: function(Dicta) {
+        mutableArgs: function(Dicta) {
             var model = new Dicta();
             model.read("dicta/coretest/function/mutableArgs.dicta");
             var d = model.get("d");
             var c = model.get("c");
             d = model.get("d");
             if (d != 1) {
+                return false;
+            }
+            return true;
+        },
+        
+        custom: function(Dicta) {
+            var model = new Dicta();
+            model.use(lib);
+            model.read("dicta/coretest/function/custom.dicta");
+            var b = model.get("b");
+            if (b != 6) {
                 return false;
             }
             return true;

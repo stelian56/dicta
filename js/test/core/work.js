@@ -1,21 +1,17 @@
-define([], function() {
+define(["./lib"], function(lib) {
     return {
 
         name: "work",
         
-        whileLoop: function(Dicta) {
+        custom: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/whileLoop.dicta");
+            model.use(lib);
+            model.read("dicta/coretest/function/custom.dicta");
             var b = model.get("b");
-            if (b != 45) {
-                return false;
-            }
-            model.set("a", 2);
-            b = model.get("b");
-            if (b != 44) {
+            if (b != 6) {
                 return false;
             }
             return true;
-        },
+        }
     };
 });
