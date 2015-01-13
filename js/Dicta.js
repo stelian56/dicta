@@ -240,25 +240,30 @@ define([
             return definers;
         };
         
-        var parseCallExpression = function(parser, ast) {
+        var parseCallExpression = function(parser, ast, createRule, ruleAnnotations) {
             var definers = [];
-            var code = utils.generateCode(ast.callee);
-            var callee;
-            try {
-                with (parser.model.context) {
-                    callee = eval(code);
+            if (createRule) {
+                parser.model.createRule(ast, ruleAnnotations);
+            }
+            else {
+                var code = utils.generateCode(ast.callee);
+                var callee;
+                try {
+                    with (parser.model.context) {
+                        callee = eval(code);
+                    }
                 }
+                catch (error) {}
+                if (!callee || typeof(callee) != "function") {
+                    // Not a Javascript library function
+                    var defs = parseExpression(parser, ast.callee);
+                    utils.appendArray(definers, defs);
+                }
+                utils.each(ast.arguments, function() {
+                    var defs = parseExpression(parser, this);
+                    utils.appendArray(definers, defs);
+                });
             }
-            catch (error) {}
-            if (!callee || typeof(callee) != "function") {
-                // Not a Javascript library function
-                var defs = parseExpression(parser, ast.callee);
-                utils.appendArray(definers, defs);
-            }
-            utils.each(ast.arguments, function() {
-                var defs = parseExpression(parser, this);
-                utils.appendArray(definers, defs);
-            });
             return definers;
         };
 
@@ -290,7 +295,7 @@ define([
                 case "BinaryExpression":
                     return parseBinaryExpression(parser, ast);
                 case "CallExpression":
-                    return parseCallExpression(parser, ast);
+                    return parseCallExpression(parser, ast, createRule, ruleAnnotations);
                 case "ConditionalExpression":
                     return parseConditionalExpression(parser, ast);
                 case "UpdateExpression":
@@ -710,7 +715,7 @@ define([
             }
         };
         
-        constructor.prototype.unset = function(text) {
+        constructor.prototype.loosen = function(text) {
             var variable = getVariable(this, text);
             if (variable.pinned) {
                 variable.pinned = false;

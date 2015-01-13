@@ -226,13 +226,16 @@
     <None Include="dicta\coretest\model\include.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="dicta\coretest\model\loosen.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="dicta\coretest\model\module.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\model\selfIncrement.dicta">
+    <None Include="dicta\coretest\model\noAssignment.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\model\setUnset.dicta">
+    <None Include="dicta\coretest\model\selfIncrement.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="dicta\coretest\model\whileLoop.dicta">

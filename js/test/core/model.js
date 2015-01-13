@@ -42,6 +42,16 @@ define([], function() {
             }
             return true;
         },
+
+        noAssignment: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/noAssignment.dicta");
+            var b = model.get("b");
+            if (b != 1) {
+                return false;
+            }
+            return true;
+        },
         
         declared: function(Dicta) {
             var text = "var a = 1;";
@@ -199,9 +209,9 @@ define([], function() {
             return true;
         },
 
-        setUnset: function(Dicta) {
+        loosen: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/setUnset.dicta");
+            model.read("dicta/coretest/model/loosen.dicta");
             var c = model.get("c");
             if (c != 1) {
                 return false;
@@ -211,7 +221,7 @@ define([], function() {
             if (c != 10) {
                 return false;
             }
-            model.unset("b");
+            model.loosen("b");
             c = model.get("c");
             if (c != 1) {
                 return false;

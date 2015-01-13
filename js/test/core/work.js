@@ -1,14 +1,13 @@
-define(["./lib"], function(lib) {
+define([], function() {
     return {
 
         name: "work",
         
-        custom: function(Dicta) {
+        noAssignment: function(Dicta) {
             var model = new Dicta();
-            model.use(lib);
-            model.read("dicta/coretest/function/custom.dicta");
+            model.read("dicta/coretest/model/noAssignment.dicta");
             var b = model.get("b");
-            if (b != 6) {
+            if (b != 1) {
                 return false;
             }
             return true;
