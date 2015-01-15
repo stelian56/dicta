@@ -17,6 +17,8 @@ public class Dicta {
     private Function parseFunc;
     private Function getFunc;
     private Function setFunc;
+    private Function setStatusListenerFunc;
+    private Function watchFunc;
     private Function addFunctionFunc;
     
     public Dicta() throws Exception {
@@ -29,6 +31,8 @@ public class Dicta {
         parseFunc = (Function)scope.get("parse", scope);
         getFunc = (Function)scope.get("get", scope);
         setFunc = (Function)scope.get("set", scope);
+        setStatusListenerFunc = (Function)scope.get("setStatusListener", scope);
+        watchFunc = (Function)scope.get("watch", scope);
         addFunctionFunc = (Function)scope.get("addFunction", scope);
     }
     
@@ -52,11 +56,21 @@ public class Dicta {
         setFunc.call(cx, scope, null, functionArgs);
     }
 
+    public void setStatusListener(DictaStatusListener statusListener) {
+        cx = Context.enter();
+        Object functionArgs[] = { statusListener, "statusChanged" };
+        setStatusListenerFunc.call(cx, scope, null, functionArgs);
+    }
+
+    public void Watch(String varName) {
+        cx = Context.enter();
+        Object functionArgs[] = { varName };
+        watchFunc.call(cx, scope, null, functionArgs);
+    }
+
     public void addFunction(String name, Object owner, String methodName) {
         cx = Context.enter();
         Object functionArgs[] = { name, owner, methodName };
         addFunctionFunc.call(cx, scope, null, functionArgs);
     }
-
-    
 }

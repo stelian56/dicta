@@ -24,6 +24,20 @@ set = function(varName, value) {
     return "Set OK";
 };
 
+setStatusListener = function(owner, methodName) {
+    model.statusListener = {
+        statusChanged: function(args) {
+            return owner[methodName](args);
+        }
+    };
+    return "Status listener OK";
+};
+
+watch = function(varName) {
+    model.watch(varName);
+    result = "Watch OK"
+};
+
 addFunction = function(name, owner, methodName) {
     model.addJavaFunction(name, owner, methodName);
     return "Add function OK";

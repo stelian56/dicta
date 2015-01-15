@@ -89,16 +89,6 @@ namespace DictaDotNet
                         binding.Mode = BindingMode.OneWay;
                         dataGrid.SetBinding(DataGrid.ItemsSourceProperty, binding);
                         model.Watch(varName);
-                        //DataTable dataTable = new DataTable("myTable");
-                        //dataTable.Columns.Add("2%");
-                        //dataTable.Columns.Add("3%");
-                        //dataTable.Columns.Add("4%");
-                        //dataTable.Columns.Add("5%");
-                        //dataTable.Rows.Add(11, 12, 13, 14);
-                        //dataTable.Rows.Add(21, 22, 23, 24);
-                        //DataSet dataset = new DataSet("myDataset");
-                        //dataset.Tables.Add(dataTable);
-                        //dataGrid.ItemsSource = dataTable.DefaultView;
                     }
                 }
             }
