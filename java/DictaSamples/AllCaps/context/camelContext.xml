@@ -10,30 +10,41 @@
          http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
   
   <bean id="dictaWrapper" class="net.geocentral.dicta.camel.DictaWrapper">
-    <property name="fileName" value="dicta/samples/autoIncrement.dicta"/>
+    <property name="fileName" value="dicta/samples/allCaps.dicta"/>
   </bean>
   
-  <bean id="dictaIn" class="net.geocentral.dicta.camel.DictaIn">
-    <property name="modelWrapper" ref="dictaWrapper"/>
-    <property name="varName" value="x"/>
-    <property name="type" value="number"/>
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="org.sqlite.JDBC"/>
+    <property name="url" value="jdbc:sqlite:sqlite/dicta.sqlite"/>
+  </bean>
+
+  <bean id="sql" class="org.apache.camel.component.sql.SqlComponent">
+    <property name="dataSource" ref="dataSource"/>
   </bean>
   
-  <bean id="dictaOut" class="net.geocentral.dicta.camel.DictaOut">
+  <bean id="dictaId" class="net.geocentral.dicta.camel.DictaSet">
     <property name="modelWrapper" ref="dictaWrapper"/>
-    <property name="varName" value="a"/>
+    <property name="varName" value="id"/>
+  </bean>
+  
+  <bean id="dictaNames" class="net.geocentral.dicta.camel.DictaSet">
+    <property name="modelWrapper" ref="dictaWrapper"/>
+    <property name="varName" value="names"/>
+  </bean>
+  
+  <bean id="dictaCapsNames" class="net.geocentral.dicta.camel.DictaGet">
+    <property name="modelWrapper" ref="dictaWrapper"/>
+    <property name="varName" value="capsNames"/>
   </bean>
   
   <camelContext id="camelSample" xmlns="http://camel.apache.org/schema/spring">
-    <template id="camelTemplate"/>
 
     <route>
       <from uri="stream:in"/>
-      <to uri="dictaIn"/>
-    </route>
-
-    <route>
-      <from uri="dictaOut"/>
+      <to uri="dictaId"/>
+      <to uri="sql:select name from numbers where id&lt;#"/>
+      <to uri="dictaNames"/>
+      <to uri="dictaCapsNames"/>
       <to uri="stream:out"/>
     </route>
     

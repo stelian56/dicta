@@ -42,12 +42,20 @@
     <copy todir="${test.dir}/java/DictaTest/dicta">
       <fileset dir="${basedir}/dicta" includes="**"/>
     </copy>
-    <copy todir="${test.dir}/java/DictaSamples/Console/js">
+    <copy todir="${test.dir}/java/DictaSamples/AllCaps/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
       <fileset dir="js/java" includes="**"/>
       <fileset dir="js/lib" includes="r.js"/>
     </copy>
-    <copy todir="${test.dir}/java/DictaSamples/Console">
+    <copy todir="${test.dir}/java/DictaSamples/AllCaps">
+      <fileset dir="${basedir}" includes="dicta/samples/**"/>
+    </copy>
+    <copy todir="${test.dir}/java/DictaSamples/AutoIncrement/js">
+      <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
+      <fileset dir="js/java" includes="**"/>
+      <fileset dir="js/lib" includes="r.js"/>
+    </copy>
+    <copy todir="${test.dir}/java/DictaSamples/AutoIncrement">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
   </target>

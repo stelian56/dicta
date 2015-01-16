@@ -1,0 +1,4 @@
+// @once 
+sum = 0;
+sum += x;
+a = sum.toString();

@@ -633,12 +633,19 @@ define([
             }
         };
 
+        var executeOnceRules = function(model) {
+            utils.each(model.onceRules, function() {
+                model.context.executeRule(this);
+            });
+        };
+        
         var constructor = function(statusListener) {
             this.statusListener = statusListener;
             this.variables = {};
             this.auxVarNames = {};
             this.parser = new DParser(this);
             this.context = new DContext();
+            this.onceRules = null;
             this.utils = utils;
         };
 
@@ -647,7 +654,9 @@ define([
         };
         
         constructor.prototype.parse = function(text) {
+            this.onceRules = [];
             this.parser.parse(text);
+            executeOnceRules(this);
         };
 
         constructor.prototype.read = function(filePath) {
@@ -663,19 +672,18 @@ define([
         };
 
         constructor.prototype.createRule = function(ast, ruleAnnotations) {
+            var model = this;
             var code = utils.generateCode(ast);
             var ruleName = utils.newRuleName();
             var rule = { name: ruleName, code: code, annotations: ruleAnnotations };
             utils.each(rule.annotations, function() {
                 if (this.type == "once") {
                     rule.once = true;
+                    model.onceRules.push(rule);
                     return false;
                 }
             });
             this.context.createRule(rule);
-            if (rule.once) {
-                this.context.executeRule(rule);
-            }
             return rule;
         };
         

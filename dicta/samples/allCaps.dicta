@@ -1,0 +1,19 @@
+toCaps = function(array, fieldName) {
+    var caps = [];
+    var length = array.size();
+    for (i = 0; i < length; i++) {
+        var value = array.get(i).get(fieldName);
+        caps.push(value.toUpperCase());
+    }
+    return caps.join(", ");
+};
+
+length = names.size();
+predicate = length < 2 ? " is" : " are";
+if (length < 1) {
+    capsNames = "None is less than " + id;
+}
+else {
+    capsNames = toCaps(names, "name") + predicate + " less than " + id;
+}
+

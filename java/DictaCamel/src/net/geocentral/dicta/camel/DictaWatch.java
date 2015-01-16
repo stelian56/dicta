@@ -13,7 +13,7 @@ import org.apache.camel.Producer;
 import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.impl.DefaultMessage;
 
-public class DictaOut extends DefaultEndpoint implements DictaStatusListener {
+public class DictaWatch extends DefaultEndpoint implements DictaStatusListener {
 
     private Dicta model;
     private String varName;
