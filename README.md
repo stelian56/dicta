@@ -1,10 +1,14 @@
-Dicta
-=====
+# Dicta
 
-Dicta provides the business analyst with a tool to create data models on which the developers will independently build UIs or report generators. Dicta is free software.
+Dicta is a cross-platform open-source business rules engine.
 
-Dictionaries define [dicta](https://www.google.com/search?q=dictum) as a set of formal pronouncements from an authoritative source.
+Dictionaries define [*dicta*](https://www.google.com/search?q=dictum) as a set of formal pronouncements from an authoritative source. The analyst, who owns the business case, writes a set of pronouncements. Then the developer creates a user interface or a back-end application based on those pronouncements.
 
-The analyst, who owns the business case, writes a set of pronouncements. Then the developer
-creates an interface or a report generator based on those pronouncements.
+Thus the business logic layer is separated from the data access, service and UI layers, with all the benefits of a modular-built application.
+
+Unlike other business rule tools, Dicta does not require learning a new [*DSL*](https://www.google.com/search?q=domain-specific+language). The analyst writes the business logic in Javascript and leaves it to Dicta to track the dependencies, do lazy evaluation and notify the application of status changes.
+
+Dicta itself is written in Javascript, therefore runs natively in any modern web browser (such as Firefox, Chrome, Internet Explorer 10+). Dicta's .NET and Java APIs are based, respectively, on the [Node.js](http://nodejs.org/) and [Rhino](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino) Javascript engines.
+
+Dicta also includes WPF and Apache Camel APIs for GUI and, respectively, back-end modeling, although this work is still in its exploratory stages.
 
