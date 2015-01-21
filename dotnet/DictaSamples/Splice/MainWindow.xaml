@@ -3,15 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Splice" Height="350" Width="525"
         xmlns:dicta="clr-namespace:DictaDotNet;assembly=DictaWPF"
-        dicta:DictaProperty.Model="dicta/samples/splice.dicta">
+        dicta:DictaProperty.DictaModel="dicta/samples/splice.dicta">
     <Grid>
         <Label Content="index =" Margin="32,65,394,227"/>
-        <TextBox dicta:DictaProperty.In="index" dicta:DictaProperty.Type="number"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,68,0,0" Width="120" RenderTransformOrigin="0.508,1.462"/>
+        <TextBox dicta:DictaProperty.DictaSet="index" dicta:DictaProperty.DictaType="number"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,68,0,0" Width="120"
+               RenderTransformOrigin="0.508,1.462"/>
         <Label Content="count =" Margin="32,104,394,188"/>
-        <TextBox dicta:DictaProperty.In="count" dicta:DictaProperty.Type="number"
+        <TextBox dicta:DictaProperty.DictaSet="count" dicta:DictaProperty.DictaType="number"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,107,0,0" Width="120"/>
         <Label Content="array = [1, 2, 3, 4, 5]" Margin="32,28,307,260"/>
-        <TextBlock dicta:DictaProperty.Out="array" Margin="36,146,332,152" VerticalAlignment="Center" Height="22" FontWeight="Bold"/>
+        <TextBlock dicta:DictaProperty.DictaWatch="array" Margin="36,146,332,152" VerticalAlignment="Center"
+               Height="22" FontWeight="Bold"/>
     </Grid>
 </Window>

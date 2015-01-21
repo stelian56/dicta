@@ -3,13 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Table" Height="350" Width="525"
         xmlns:dicta="clr-namespace:DictaDotNet;assembly=DictaWPF"
-        dicta:DictaProperty.Model="dicta/samples/table.dicta">
+        dicta:DictaProperty.DictaModel="dicta/samples/table.dicta">
     <Grid Margin="0,0,15,12">
-        <Label Content="Principal:" HorizontalAlignment="Left" Margin="21,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.48,-0.069"/>
-        <TextBox dicta:DictaProperty.In="principal" dicta:DictaProperty.Type="number"
+        <Label Content="Principal:" HorizontalAlignment="Left" Margin="21,21,0,0" VerticalAlignment="Top"
+             RenderTransformOrigin="0.48,-0.069"/>
+        <TextBox dicta:DictaProperty.DictaSet="principal" dicta:DictaProperty.DictaType="number"
              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="112,21,0,0" Width="92"/>
       <Label Content="Compound interest:" HorizontalAlignment="Left" Margin="21,55,0,0" VerticalAlignment="Top"/>
-      <DataGrid dicta:DictaProperty.Out="interestValues" HorizontalAlignment="Left" Margin="31,89,0,0"
+      <DataGrid dicta:DictaProperty.DictaWatch="interestValues" HorizontalAlignment="Left" Margin="31,89,0,0"
            VerticalAlignment="Top" Focusable="true"/>
     </Grid>
 </Window>

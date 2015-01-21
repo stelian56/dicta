@@ -4,75 +4,75 @@ namespace DictaDotNet
 {
     public static class DictaProperty
     {
-        public static readonly DependencyProperty Model = DependencyProperty.RegisterAttached("Model",
+        public static readonly DependencyProperty DictaModel = DependencyProperty.RegisterAttached("DictaModel",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
-        public static readonly DependencyProperty In = DependencyProperty.RegisterAttached("In",
+        public static readonly DependencyProperty DictaGet = DependencyProperty.RegisterAttached("DictaGet",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
-        public static readonly DependencyProperty Trigger = DependencyProperty.RegisterAttached("Trigger",
+        public static readonly DependencyProperty DictaSet = DependencyProperty.RegisterAttached("DictaSet",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
-        public static readonly DependencyProperty Out = DependencyProperty.RegisterAttached("Out",
+        public static readonly DependencyProperty DictaCallback = DependencyProperty.RegisterAttached("DictaCallback",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
-        public static readonly DependencyProperty Callback = DependencyProperty.RegisterAttached("Callback",
+        public static readonly DependencyProperty DictaWatch = DependencyProperty.RegisterAttached("DictaWatch",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
-        public static readonly DependencyProperty Type = DependencyProperty.RegisterAttached("Type",
+        public static readonly DependencyProperty DictaType = DependencyProperty.RegisterAttached("DictaType",
             typeof(string), typeof(DictaProperty), new FrameworkPropertyMetadata(null));
 
-        public static string GetModel(UIElement element)
+        public static string GetDictaModel(UIElement element)
         {
-            return (string)element.GetValue(Model);
+            return (string)element.GetValue(DictaModel);
         }
 
-        public static void SetModel(UIElement element, string value)
-        {
-        }
-
-        public static string GetIn(UIElement element)
-        {
-            return (string)element.GetValue(In);
-        }
-
-        public static void SetIn(UIElement element, string value)
+        public static void SetDictaModel(UIElement element, string value)
         {
         }
 
-        public static string GetTrigger(UIElement element)
+        public static string GetDictaGet(UIElement element)
         {
-            return (string)element.GetValue(Trigger);
+            return (string)element.GetValue(DictaGet);
         }
 
-        public static void SetTrigger(UIElement element, string value)
-        {
-        }
-
-        public static string GetOut(UIElement element)
-        {
-            return (string)element.GetValue(Out);
-        }
-
-        public static void SetOut(UIElement element, string value)
+        public static void SetDictaGet(UIElement element, string value)
         {
         }
 
-        public static string GetCallback(UIElement element)
+        public static string GetDictaSet(UIElement element)
         {
-            return (string)element.GetValue(Callback);
+            return (string)element.GetValue(DictaSet);
         }
 
-        public static void SetCallback(UIElement element, string value)
+        public static void SetDictaSet(UIElement element, string value)
         {
         }
 
-        public static string GetType(UIElement element)
+        public static string GetDictaWatch(UIElement element)
         {
-            return (string)element.GetValue(Type);
+            return (string)element.GetValue(DictaWatch);
         }
 
-        public static void SetType(UIElement element, string value)
+        public static void SetDictaWatch(UIElement element, string value)
+        {
+        }
+
+        public static string GetDictaCallback(UIElement element)
+        {
+            return (string)element.GetValue(DictaCallback);
+        }
+
+        public static void SetDictaCallback(UIElement element, string value)
+        {
+        }
+
+        public static string GetDictaType(UIElement element)
+        {
+            return (string)element.GetValue(DictaType);
+        }
+
+        public static void SetDictaType(UIElement element, string value)
         {
         }
     }

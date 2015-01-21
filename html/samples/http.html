@@ -16,13 +16,13 @@ require(["../../js/DictaBrowser"], function(dictaBrowser) {
 <div style="display:inline-block;">
 <p>
 URL:
-<input type="text" dicta_in="url" dicta_trigger="sendRequest"></input>
+<input type="text" dicta_set="url" dicta_get="sendRequest"></input>
 </p>
 <p>
 Response:
 </p>
 <p>
-<b dicta_out="response" dicta_callback="onResponse"></b>
+<b dicta_watch="response" dicta_callback="onResponse"></b>
 </p>
 </div>
 </body>

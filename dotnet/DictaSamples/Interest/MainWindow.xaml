@@ -3,25 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Interest" Height="350" Width="525"
         xmlns:dicta="clr-namespace:DictaDotNet;assembly=DictaWPF"
-        dicta:DictaProperty.Model="dicta/samples/interest.dicta">
+        dicta:DictaProperty.DictaModel="dicta/samples/interest.dicta">
     <Grid>
       <Label Content="Principal: " Margin="26,18,419,274"/>
-      <TextBox dicta:DictaProperty.In="principal" dicta:DictaProperty.Type="number" Margin="185,18,212,278" Width="120" Height="24"/>
+      <TextBox dicta:DictaProperty.DictaSet="principal" dicta:DictaProperty.DictaType="number" Margin="185,18,212,278"
+               Width="120" Height="24"/>
       <Label Content="Interest (%): " Margin="26,51,379,241"/>
-      <ComboBox dicta:DictaProperty.In="interest" Margin="185,51,212,245" Width="120" Height="24">
+      <ComboBox dicta:DictaProperty.DictaSet="interest" Margin="185,51,212,245" Width="120" Height="24">
           <TextBlock></TextBlock>
           <TextBlock>3</TextBlock>
           <TextBlock>4</TextBlock>
           <TextBlock>5</TextBlock>
       </ComboBox>
       <Label Content="Number of years: " Margin="26,84,352,208"/>
-      <ComboBox dicta:DictaProperty.In="years" Margin="185,84,212,212" Width="120" Height="24">
+      <ComboBox dicta:DictaProperty.DictaSet="years" Margin="185,84,212,212" Width="120" Height="24">
         <TextBlock></TextBlock>
         <TextBlock>3</TextBlock>
         <TextBlock>4</TextBlock>
         <TextBlock>5</TextBlock>
       </ComboBox>
       <Label Content="Compound interest: " Margin="26,117,337,175"/>
-      <TextBlock dicta:DictaProperty.Out="compoundInterest" Margin="185,121,190,175" FontWeight="Bold"/>
+      <TextBlock dicta:DictaProperty.DictaWatch="compoundInterest" Margin="185,121,190,175" FontWeight="Bold"/>
     </Grid>
 </Window>

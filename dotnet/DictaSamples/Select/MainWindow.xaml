@@ -3,15 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Select" Height="350" Width="525"
         xmlns:dicta="clr-namespace:DictaDotNet;assembly=DictaWPF"
-        dicta:DictaProperty.Model="dicta/samples/select.dicta">
+        dicta:DictaProperty.DictaModel="dicta/samples/select.dicta">
     <Grid>
-        <ComboBox dicta:DictaProperty.In="text" Margin="24,24,373,268" Width="120" Height="24">
+        <ComboBox dicta:DictaProperty.DictaSet="text" Margin="24,24,373,268" Width="120" Height="24">
             <TextBlock></TextBlock>
             <TextBlock>apple</TextBlock>
             <TextBlock>grapefruit</TextBlock>
             <TextBlock>orange</TextBlock>
             <TextBlock>peach</TextBlock>
         </ComboBox>
-        <TextBlock dicta:DictaProperty.Out="upperCase" Margin="24,62,344,234" VerticalAlignment="Center" Height="28" FontWeight="Bold"/>
+        <TextBlock dicta:DictaProperty.DictaWatch="upperCase" Margin="24,62,344,234" VerticalAlignment="Center"
+            Height="28" FontWeight="Bold"/>
     </Grid>
 </Window>

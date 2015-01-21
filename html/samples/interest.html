@@ -16,11 +16,11 @@ require(["../../js/DictaBrowser"], function(dictaBrowser) {
 <div style="display:inline-block;">
 <p>
 Principal:
-<input dicta_in="principal" dicta_type="number"/>
+<input dicta_set="principal" dicta_type="number"/>
 </p>
 <p>
 Interest (%):
-<select dicta_in="interest" dicta_type="number">
+<select dicta_set="interest" dicta_type="number">
 <option>--</option>
 <option>3</option>
 <option>4</option>
@@ -29,7 +29,7 @@ Interest (%):
 </p>
 <p>
 Number of years:
-<select dicta_in="years" dicta_type="number">
+<select dicta_set="years" dicta_type="number">
 <option>--</option>
 <option>1</option>
 <option>2</option>
@@ -40,7 +40,7 @@ Number of years:
 </p>
 <p>
 Compound interest:
-<b dicta_out="compoundInterest"></b>
+<b dicta_watch="compoundInterest"></b>
 </p>
 </div>
 </body>

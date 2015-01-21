@@ -15,9 +15,12 @@ namespace DictaDotNet
     public class DictaWPF : IDictaStatusListener
     {
         private Dicta model;
-        private List<BindSource> inSources = new List<BindSource>();
-        private List<BindSource> outSources = new List<BindSource>();
-
+        private List<BindSource> watchSources = new List<BindSource>();
+        enum AttributeType
+        {
+            Get,
+            Set
+        };
         public void Init(System.Windows.UIElement uiElement)
         {
             ParseModel(uiElement);
@@ -26,7 +29,7 @@ namespace DictaDotNet
 
         private void ParseModel(UIElement uiElement)
         {
-            string fileName = DictaProperty.GetModel(uiElement);
+            string fileName = DictaProperty.GetDictaModel(uiElement);
             string text = File.ReadAllText(fileName);
             model = new Dicta();
             model.SetStatusListener(this);
@@ -35,68 +38,85 @@ namespace DictaDotNet
 
         private void ParseUIElements(object element)
         {
+            ParseUIElements(element, AttributeType.Get);
+            ParseUIElements(element, AttributeType.Set);
+        }
+
+        private void ParseUIElements(object element, AttributeType attributeType)
+        {
             UIElement uiElement = element as UIElement;
-            if (uiElement != null)
+            TextBox textBox = element as TextBox;
+            ComboBox comboBox = element as ComboBox;
+            TextBlock textBlock = element as TextBlock;
+            DataGrid dataGrid = element as DataGrid;
+            if (textBox != null || comboBox != null || dataGrid != null || textBlock != null)
             {
-                string varName = DictaProperty.GetIn(uiElement);
-                if (varName != null)
+                Binding binding = new Binding("Action");
+                BindSource source = new BindSource(uiElement, model);
+                switch (attributeType)
                 {
-                    Control control = uiElement as Control;
-                    Binding binding = new Binding("Action");
-                    binding.Mode = BindingMode.OneWayToSource;
-                    BindSource source = new BindSource(control, model);
-                    binding.Source = source;
-                    inSources.Add(source);
-                    if (control is TextBox)
-                    {
-                        control.SetBinding(TextBox.TextProperty, binding);
-                    }
-                    else if (control is ComboBox)
-                    {
-                        control.SetBinding(ComboBox.SelectedValueProperty, binding);
-                    }
-                }
-                varName = DictaProperty.GetOut(uiElement);
-                if (varName != null)
-                {
-                    TextBlock textBlock = uiElement as TextBlock;
-                    if (textBlock != null)
-                    {
-                        BindSource source = new BindSource(textBlock, model);
-                        outSources.Add(source);
-                        textBlock.DataContext = source;
-                        Binding binding = new Binding("Action");
+                    case AttributeType.Get:
                         binding.Mode = BindingMode.OneWay;
-                        textBlock.SetBinding(TextBlock.TextProperty, binding);
-                        model.Watch(varName);
-                        string callback = DictaProperty.GetCallback(uiElement);
-                        if (callback != null)
+                        string setVarName = DictaProperty.GetDictaSet(uiElement);
+                        if (setVarName == null)
                         {
-                            model.AddFunction(callback, delegate(object value)
+                            string getVarName = DictaProperty.GetDictaGet(uiElement);
+                            string watchVarName = DictaProperty.GetDictaWatch(uiElement);
+                            if (getVarName != null || watchVarName != null)
                             {
-                                model.Set(varName, value);
-                                return true;
-                            }, true);
+                                if (textBlock != null)
+                                {
+                                    if (watchVarName != null)
+                                    {
+                                        watchSources.Add(source);
+                                    }
+                                    textBlock.DataContext = source;
+                                    textBlock.SetBinding(TextBlock.TextProperty, binding);
+                                }
+                                if (dataGrid != null)
+                                {
+                                    if (watchVarName != null)
+                                    {
+                                        watchSources.Add(source);
+                                    }
+                                    dataGrid.DataContext = source;
+                                    dataGrid.SetBinding(DataGrid.ItemsSourceProperty, binding);
+                                }
+                            }
+                            if (watchVarName != null)
+                            {
+                                model.Watch(watchVarName);
+                                string callback = DictaProperty.GetDictaCallback(uiElement);
+                                if (callback != null)
+                                {
+                                    model.AddFunction(callback, delegate(object value)
+                                    {
+                                        model.Set(watchVarName, value);
+                                        return true;
+                                    }, true);
+                                }
+                            }
                         }
-                    }
-                    DataGrid dataGrid = uiElement as DataGrid;
-                    if (dataGrid != null)
-                    {
-                        BindSource source = new BindSource(dataGrid, model);
-                        outSources.Add(source);
-                        dataGrid.DataContext = source;
-                        Binding binding = new Binding("Action");
-                        binding.Mode = BindingMode.OneWay;
-                        dataGrid.SetBinding(DataGrid.ItemsSourceProperty, binding);
-                        model.Watch(varName);
-                    }
+                        break;
+                    case AttributeType.Set:
+                        binding.Mode = BindingMode.OneWayToSource;
+                        binding.Source = source;
+                        if (textBox != null)
+                        {
+                            textBox.SetBinding(TextBox.TextProperty, binding);
+                        }
+                        else if (comboBox != null)
+                        {
+                            comboBox.SetBinding(ComboBox.SelectedValueProperty, binding);
+                        }
+                        break;
                 }
             }
             if (element is DependencyObject)
             {
                 foreach (object child in LogicalTreeHelper.GetChildren((DependencyObject)element))
                 {
-                    ParseUIElements(child);
+                    ParseUIElements(child, attributeType);
                 }
             }
         }
@@ -105,7 +125,7 @@ namespace DictaDotNet
         {
             foreach (string varName in staleVarNames)
             {
-                foreach(BindSource source in outSources)
+                foreach(BindSource source in watchSources)
                 {
                     if (string.Equals(source.VarName, varName))
                     {
@@ -133,14 +153,27 @@ namespace DictaDotNet
         {
             this.uiElement = uiElement;
             this.model = model;
-            varName = DictaProperty.GetIn(uiElement);
-            if (varName != null)
+            string setVarName = DictaProperty.GetDictaSet(uiElement);
+            if (setVarName != null)
             {
-                type = DictaProperty.GetType(uiElement);
+                type = DictaProperty.GetDictaType(uiElement);
+                varName = setVarName;
             }
             else
             {
-                varName = DictaProperty.GetOut(uiElement);
+                string getVarName = DictaProperty.GetDictaGet(uiElement);
+                if (getVarName != null)
+                {
+                    varName = getVarName;
+                }
+                else
+                {
+                    string watchVarName = DictaProperty.GetDictaWatch(uiElement);
+                    if (watchVarName != null)
+                    {
+                        varName = watchVarName;
+                    }
+                }
             }
         }
 
@@ -153,12 +186,14 @@ namespace DictaDotNet
         public object Action
         {
             get {
+                TextBlock textBlock = uiElement as TextBlock;
+                DataGrid dataGrid = uiElement as DataGrid;
                 object varValue = model.Get(varName);
-                if (uiElement is TextBlock)
+                if (textBlock != null)
                 {
-                    return varValue; // TODO ToString() ?
+                    return varValue;
                 }
-                if (uiElement is DataGrid)
+                if (dataGrid != null)
                 {
                     dynamic expObj = varValue as ExpandoObject;
                     if (expObj != null)
@@ -192,39 +227,43 @@ namespace DictaDotNet
             set
             {
                 string text;
-                TextBlock control = value as TextBlock;
-                if (control != null)
+                TextBlock textBlock = value as TextBlock;
+                if (textBlock != null)
                 {
-                    text = control.Text;
+                    text = textBlock.Text;
                 }
                 else
                 {
-                    text = (value as String).Trim();
-                }
-                if (text.Length > 0)
-                {
-                    object varValue = null;
-                    switch (type)
+                    if (value == null)
                     {
-                        case "number":
-                            int intValue;
-                            if (Int32.TryParse(text, out intValue))
-                            {
-                                varValue = intValue;
-                            }
-                            break;
-                        default:
-                            varValue = text;
-                            break;
+                        text = null;
                     }
-                    if (varValue != null)
+                    else
                     {
-                        model.Set(varName, varValue);
-                        string trigger = DictaProperty.GetTrigger(uiElement);
-                        if (trigger != null)
+                        text = (value as String).Trim();
+                    }
+                }
+                object varValue = null;
+                switch (type)
+                {
+                    case "number":
+                        int intValue;
+                        if (Int32.TryParse(text, out intValue))
                         {
-                            model.Get(trigger);
+                            varValue = intValue;
                         }
+                        break;
+                    default:
+                        varValue = text;
+                        break;
+                }
+                if (varValue != null)
+                {
+                    model.Set(varName, varValue);
+                    string getVarName = DictaProperty.GetDictaGet(uiElement);
+                    if (getVarName != null)
+                    {
+                        model.Get(getVarName);
                     }
                 }
             }

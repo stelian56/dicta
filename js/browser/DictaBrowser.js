@@ -40,32 +40,18 @@
     };
     
     var parsePage = function() {
-        $("[dicta_in]").each(function() {
+        $("[dicta_get]").each(function() {
             var element = this;
-            var varName = $(element).attr("dicta_in");
-            var valueType = $(element).attr("dicta_type");
-            $(element).change(function() {
-                var text = $(element).val();
-                var value;
-                switch (valueType) {
-                    case "number":
-                        value = parseFloat(text);
-                        break;
-                    default:
-                        value = text;
-                }
-                model.set(varName, value);
-                var trigger = $(element).attr("dicta_trigger");
-                if (trigger) {
-                    model.get(trigger);
-                }
-            });
+            var setVarName = $(element).attr("dicta_set");
+            if (!setVarName) {
+                var varName = $(element).attr("dicta_get");
+                var value = model.get(varName);
+                setValue(element, value);
+            }
         });
-        $("[dicta_out]").each(function() {
+        $("[dicta_watch]").each(function() {
             var element = this;
-            var varName = $(element).attr("dicta_out");
-            var value = model.get(varName);
-            setValue(element, value);
+            var varName = $(element).attr("dicta_watch");
             model.watch(varName);
             var callback = $(element).attr("dicta_callback");
             if (callback) {
@@ -73,14 +59,39 @@
                     model.set(varName, value);
                 });
             }
+            else {
+                var value = model.get(varName);
+                setValue(element, value);
+            }
+        });
+        $("[dicta_set]").each(function() {
+            var element = this;
+            var varName = $(element).attr("dicta_set");
+            var valueType = $(element).attr("dicta_type");
+            $(element).change(function() {
+                var text = $(element).val();
+                var value;
+                switch (valueType) {
+                    case "number":
+                        value = parseFloat(text) || 0;
+                        break;
+                    default:
+                        value = text;
+                }
+                model.set(varName, value);
+                if ($(element).attr("dicta_get")) {
+                    var getVarName = $(element).attr("dicta_get");
+                    model.get(getVarName);
+                }
+            });
         });
     };
 
     var statusChanged = function(varNames) {
         $.each(varNames, function(varName) {
-            $("[dicta_out]").each(function() {
+            $("[dicta_watch]").each(function() {
                 var element = this;
-                var vName = $(element).attr("dicta_out");
+                var vName = $(element).attr("dicta_watch");
                 if (vName == varName) {
                     var value = model.get(varName);
                     setValue(element, value);
