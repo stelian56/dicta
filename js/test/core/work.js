@@ -3,17 +3,13 @@ define([], function() {
 
         name: "work",
         
-        library: function(Dicta) {
+        unassigned: function(Dicta) {
+            var text = "a;";
             var model = new Dicta();
-            model.read("dicta/coretest/function/library.dicta");
-            model.set("x", 1);
+            model.parse(text);
+            model.set("a", 1);
             var a = model.get("a");
-            if (a != "1") {
-                return false;
-            }
-            model.set("x", 2);
-            var a = model.get("a");
-            if (a != "3") {
+            if (a != 1) {
                 return false;
             }
             return true;

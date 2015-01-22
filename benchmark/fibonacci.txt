@@ -1,0 +1,24 @@
+﻿Model:
+500 Fibonacci 20-sequences
+
+.NET dicta
+1 second/parse
+30 ms/run over 100 serial runs
+
+Java dicta
+4 seconds/parse
+100 ms/run over 100 serial runs
+
+Browser dicta
+2 seconds/parse
+40 ms/run over 100 serial runs
+
+.NET DL
+700 ms/parse
+40 ms/clone
+70 ms/run over 100 parallel runs
+
+Java DL
+9 seconds/parse
+40 ms/clone
+70 ms/run over 100 parallel runs
