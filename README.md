@@ -2,7 +2,7 @@
 
 Dicta is a cross-platform open-source business rules engine.
 
-Dictionaries define [*dicta*](https://www.google.com/search?q=dictum) as a set of formal pronouncements from an authoritative source. The analyst, who owns the business case, writes a set of pronouncements. Then the developer creates a user interface or a back-end application based on those pronouncements.
+Dictionaries define [*dicta*](https://www.google.com/search?q=dictum) as a set of formal pronouncements from an authoritative source. The analyst, who owns the business case, writes a set of rules (pronouncements). Then the developer creates a user interface or a back-end application based on those rules.
 
 Thus the analyst can define and maintain the business logic layer of the application separately from the data access, service and UI layers.
 
