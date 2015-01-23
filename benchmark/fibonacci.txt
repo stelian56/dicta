@@ -13,12 +13,12 @@ Browser dicta
 2 seconds/parse
 40 ms/run over 100 serial runs
 
-.NET DL
+.NET Proprietary
 700 ms/parse
 40 ms/clone
 70 ms/run over 100 parallel runs
 
-Java DL
+Java Proprietary
 9 seconds/parse
 40 ms/clone
 70 ms/run over 100 parallel runs

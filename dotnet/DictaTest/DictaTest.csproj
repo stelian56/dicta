@@ -169,10 +169,10 @@
     <None Include="dicta\coretest\function\constArgs.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\function\custom.dicta">
+    <None Include="dicta\coretest\function\declaration.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\function\declaration.dicta">
+    <None Include="dicta\coretest\function\external.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="dicta\coretest\function\functionProp.dicta">

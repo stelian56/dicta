@@ -234,6 +234,7 @@ define([], function() {
             model.read("dicta/coretest/model/ifStatement.dicta");
             model.set("a", 2);
             model.set("b", 1);
+            model.set("x", 10);
             c = model.get("c");
             if (c != 10) {
                 return false;

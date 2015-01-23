@@ -1,7 +1,9 @@
 if (a > b) {
-    c = 10;
+    c = x;
 }
 else if (d > e) {
-    f = 20;
+    f = c + x;
 }
-else g = 30;
+else {
+    g = 3*x;
+}

@@ -114,10 +114,10 @@ define(["./lib"], function(lib) {
             return true;
         },
         
-        custom: function(Dicta) {
+        external: function(Dicta) {
             var model = new Dicta();
             model.use(lib);
-            model.read("dicta/coretest/function/custom.dicta");
+            model.read("dicta/coretest/function/external.dicta");
             var b = model.get("b");
             if (b != 6) {
                 return false;
