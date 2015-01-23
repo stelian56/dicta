@@ -1,6 +1,6 @@
 # Dicta
 
-Dicta is a cross-platform open-source business rules engine.
+Dicta is a cross-platform business rules engine.
 
 Dictionaries define [*dicta*](https://www.google.com/search?q=dictum) as a set of formal pronouncements from an authoritative source. The analyst, who owns the business case, writes a set of rules. Then the developer creates a user interface or a back-end application based on those rules.
 
@@ -12,3 +12,6 @@ Dicta itself is written in Javascript, therefore runs natively in any modern web
 
 Dicta also includes WPF and Apache Camel APIs for GUI and, respectively, back-end modelling, although this work is still in its exploratory stages.
 
+Dicta is extremely lightweight (less than 1K lines of code).
+
+Dicta is free open-source software under the business-friendly MIT license.
