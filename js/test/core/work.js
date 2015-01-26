@@ -3,16 +3,16 @@ define([], function() {
 
         name: "work",
         
-        unassigned: function(Dicta) {
-            var text = "a;";
+        clearAssignment: function(Dicta) {
             var model = new Dicta();
-            model.parse(text);
-            model.set("a", 1);
-            var a = model.get("a");
-            if (a != 1) {
+            model.read("dicta/coretest/model/clearAssignment.dicta");
+            var c = model.get("c");
+            model.get("b");
+            c = model.get("c");
+            if (c != 1) {
                 return false;
             }
             return true;
-        }
+        },
     };
 });

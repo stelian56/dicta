@@ -31,7 +31,6 @@ namespace DictaDotNet
                     text = text
                 };
                 var result = edge(args).Result;
-                Console.WriteLine(result);
             }
             catch (Exception exception)
             {
@@ -68,7 +67,6 @@ namespace DictaDotNet
                     varValue = value
                 };
                 var result = edge(args).Result;
-                Console.WriteLine(result);
                 if (statusListener != null)
                 {
                     statusListener.StatusChanged(staleVarNames.ToArray());
@@ -108,7 +106,6 @@ namespace DictaDotNet
                     statusChanged = statusChanged
                 };
                 var result = edge(args).Result;
-                Console.WriteLine(result);
             }
             catch (Exception exception)
             {
@@ -125,7 +122,6 @@ namespace DictaDotNet
             try
             {
                 var result = edge(args).Result;
-                Console.WriteLine(result);
             }
             catch (Exception exception)
             {
@@ -159,7 +155,6 @@ namespace DictaDotNet
                     func  = func
                 };
                 var result = edge(args).Result;
-                Console.WriteLine(result);
             }
             catch (Exception exception)
             {

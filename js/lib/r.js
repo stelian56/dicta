@@ -27981,7 +27981,10 @@ function (args, quit, logger, build) {
         if (exists(fileName)) {
             exec(readFile(fileName), fileName);
         } else {
-            showHelp();
+        
+/* Dicta: turn off nuissance warnings */
+
+//            showHelp();
         }
     }
 

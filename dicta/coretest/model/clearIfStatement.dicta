@@ -1,7 +1,7 @@
 // @once
 a = [2, 1];
+// @clear{a}
 b = a.sort();
-// @force
 if (a[0] < a[1]) {
     c = 1;
 }

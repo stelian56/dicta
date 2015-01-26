@@ -91,8 +91,13 @@ define([
             }
             else {
                 var request = new XMLHttpRequest();
-                request.open("GET", "/" + filePath, false);
-                request.send();
+                try {
+                    request.open("GET", "/" + filePath, false);
+                    request.send();
+                }
+                catch (error) {
+                    console.log(error);
+                }
                 text = request.responseText;
             }
             return text;
@@ -595,15 +600,21 @@ define([
             return variable;
         };
 
-        var evaluate = function(model, variable) {
-            var stale = variable.stale || variable.force;
+        var evaluate = function(model, variable, clearVars) {
+            var stale = variable.stale;
             variable.stale = false;
             if (stale) {
                 utils.each(variable.definers, function() {
-                    evaluate(model, this);
+                    evaluate(model, this, clearVars);
                 });
                 utils.each(variable.rules, function() {
-                    model.context.executeRule(this);
+                    var rule = this;
+                    model.context.executeRule(rule);
+                    if (rule.clearVars) {
+                        utils.each(rule.clearVars, function() {
+                            clearVars[this] = true;
+                        });
+                    }
                 });
             }
         };
@@ -691,8 +702,8 @@ define([
             if (!rule.once) {
                 variable.rules.push(rule);
                 utils.each(rule.annotations, function() {
-                    if (this.type == "force") {
-                        variable.force = true;
+                    if (this.type == "clear") {
+                        rule.clearVars = this.params;
                         return false;
                     }
                 });
@@ -700,15 +711,19 @@ define([
         };
         
         constructor.prototype.get = function(text) {
+            var model = this;
             var variable = getVariable(this, text);
-            evaluate(this, variable);
+            var clearVars = {};
+            evaluate(this, variable, clearVars);
+            utils.each(clearVars, function(varName) {
+                model.clear(varName);
+            });
             return this.context.get(variable.name);
         };
         
         constructor.prototype.set = function(text, value) {
             var model = this;
             var variable = getVariable(this, text);
-            variable.pinned = true;
             model.context.set(text, value);
             if (variable.auxiliary) {
                 utils.each(variable.definers, function() {
@@ -723,10 +738,9 @@ define([
             }
         };
         
-        constructor.prototype.loosen = function(text) {
+        constructor.prototype.clear = function(text) {
             var variable = getVariable(this, text);
-            if (variable.pinned) {
-                variable.pinned = false;
+            if (!variable.stale) {
                 invalidate(this, variable);
             }
         };

@@ -39,8 +39,7 @@ public class Dicta {
     public void parse(String text) {
         cx = Context.enter();
         Object functionArgs[] = { text };
-        Object result = parseFunc.call(cx,  scope, null, functionArgs);
-        System.out.println(result);
+        parseFunc.call(cx,  scope, null, functionArgs);
     }
 
     public Object get(String varName) {

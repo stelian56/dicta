@@ -154,6 +154,7 @@
     <exec executable="cmd" dir="${build.dir}/browser/package">
       <arg value="/c"/>
       <arg value="node"/>
+      <arg value="-o"/>
       <arg value="optimizeBrowser.js"/>
     </exec>
   </target>

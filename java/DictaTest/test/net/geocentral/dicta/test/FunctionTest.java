@@ -22,6 +22,7 @@ public class FunctionTest {
         model.set("id", id);
         Object name = model.get("name");
         Assert.assertEquals(name, "five");
+        System.out.println("Sqlite test OK");
     }
 
     public class SqliteHelper {

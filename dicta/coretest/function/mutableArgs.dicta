@@ -5,6 +5,6 @@ f = function(x) {
 
 // @once
 a = [0];
+// @clear{a}
 c = f(a);
-//@force
 d = a[0];

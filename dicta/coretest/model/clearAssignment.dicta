@@ -1,5 +1,5 @@
 // @once
 a = [2, 1];
+// @clear{a}
 b = a.sort();
-// @force
 c = a[0];

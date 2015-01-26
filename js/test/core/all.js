@@ -9,7 +9,7 @@ define([
     "./work"
 ], function(Dicta) {
 
-    var delay = 2000; // milliseconds
+    var timeout = 10000; // milliseconds
     var allTestGroups = Array.prototype.slice.call(arguments);
     
     return {
@@ -97,7 +97,7 @@ define([
                 for (key in testGroup) {
                     var f = testGroup[key];
                     if (typeof(f) == "function") {
-                        var timer = setTimeout(processResult(testGroup, key), delay);
+                        var timer = setTimeout(processResult(testGroup, key), timeout);
                         var callback = processResult(testGroup, key, timer);
                         result = false;
                         try {

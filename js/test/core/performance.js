@@ -23,7 +23,7 @@ define([], function() {
         fibonacci: function(Dicta) {
             var groupCount = 500;
             var varCount = 20;
-            var runCount = 100;
+            var runCount = 20;
 
             var getPrefix = function(groupIndex) {
                 return "a_" + groupIndex + "_";

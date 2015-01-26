@@ -31,18 +31,6 @@ define([], function() {
             return true;
         },
         
-        forceAssignment: function(Dicta) {
-            var model = new Dicta();
-            model.read("dicta/coretest/model/forceAssignment.dicta");
-            var c = model.get("c");
-            model.get("b");
-            c = model.get("c");
-            if (c != 1) {
-                return false;
-            }
-            return true;
-        },
-
         noAssignment: function(Dicta) {
             var model = new Dicta();
             model.read("dicta/coretest/model/noAssignment.dicta");
@@ -209,9 +197,9 @@ define([], function() {
             return true;
         },
 
-        loosen: function(Dicta) {
+        clear: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/loosen.dicta");
+            model.read("dicta/coretest/model/clear.dicta");
             var c = model.get("c");
             if (c != 1) {
                 return false;
@@ -221,7 +209,7 @@ define([], function() {
             if (c != 10) {
                 return false;
             }
-            model.loosen("b");
+            model.clear("b");
             c = model.get("c");
             if (c != 1) {
                 return false;
@@ -299,9 +287,21 @@ define([], function() {
             return true;
         },
         
-        forceIfStatement: function(Dicta) {
+        clearAssignment: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/forceIfStatement.dicta");
+            model.read("dicta/coretest/model/clearAssignment.dicta");
+            var c = model.get("c");
+            model.get("b");
+            c = model.get("c");
+            if (c != 1) {
+                return false;
+            }
+            return true;
+        },
+
+        clearIfStatement: function(Dicta) {
+            var model = new Dicta();
+            model.read("dicta/coretest/model/clearIfStatement.dicta");
             var c = model.get("c");
             model.get("b");
             c = model.get("c");
@@ -311,21 +311,9 @@ define([], function() {
             return true;
         },
         
-        forceWhileLoop: function(Dicta) {
+        clearForLoop: function(Dicta) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/forceWhileLoop.dicta");
-            var c = model.get("c");
-            model.get("b");
-            c = model.get("c");
-            if (c != 2) {
-                return false;
-            }
-            return true;
-        },
-        
-        forceForLoop: function(Dicta) {
-            var model = new Dicta();
-            model.read("dicta/coretest/model/forceForLoop.dicta");
+            model.read("dicta/coretest/model/clearForLoop.dicta");
             var c = model.get("c");
             model.get("b");
             c = model.get("c");

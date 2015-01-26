@@ -13,17 +13,18 @@ namespace DictaDotNet
             string text = File.ReadAllText(@"dicta\coretest\performance\concat.dicta");
             Dicta model = new Dicta();
             model.Parse(text);
-            int queryCount = (int)1e4;
-            model.Set("count", queryCount);
-            Console.WriteLine(string.Format("{0} concatenations", queryCount));
-            for (int queryIndex = 1; queryIndex <= 10; queryIndex++) {
-                DateTime start = DateTime.Now;
-                model.Set("base", queryIndex);
+            int appendCount = (int)1e4;
+            model.Set("count", appendCount);
+            int runCount = 10;
+            DateTime start = DateTime.Now;
+            for (int runIndex = 1; runIndex <= runCount; runIndex++)
+            {
+                model.Set("base", runIndex);
                 model.Get("a");
-                TimeSpan elapsed = DateTime.Now - start;
-                Console.WriteLine(string.Format("Run {0}: {1} milliseconds", queryIndex,
-                    elapsed.TotalMilliseconds));
             }
+            TimeSpan elapsed = DateTime.Now - start;
+            Console.WriteLine(string.Format("Appended {0} times in {1} milliseconds", appendCount,
+                elapsed.TotalMilliseconds));
             Console.WriteLine();
         }
 
