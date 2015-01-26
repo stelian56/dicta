@@ -12,6 +12,6 @@ Dicta itself is written in Javascript, therefore runs natively in any modern web
 
 Dicta also includes WPF and Apache Camel APIs for GUI and, respectively, back-end modelling, although this work is still in its exploratory stages.
 
-Dicta is extremely lightweight (less than 1K lines of code).
+Dicta is extremely lightweight (about 1K lines of code).
 
 Dicta is free open-source software under the business-friendly MIT license.
