@@ -229,7 +229,13 @@
     <None Include="dicta\coretest\model\include.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="dicta\coretest\model\module.dicta">
+    <None Include="dicta\coretest\model\module1.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\module2.dicta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dicta\coretest\model\module21.dicta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="dicta\coretest\model\noAssignment.dicta">

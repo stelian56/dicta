@@ -1,2 +1,3 @@
-// @include{dicta/coretest/model/module.dicta}
-b = a + 1;
+// @include{dicta/coretest/model/module1.dicta}
+// @include{dicta/coretest/model/module2.dicta}
+d = a + b + c;

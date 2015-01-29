@@ -3,21 +3,22 @@ define([], function() {
     
         name: "performance",
 
-        setGet: function(Dicta) {
+        setGet: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/performance/setGet.dicta");
-            var queryCount = 1e4;
-            var queryIndex;
-            var id, name;
-            var start = new Date();
-            for (queryIndex = 0; queryIndex < queryCount; queryIndex++) {
-                id = Math.floor(Math.random()*10) + 1;
-                model.set("id", 1);
-                name = model.get("name");
-            }
-            var elapsed = new Date().getTime() - start.getTime();
-            var rate = Math.ceil(1e3*queryCount/elapsed);
-            return rate > 1e3;
+            model.read("dicta/coretest/performance/setGet.dicta", function() {
+                var queryCount = 1e4;
+                var queryIndex;
+                var id, name;
+                var start = new Date();
+                for (queryIndex = 0; queryIndex < queryCount; queryIndex++) {
+                    id = Math.floor(Math.random()*10) + 1;
+                    model.set("id", 1);
+                    name = model.get("name");
+                }
+                var elapsed = new Date().getTime() - start.getTime();
+                var rate = Math.ceil(1e3*queryCount/elapsed);
+                callback(rate > 1e3);
+            });
         },
         
         fibonacci: function(Dicta) {

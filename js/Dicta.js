@@ -76,7 +76,7 @@ define([
             });
         };
 
-        var read = function(filePath) {
+        var read = function(filePath, callback) {
             var text;
             if (typeof XMLHttpRequest == "undefined") {
                 if (typeof readFile == "undefined") {
@@ -88,19 +88,21 @@ define([
                 else {
                     text = readFile(filePath);
                 }
+                callback(text);
             }
             else {
                 var request = new XMLHttpRequest();
+                request.onload = function() {
+                    callback(request.responseText);
+                };
                 try {
-                    request.open("GET", "/" + filePath, false);
+                    request.open("GET", "/" + filePath, true);
                     request.send();
                 }
                 catch (error) {
                     console.log(error);
                 }
-                text = request.responseText;
             }
-            return text;
         };
 
         var resetRegex = function(regex) {
@@ -186,12 +188,6 @@ define([
             }
         };
 
-        var include = function(parser, annotation) {
-            var fileName = annotation.params[0];
-            var text = utils.read(fileName);
-            parser.parse(text);
-        };
-        
         var parseIdentifier = function(parser, ast, owned) {
             if (!owned) {
                 var model = parser.model;
@@ -245,10 +241,10 @@ define([
             return definers;
         };
         
-        var parseCallExpression = function(parser, ast, createRule, ruleAnnotations) {
+        var parseCallExpression = function(parser, ast, annotations) {
             var definers = [];
-            if (createRule) {
-                parser.model.createRule(ast, ruleAnnotations);
+            if (annotations) {
+                parser.model.createRule(ast, annotations);
             }
             else {
                 var code = utils.generateCode(ast.callee);
@@ -287,7 +283,7 @@ define([
             return parseExpression(parser, ast.argument);
         };
         
-        var parseExpression = function(parser, ast, owned, createRule, ruleAnnotations) {
+        var parseExpression = function(parser, ast, owned, annotations) {
             switch (ast.type) {
                 case "Identifier":
                     return parseIdentifier(parser, ast, owned);
@@ -300,19 +296,19 @@ define([
                 case "BinaryExpression":
                     return parseBinaryExpression(parser, ast);
                 case "CallExpression":
-                    return parseCallExpression(parser, ast, createRule, ruleAnnotations);
+                    return parseCallExpression(parser, ast, annotations);
                 case "ConditionalExpression":
                     return parseConditionalExpression(parser, ast);
                 case "UpdateExpression":
                     return parseUpdateExpression(parser, ast);
                 case "AssignmentExpression":
-                    return parseAssignment(parser, ast, createRule, ruleAnnotations);
+                    return parseAssignment(parser, ast, annotations);
                 default:
                     return [];
             }
         };
 
-        var parseAssignment = function(parser, ast, createRule, ruleAnnotations)  {
+        var parseAssignment = function(parser, ast, annotations)  {
             var model = parser.model;
             var rightDefiners = parseExpression(parser, ast.right);
             var leftDefiners = parseExpression(parser, ast.left);
@@ -332,14 +328,14 @@ define([
                     }
                 }
             });
-            if (createRule) {
-                var rule = model.createRule(ast, ruleAnnotations);
+            if (annotations) {
+                var rule = model.createRule(ast, annotations);
                 model.applyRule(definedVar, rule);
             }
             return [ varName ];
         };
 
-        var parseVariableDeclaration = function(parser, ast, createRules, ruleAnnotations) {
+        var parseVariableDeclaration = function(parser, ast, annotations) {
             var model = parser.model;
             var definers = [];
             utils.each(ast.declarations, function() {
@@ -347,7 +343,7 @@ define([
                     var expression = { type: "AssignmentExpression", operator: "=" };
                     expression.left = { type: "Identifier", name: this.id.name };
                     expression.right = this.init;
-                    var defs = parseAssignment(parser, expression, createRules, ruleAnnotations);
+                    var defs = parseAssignment(parser, expression, annotations);
                     utils.appendArray(definers, defs);
                 }
                 else {
@@ -359,19 +355,19 @@ define([
             return definers;
         };
         
-        var parseFunctionDeclaration = function(parser, ast, createRules, ruleAnnotations) {
+        var parseFunctionDeclaration = function(parser, ast, annotations) {
             var expression = { type: "AssignmentExpression", operator: "=" };
             expression.left = { type: "Identifier", name: ast.id.name };
             expression.right =
                 { type: "FunctionExpression", params: ast.params, body: ast.body };
-            return parseAssignment(parser, expression, createRules, ruleAnnotations);
+            return parseAssignment(parser, expression, annotations);
         };
         
-        var parseIfStatement = function(parser, ast, createRule, ruleAnnotations) {
+        var parseIfStatement = function(parser, ast, annotations) {
             var model = parser.model;
             var rule;
-            if (createRule) {
-                rule = model.createRule(ast, ruleAnnotations);
+            if (annotations) {
+                rule = model.createRule(ast, annotations);
             }
             var testDefiners = parseExpression(parser, ast.test);
             var consequentDefiners = [];
@@ -398,11 +394,11 @@ define([
             return consequentDefiners;
         };
         
-        var parseWhileStatement = function(parser, ast, createRule, ruleAnnotations) {
+        var parseWhileStatement = function(parser, ast, annotations) {
             var model = parser.model;
             var rule;
-            if (createRule) {
-                rule = model.createRule(ast, ruleAnnotations);
+            if (annotations) {
+                rule = model.createRule(ast, annotations);
             }
             var testDefiners = parseExpression(parser, ast.test);
             var bodyDefiners = parseStatements(parser, [ ast.body ]);
@@ -421,11 +417,11 @@ define([
             return bodyDefiners;
         };
 
-        var parseForStatement = function(parser, ast, createRule, ruleAnnotations) {
+        var parseForStatement = function(parser, ast, annotations) {
             var model = parser.model;
             var rule;
-            if (createRule) {
-                rule = model.createRule(ast, ruleAnnotations);
+            if (annotations) {
+                rule = model.createRule(ast, annotations);
             }
             var testDefiners = [];
             if (ast.init) {
@@ -456,81 +452,148 @@ define([
             return bodyDefiners;
         };
         
-        var parseStatements = function(parser, ast, createRules) {
-            var annotationIterator;
-            if (createRules) {
-                annotationIterator = parser.annotator.iterator();
-            }
+        var parseStatements = function(parser, statements, annotations) {
+            
             var definers = [];
-            utils.each(ast, function() {
-                var statement = this;
-                var ruleAnnotations;
-                if (createRules) {
-                    var annotation;
-                    while ((annotation = annotationIterator.peek()) != null &&
-                            annotation.end < statement.end) {
-                        if (annotation.start < statement.start) {
-                            if (annotation.type == "include") {
-                                include(parser, annotation);
-                            }
-                            else {
-                                if (!ruleAnnotations) {
-                                    ruleAnnotations = [];
-                                }
-                                ruleAnnotations.push(annotation);
-                            }
-                        }
-                        annotationIterator.next();
-                    }
+            for (var statementIndex = 0; statementIndex < statements.length; statementIndex++) {
+                var statement = statements[statementIndex];
+                var statementAnnotations;
+                if (annotations) {
+                    statementAnnotations = annotations[statementIndex];
                 }
                 var defs = [];
                 switch (statement.type) {
                     case "ExpressionStatement":
                         defs = parseExpression(parser, statement.expression, false,
-                                createRules, ruleAnnotations);
+                            statementAnnotations);
                         break;
                     case "VariableDeclaration":
-                        defs = parseVariableDeclaration(parser, statement, createRules,
-                                ruleAnnotations);
+                        defs = parseVariableDeclaration(parser, statement, statementAnnotations);
                         break;
                     case "FunctionDeclaration":
-                        defs = parseFunctionDeclaration(parser, statement, createRules,
-                                ruleAnnotations);
+                        defs = parseFunctionDeclaration(parser, statement, statementAnnotations);
                         break;
                     case "IfStatement":
-                        defs = parseIfStatement(parser, statement, createRules, ruleAnnotations);
+                        defs = parseIfStatement(parser, statement, statementAnnotations);
                         break;
                     case "WhileStatement":
                     case "DoWhileStatement":
-                        defs = parseWhileStatement(parser, statement, createRules, ruleAnnotations);
+                        defs = parseWhileStatement(parser, statement, statementAnnotations);
                         break;
                     case "ForStatement":
-                        defs = parseForStatement(parser, statement, createRules, ruleAnnotations);
+                        defs = parseForStatement(parser, statement, statementAnnotations);
                         break;
                     case "BlockStatement":
-                        defs = parseStatements(parser, statement.body, false);
+                        defs = parseStatements(parser, statement.body);
                         break;
                 }
                 utils.appendArray(definers, defs);
-            });
+            }
             return definers;
         };
 
-        var constructor = function(model) {
-            this.model = model;
-            this.annotator = new DAnnotator();
-        };
-
-        constructor.prototype.parse = function(text) {
-            var annotator = this.annotator;
+        var parseAnnotations = function(text, includes) {
+            var addInclude = function(statementIndex, annotation) {
+                var filePath = annotation.params[0];
+                includes.push({
+                    statementIndex: statementIndex,
+                    filePath: filePath
+                });
+            };
+            
+            var annotator = new DAnnotator();
             var parseOptions = {
                 strictSemicolons: true,
                 onComment: function(block, text, start, end) {
                     annotator.parseComment(text, start, end);
                 }
             };
-            var ast = acorn.parse(text, parseOptions);
-            parseStatements(this, ast.body, true);
+            var ast = acorn.parse(text, parseOptions).body;
+            var annotatedStatements = [];
+            var annotationIterator = annotator.iterator();
+            for (var statementIndex = 0; statementIndex < ast.length; statementIndex++) {
+                var statement = ast[statementIndex];
+                var annotations = [];
+                var annotation;
+                while ((annotation = annotationIterator.peek()) != null &&
+                        annotation.end < statement.end) {
+                    if (annotation.start < statement.start) {
+                        if (annotation.type == "include") {
+                            addInclude(statementIndex, annotation);
+                        }
+                        else {
+                            annotations.push(annotation);
+                        }
+                    }
+                    annotationIterator.next();
+                }
+                annotatedStatements.push({
+                    statement: statement,
+                    annotations: annotations
+                });
+            }
+            while ((annotation = annotationIterator.peek()) != null) {
+                addInclude(ast.length, annotation);
+                annotationIterator.next();
+            }
+            return annotatedStatements;
+        };
+        
+        var constructor = function(model) {
+            this.model = model;
+            this.annotator = new DAnnotator();
+        };
+
+        var parse = function(text, callback) {
+            var includes = [];
+            var annotatedStatements = parseAnnotations(text, includes);
+            var includeCount = includes.length;
+            if (includeCount == 0) {
+                callback(annotatedStatements);
+            }
+            else {
+                var includeCounter = { count: includeCount };
+                var statements = annotatedStatements;
+                utils.each(includes, function() {
+                    var statementIndex = this.statementIndex;
+                    var filePath = this.filePath;
+                    utils.read(filePath, function(text) {
+                        parse(text, function(includeAst) {
+                            statements = statements.slice(0, statementIndex)
+                                .concat(includeAst)
+                                .concat(statements.slice(statementIndex));
+                            if (--includeCounter.count == 0) {
+                                callback(statements);
+                            }
+                        });
+                    });
+                });
+            }
+        };
+        
+        constructor.prototype.parse = function(text, callback) {
+            var parser = this;
+            var statements = [];
+            var annotations = [];
+            parse(text, function(annotatedStatements) {
+                utils.each(annotatedStatements, function() {
+                    statements.push(this.statement);
+                    annotations.push(this.annotations);
+                });
+                parseStatements(parser, statements, annotations);
+                if (callback) {
+                    callback();
+                }
+            });
+        };
+
+        constructor.prototype.read = function(filePath, callback) {
+            var parser = this;
+            utils.read(filePath, function(text) {
+                parser.parse(text, function() {
+                    callback();
+                });
+            });
         };
 
         return constructor;
@@ -664,15 +727,24 @@ define([
             this.context.use(lib);
         };
         
-        constructor.prototype.parse = function(text) {
+        constructor.prototype.parse = function(text, callback) {
+            var model = this;
             this.onceRules = [];
-            this.parser.parse(text);
-            executeOnceRules(this);
+            this.parser.parse(text, function() {
+                executeOnceRules(model);
+                if (callback) {
+                    callback();
+                }
+            });
         };
 
-        constructor.prototype.read = function(filePath) {
-            var text = utils.read(filePath);
-            this.parse(text);
+        constructor.prototype.read = function(filePath, callback) {
+            var model = this;
+            this.onceRules = [];
+            this.parser.read(filePath, function() {
+                executeOnceRules(model);
+                callback();
+            });
         };
 
         constructor.prototype.createVariable = function(varName) {
@@ -682,12 +754,12 @@ define([
             return variable;
         };
 
-        constructor.prototype.createRule = function(ast, ruleAnnotations) {
+        constructor.prototype.createRule = function(ast, annotations) {
             var model = this;
             var code = utils.generateCode(ast);
             var ruleName = utils.newRuleName();
-            var rule = { name: ruleName, code: code, annotations: ruleAnnotations };
-            utils.each(rule.annotations, function() {
+            var rule = { name: ruleName, code: code, annotations: annotations };
+            utils.each(annotations, function() {
                 if (this.type == "once") {
                     rule.once = true;
                     model.onceRules.push(rule);
