@@ -18,9 +18,9 @@
     <property name="varName" value="x"/>
   </bean>
   
-  <bean id="dictaA" class="net.geocentral.dicta.camel.DictaWatch">
+  <bean id="dictaSum" class="net.geocentral.dicta.camel.DictaWatch">
     <property name="modelWrapper" ref="dictaWrapper"/>
-    <property name="varName" value="a"/>
+    <property name="varName" value="sum"/>
   </bean>
   
   <camelContext id="camelSample" xmlns="http://camel.apache.org/schema/spring">
@@ -34,7 +34,7 @@
     </route>
 
     <route>
-      <from uri="dictaA"/>
+      <from uri="dictaSum"/>
       <to uri="stream:out"/>
     </route>
     

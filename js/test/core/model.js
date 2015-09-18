@@ -33,7 +33,7 @@ define([], function() {
         
         noAssignment: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/noAssignment.dicta", function() {
+            model.read("../dicta/coretest/model/noAssignment.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -56,7 +56,7 @@ define([], function() {
         
         declaredAssigned: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/declaredAssigned.dicta", function() {
+            model.read("../dicta/coretest/model/declaredAssigned.dicta", function() {
                 var a = model.get("a");
                 if (a != 1) {
                     callback(false);
@@ -68,7 +68,7 @@ define([], function() {
 
         dependents: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/dependents.dicta", function() {
+            model.read("../dicta/coretest/model/dependents.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -86,7 +86,7 @@ define([], function() {
 
         binaryOperator: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/binaryOperator.dicta", function() {
+            model.read("../dicta/coretest/model/binaryOperator.dicta", function() {
                 var b = model.get("b");
                 if (b != 2) {
                     callback(false);
@@ -159,7 +159,7 @@ define([], function() {
         
         selfIncrement: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/selfIncrement.dicta", function() {
+            model.read("../dicta/coretest/model/selfIncrement.dicta", function() {
                 model.set("a", 1);
                 b = model.get("b");
                 if (b != 1) {
@@ -212,7 +212,7 @@ define([], function() {
 
         clear: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/clear.dicta", function() {
+            model.read("../dicta/coretest/model/clear.dicta", function() {
                 var c = model.get("c");
                 if (c != 1) {
                     callback(false);
@@ -236,7 +236,7 @@ define([], function() {
         
         ifStatement: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/ifStatement.dicta", function() {
+            model.read("../dicta/coretest/model/ifStatement.dicta", function() {
                 model.set("a", 2);
                 model.set("b", 1);
                 model.set("x", 10);
@@ -265,7 +265,7 @@ define([], function() {
         
         whileLoop: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/whileLoop.dicta", function() {
+            model.read("../dicta/coretest/model/whileLoop.dicta", function() {
                 var b = model.get("b");
                 if (b != 45) {
                     callback(false);
@@ -283,7 +283,7 @@ define([], function() {
         
         doWhileLoop: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/doWhileLoop.dicta", function() {
+            model.read("../dicta/coretest/model/doWhileLoop.dicta", function() {
                 var b = model.get("b");
                 if (b != 45) {
                     callback(false);
@@ -301,7 +301,7 @@ define([], function() {
         
         forLoop: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/forLoop.dicta", function() {
+            model.read("../dicta/coretest/model/forLoop.dicta", function() {
                 var b = model.get("b");
                 if (b != 45) {
                     callback(false);
@@ -319,7 +319,7 @@ define([], function() {
         
         clearAssignment: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/clearAssignment.dicta", function() {
+            model.read("../dicta/coretest/model/clearAssignment.dicta", function() {
                 var c = model.get("c");
                 model.get("b");
                 c = model.get("c");
@@ -333,7 +333,7 @@ define([], function() {
 
         clearIfStatement: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/clearIfStatement.dicta", function() {
+            model.read("../dicta/coretest/model/clearIfStatement.dicta", function() {
                 var c = model.get("c");
                 model.get("b");
                 c = model.get("c");
@@ -347,7 +347,7 @@ define([], function() {
         
         clearForLoop: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/clearForLoop.dicta", function() {
+            model.read("../dicta/coretest/model/clearForLoop.dicta", function() {
                 var c = model.get("c");
                 model.get("b");
                 c = model.get("c");
@@ -361,7 +361,7 @@ define([], function() {
         
         include: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/include.dicta", function() {
+            model.read("../dicta/coretest/model/include.dicta", function() {
                 var d = model.get("d");
                 if (d != 111) {
                     callback(false);
@@ -373,7 +373,7 @@ define([], function() {
         
         append: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/module1.dicta", function() {
+            model.read("../dicta/coretest/model/module1.dicta", function() {
                 var rule = "b = a + 1;";
                 model.parse(rule);
                 var b = model.get("b");

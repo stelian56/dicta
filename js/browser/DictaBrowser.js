@@ -4,10 +4,16 @@
 
     var model;
     
-    var init = function(filePath) {
+    var read = function(filePath) {
         model = new Dicta(this);
-        model.read(filePath);
-        parsePage();
+        model.read(filePath, parsePage);
+    };
+    
+    var parse = function(text, callback) {
+        model = new Dicta(this);
+        model.parse(text, function() {
+            callback(model);
+        });
     };
     
     var setValue = function(element, value) {
@@ -34,6 +40,9 @@
                     });
                 }
                 break;
+            case "input":
+                $(element).val(value);
+                break;
             default:
                 $(element).text(value);
         };
@@ -46,6 +55,9 @@
             if (!setVarName) {
                 var varName = $(element).attr("dicta_get");
                 var value = model.get(varName);
+                if (isNaN(value)) {
+                    value = null;
+                }
                 setValue(element, value);
             }
         });
@@ -61,22 +73,25 @@
             }
             else {
                 var value = model.get(varName);
+                if (typeof value == "number" && isNaN(value)) {
+                    value = null;
+                }
                 setValue(element, value);
             }
         });
         $("[dicta_set]").each(function() {
             var element = this;
             var varName = $(element).attr("dicta_set");
-            var valueType = $(element).attr("dicta_type");
             $(element).change(function() {
                 var text = $(element).val();
+                var valueType = $(element).attr("dicta_type");
                 var value;
-                switch (valueType) {
-                    case "number":
-                        value = parseFloat(text) || 0;
-                        break;
-                    default:
-                        value = text;
+                if (valueType == "text") {
+                    value = text;
+                }
+                else {
+                    var numericValue = parseFloat(text);
+                    value = isNaN(numericValue) ? text : numericValue;
                 }
                 model.set(varName, value);
                 if ($(element).attr("dicta_get")) {
@@ -101,7 +116,9 @@
     };
 
     return {
-        init: init,
+        read: read,
+        parse: parse,
+        parsePage: parsePage,
         statusChanged: statusChanged
     };
 });

@@ -5,7 +5,7 @@ define([], function() {
         
         selfIncrement: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/model/selfIncrement.dicta", function() {
+            model.read("../dicta/coretest/model/selfIncrement.dicta", function() {
                 model.set("a", 1);
                 b = model.get("b");
                 if (b != 1) {

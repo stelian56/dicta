@@ -22,6 +22,7 @@
       <fileset dir="lib/mongoose" includes="Startup.exe"/>
       <fileset dir="${basedir}" includes="html/**"/>
       <fileset dir="${basedir}" includes="dicta/**"/>
+      <fileset dir="${basedir}" includes="images/*.ico"/>
     </copy>
     <copy todir="${test.dir}/browser/js">
       <fileset dir="js" includes="*.js lib/** test/core/** test/sundry/**"/>
@@ -39,8 +40,8 @@
       <fileset dir="js/java" includes="**"/>
       <fileset dir="js/lib" includes="r.js"/>
     </copy>
-    <copy todir="${test.dir}/java/DictaTest/dicta">
-      <fileset dir="${basedir}/dicta" includes="**"/>
+    <copy todir="${test.dir}/java">
+      <fileset dir="${basedir}" includes="dicta/**"/>
     </copy>
     <copy todir="${test.dir}/java/DictaSamples/AllCaps/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
@@ -104,15 +105,15 @@
     <copy todir="${test.dir}/dotnet/DictaSamples/Interest">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaSamples/Select">
+    <copy todir="${test.dir}/dotnet/DictaSamples/UpperCase">
       <fileset dir="lib" includes="edge/**"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaSamples/Select/edge/js">
+    <copy todir="${test.dir}/dotnet/DictaSamples/UpperCase/edge/js">
       <fileset dir="${build.dir}/browser/release/package" includes="Dicta.min.js"/>
       <fileset dir="js/dotnet" includes="**"/>
       <fileset dir="js/lib" includes="r.js"/>
     </copy>
-    <copy todir="${test.dir}/dotnet/DictaSamples/Select">
+    <copy todir="${test.dir}/dotnet/DictaSamples/UpperCase">
       <fileset dir="${basedir}" includes="dicta/samples/**"/>
     </copy>
     <copy todir="${test.dir}/dotnet/DictaSamples/Splice">

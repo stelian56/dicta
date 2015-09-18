@@ -1,6 +1,6 @@
 interestRange = function(principal, interest, yearRange) {
     compoundInterest = function(principal, interest, years) {
-        return Math.floor(principal*Math.pow(1 + 0.01*interest/12, 12*years));
+        return Math.floor(principal*Math.pow(1 + 0.01*interest, years));
     };
 
     values = [];

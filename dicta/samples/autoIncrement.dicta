@@ -1,5 +1,6 @@
 // @once
+x = 0;
+// @once
 sum = 0;
 
 sum += x;
-a = sum.toFixed(0);

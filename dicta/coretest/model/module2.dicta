@@ -1,2 +1,2 @@
 b = 10;
-// @include{dicta/coretest/model/module21.dicta}
+// @include{../dicta/coretest/model/module21.dicta}

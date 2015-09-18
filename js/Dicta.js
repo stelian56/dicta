@@ -96,7 +96,7 @@ define([
                     callback(request.responseText);
                 };
                 try {
-                    request.open("GET", "/" + filePath, true);
+                    request.open("GET", filePath, true);
                     request.send();
                 }
                 catch (error) {
@@ -822,6 +822,14 @@ define([
             variable.watched = true;
         };
 
+        constructor.prototype.getVariableNames = function() {
+            var varNames = [];
+            utils.each(this.variables, function() {
+                varNames.push(this.name);
+            });
+            return varNames;
+        };
+        
         constructor.prototype.addDotNetFunction = function (name, func) {
             var funcDef = function(args) {
                 var res;

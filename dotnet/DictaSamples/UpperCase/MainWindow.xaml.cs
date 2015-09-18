@@ -2,7 +2,7 @@
 using DictaDotNet;
 using System;
 
-namespace DictaSamples
+namespace UpperCaseSample
 {
     public partial class MainWindow : Window
     {

@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Dicta Debugger</title>
+<link rel="icon" type="image/x-icon" href="../../images/Dicta.ico"/>
+<script type="text/javascript" src="../../js/lib/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="../../js/lib/require-2.1.14.js"></script>
+<script type="text/javascript">
+require(["../../js/DictaBrowser"], function(dictaBrowser) {
+
+    var samples = {
+        "Fibonacci": "fibonacci",
+        "Upper Case": "upperCase",
+        "Interest Calculator": "interest",
+        "Splice Array": "splice",
+        "Auto Increment": "autoIncrement"
+    };
+
+    var showVariables = function() {
+        $("#varsPane").empty();
+        var text = $("#modelInput").val();
+        try {
+            dictaBrowser.parse(text, function(model) {
+                var varNames = model.getVariableNames();
+                var table = $("<table/>").attr({
+                    cellspacing: "10px"
+                });
+                $("#varsPane").append(table);
+                $.each(varNames, function() {
+                    var varName = this;
+                    var varValue = model.get(varName);
+                    if (typeof varValue != "function") {
+                        if (isNaN(varValue)) {
+                            varValue = "";
+                        }
+                        var varInput = $("<input/>").attr({
+                            id: "var_" + varName,
+                            type: "text",
+                            dicta_set: varName,
+                            dicta_watch: varName
+                        }).val(varValue);
+                        var tr = $("<tr/>");
+                        tr.append("<td/>").text("All")
+                        tr.append("<td/>");
+                        tr.append("<td/>")
+                        tr = $("<tr/>");
+                        tr.append("<td/>").append(varName);
+                        tr.append("<td/>").append(varInput);
+                        table.append(tr);
+                    }
+                });
+                dictaBrowser.parsePage();
+            });
+        }
+        catch (error) {
+            var message = $("<span/>").css({
+                color: "red"
+            }).text(error);
+            $("#varsPane").append(message);
+        }
+    };
+            
+    var showSamples = function() {
+        $.each(samples, function(name, fileName) {
+            var url = "../dicta/samples/" + fileName + ".dicta";
+            var a = $("<a>").
+                attr("href", url).
+                text(name).
+                click(function(event) {
+                    $.get(url, function(text) {
+                        $("#modelInput").val(text);
+                        showVariables();
+                    });
+                    return false;
+                });
+            $("#samplesPane").append("<br>").append(a);
+        });
+    };
+    
+    var init = function() {
+        $("#modelInput").keyup(function() {
+            $("#varsPane").empty();
+        });
+        $("#updateButton").click(function() {
+            showVariables();
+        });
+        showSamples();
+    };
+
+    $(document).ready(function() {
+        init();
+    });
+});
+</script>
+</head>
+<body>
+<div id="varsPane" style="float:left;">
+</div>
+<div style="margin-top:1em;float:right;">
+<div>
+<textarea id="modelInput" rows="20" cols="50" style="background-color:#F0F0F0" placeholder="Type or paste model in here">
+</textarea>
+</div>
+<div style="float:left;margin-top:10px;">
+<button id="updateButton">Update</button>
+</div>
+<div id="samplesPane" style="float:right;margin-top:10px;">
+Sample Models:<br>
+</div>
+</div>
+</body>

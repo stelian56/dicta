@@ -5,7 +5,7 @@ define([], function() {
 
         setGet: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/performance/setGet.dicta", function() {
+            model.read("../dicta/coretest/performance/setGet.dicta", function() {
                 var queryCount = 1e4;
                 var queryIndex;
                 var id, name;

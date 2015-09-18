@@ -2,7 +2,7 @@
 using DictaDotNet;
 using System;
 
-namespace DictaSamples
+namespace TableSample
 {
     public partial class MainWindow : Window
     {

@@ -5,7 +5,7 @@ define([], function() {
 
         watch: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/status/watch.dicta", function() {
+            model.read("../dicta/coretest/status/watch.dicta", function() {
                 var vars = "";
                 model.statusListener = {
                     statusChanged: function(variables) {
@@ -52,7 +52,7 @@ define([], function() {
         
         watchGet: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/status/watchGet.dicta", function() {
+            model.read("../dicta/coretest/status/watchGet.dicta", function() {
                 var b;
                 model.statusListener = {
                     statusChanged: function(variables) {

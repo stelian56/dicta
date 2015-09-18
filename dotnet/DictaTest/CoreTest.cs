@@ -11,7 +11,9 @@ namespace DictaDotNet
         {
             Console.WriteLine("\n***\nTestCore");
             string text = File.ReadAllText(@".\edge\js\test\dotnet\testCoreDotNet.js");
+            Directory.SetCurrentDirectory("edge");
             TestUtils.RunTest(text);
+            Directory.SetCurrentDirectory("..");
         }
 
         public void All()

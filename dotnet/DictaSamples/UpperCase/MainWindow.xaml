@@ -1,9 +1,9 @@
-﻿<Window x:Class="DictaSamples.MainWindow"
+﻿<Window x:Class="UpperCaseSample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Select" Height="350" Width="525"
         xmlns:dicta="clr-namespace:DictaDotNet;assembly=DictaWPF"
-        dicta:DictaProperty.DictaModel="dicta/samples/select.dicta">
+        dicta:DictaProperty.DictaModel="dicta/samples/upperCase.dicta">
     <Grid>
         <ComboBox dicta:DictaProperty.DictaSet="text" Margin="24,24,373,268" Width="120" Height="24">
             <TextBlock></TextBlock>

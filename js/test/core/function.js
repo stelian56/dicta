@@ -5,7 +5,7 @@ define(["./lib"], function(lib) {
 
         noArgs: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/noArgs.dicta", function() {
+            model.read("../dicta/coretest/function/noArgs.dicta", function() {
                 var a = model.get("a");
                 if (a != 1) {
                     callback(false);
@@ -17,7 +17,7 @@ define(["./lib"], function(lib) {
         
         constArgs: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/constArgs.dicta", function() {
+            model.read("../dicta/coretest/function/constArgs.dicta", function() {
                 var a = model.get("a");
                 if (a != 3) {
                     callback(false);
@@ -29,7 +29,7 @@ define(["./lib"], function(lib) {
         
         varArgs: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/varArgs.dicta", function() {
+            model.read("../dicta/coretest/function/varArgs.dicta", function() {
                 model.set("a", 1);
                 model.set("b", 2);
                 var c = model.get("c");
@@ -43,7 +43,7 @@ define(["./lib"], function(lib) {
         
         localVar: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/localVar.dicta", function() {
+            model.read("../dicta/coretest/function/localVar.dicta", function() {
                 var b = model.get("b");
                 var a = model.get("a");
                 if (a != 1) {
@@ -56,7 +56,7 @@ define(["./lib"], function(lib) {
 
         globalVar: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/globalVar.dicta", function() {
+            model.read("../dicta/coretest/function/globalVar.dicta", function() {
                 var b = model.get("b");
                 var a = model.get("a");
                 if (a != 2) {
@@ -69,7 +69,7 @@ define(["./lib"], function(lib) {
         
         declaration: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/declaration.dicta", function() {
+            model.read("../dicta/coretest/function/declaration.dicta", function() {
                 var a = model.get("a");
                 if (a != 1) {
                     callback(false);
@@ -106,7 +106,7 @@ define(["./lib"], function(lib) {
         
         functionProp: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/functionProp.dicta", function() {
+            model.read("../dicta/coretest/function/functionProp.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -118,7 +118,7 @@ define(["./lib"], function(lib) {
         
         mutableArgs: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/mutableArgs.dicta", function() {
+            model.read("../dicta/coretest/function/mutableArgs.dicta", function() {
                 var d = model.get("d");
                 var c = model.get("c");
                 d = model.get("d");
@@ -133,7 +133,7 @@ define(["./lib"], function(lib) {
         external: function(Dicta, callback) {
             var model = new Dicta();
             model.use(lib);
-            model.read("dicta/coretest/function/external.dicta", function() {
+            model.read("../dicta/coretest/function/external.dicta", function() {
                 var b = model.get("b");
                 if (b != 6) {
                     callback(false);
@@ -145,7 +145,7 @@ define(["./lib"], function(lib) {
         
         library: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/function/library.dicta", function() {
+            model.read("../dicta/coretest/function/library.dicta", function() {
                 model.set("x", 1);
                 var a = model.get("a");
                 if (a != "1") {

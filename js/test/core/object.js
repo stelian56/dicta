@@ -5,7 +5,7 @@ define([], function() {
 
         constantInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/constantInitializer.dicta", function() {
+            model.read("../dicta/coretest/object/constantInitializer.dicta", function() {
                 var a_p = model.get("a.p");
                 if (a_p != 1) {
                     callback(false);
@@ -23,7 +23,7 @@ define([], function() {
 
         variableInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/variableInitializer.dicta", function() {
+            model.read("../dicta/coretest/object/variableInitializer.dicta", function() {
                 var b_p = model.get("b.p");
                 if (b_p != 1) {
                     callback(false);
@@ -41,7 +41,7 @@ define([], function() {
         
         expressionInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/expressionInitializer.dicta", function() {
+            model.read("../dicta/coretest/object/expressionInitializer.dicta", function() {
                 var b_p = model.get("b.p");
                 if (b_p != 2) {
                     callback(false);
@@ -59,7 +59,7 @@ define([], function() {
         
         depthInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/depthInitializer.dicta", function() {
+            model.read("../dicta/coretest/object/depthInitializer.dicta", function() {
                 var b_q_w = model.get("b.q.w");
                 var b_e_r = model.get("b.e.r");
                 if (b_q_w != 1 || b_e_r != 2) {
@@ -83,7 +83,7 @@ define([], function() {
 
         fixedIdentifierLeft: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/fixedIdentifierLeft.dicta", function() {
+            model.read("../dicta/coretest/object/fixedIdentifierLeft.dicta", function() {
                 var b_p = model.get("b.p");
                 if (b_p != 1) {
                     callback(false);
@@ -101,7 +101,7 @@ define([], function() {
         
         literalLeft: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/literalLeft.dicta", function() {
+            model.read("../dicta/coretest/object/literalLeft.dicta", function() {
                 var b_p = model.get("b.p");
                 if (b_p != 1) {
                     callback(false);
@@ -119,7 +119,7 @@ define([], function() {
         
         fixedIdentifierRight: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/fixedIdentifierRight.dicta", function() {
+            model.read("../dicta/coretest/object/fixedIdentifierRight.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -137,7 +137,7 @@ define([], function() {
         
         literalRight: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/fixedIdentifierRight.dicta", function() {
+            model.read("../dicta/coretest/object/fixedIdentifierRight.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -155,7 +155,7 @@ define([], function() {
         
         opratorRight: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/operatorRight.dicta", function() {
+            model.read("../dicta/coretest/object/operatorRight.dicta", function() {
                 var c = model.get("c");
                 if (c != 1) {
                     callback(false);
@@ -174,7 +174,7 @@ define([], function() {
         
         identifierLeftInitializerRight: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/identifierLeftInitializerRight.dicta", function() {
+            model.read("../dicta/coretest/object/identifierLeftInitializerRight.dicta", function() {
                 var a_p_x = model.get("a.p.x");
                 if (a_p_x != 1) {
                     callback(false);
@@ -192,7 +192,7 @@ define([], function() {
         
         computedIdentifierRight: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/computedIdentifierRight.dicta", function() {
+            model.read("../dicta/coretest/object/computedIdentifierRight.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -210,7 +210,7 @@ define([], function() {
         
         computedIdentifierLeft: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/object/computedIdentifierLeft.dicta", function() {
+            model.read("../dicta/coretest/object/computedIdentifierLeft.dicta", function() {
                 var b_p = model.get("b[p]");
                 if (b_p != 1) {
                     callback(false);

@@ -37,7 +37,7 @@ define([], function() {
         
         variableInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/variableInitializer.dicta", function() {
+            model.read("../dicta/coretest/array/variableInitializer.dicta", function() {
                 var b_0 = model.get("b[0]");
                 if (b_0 != 1) {
                     callback(false);
@@ -71,7 +71,7 @@ define([], function() {
         
         propInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/propInitializer.dicta", function() {
+            model.read("../dicta/coretest/array/propInitializer.dicta", function() {
                 var b_0 = model.get("b[0]");
                 var b_1 = model.get("b[1]");
                 if (b_0 != 1 || b_1 != 1) {
@@ -95,7 +95,7 @@ define([], function() {
 
         expressionInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/expressionInitializer.dicta", function() {
+            model.read("../dicta/coretest/array/expressionInitializer.dicta", function() {
                 var b_0 = model.get("b[0]");
                 if (b_0 != 2) {
                     callback(false);
@@ -113,7 +113,7 @@ define([], function() {
         
         depthInitializer: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/depthInitializer.dicta", function() {
+            model.read("../dicta/coretest/array/depthInitializer.dicta", function() {
                 var b_0_0 = model.get("b[0][0]");
                 var b_0_1 = model.get("b[0][1]");
                 var b_1_0 = model.get("b[1][0]");
@@ -143,7 +143,7 @@ define([], function() {
         
         assignRight: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/assignRight.dicta", function() {
+            model.read("../dicta/coretest/array/assignRight.dicta", function() {
                 var b = model.get("b");
                 if (b != 2) {
                     callback(false);
@@ -161,7 +161,7 @@ define([], function() {
 
         assignLast: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/assignLast.dicta", function() {
+            model.read("../dicta/coretest/array/assignLast.dicta", function() {
                 var b_0 = model.get("b[0]");
                 var b_1 = model.get("b[1]");
                 if (b_0 || b_1 != 2) {
@@ -185,7 +185,7 @@ define([], function() {
         
         variableIndex: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/variableIndex.dicta", function() {
+            model.read("../dicta/coretest/array/variableIndex.dicta", function() {
                 var b = model.get("b");
                 if (b != 1) {
                     callback(false);
@@ -203,7 +203,7 @@ define([], function() {
         
         expressionIndex: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/expressionIndex.dicta", function() {
+            model.read("../dicta/coretest/array/expressionIndex.dicta", function() {
                 var b = model.get("b");
                 if (b != 4) {
                     callback(false);
@@ -222,7 +222,7 @@ define([], function() {
         
         depth: function(Dicta, callback) {
             var model = new Dicta();
-            model.read("dicta/coretest/array/depth.dicta", function() {
+            model.read("../dicta/coretest/array/depth.dicta", function() {
                 var b = model.get(
                     "b[0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0][0]");
                 if (b != 1) {
